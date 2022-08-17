@@ -9,6 +9,8 @@ import Header from './main/Header'
 
 import Home from './pages/Welcome'
 import NotFound from './pages/NotFound'
+import Team from './pages/Team/Team'
+import TeamList from './pages/Team/TeamList'
 
 const mainPalette = {
 	primary: { main: '#F7484E', },
@@ -34,6 +36,9 @@ function App() {
 
 				<Container maxWidth='md'>
 					<Switch>
+						<Route exact path='/Teams/:id' component={Team} />
+						<Route exact path='/Teams' component={TeamList} />
+
 						<Route exact path='/' component={Home} />
 						<Route component={NotFound} />
 					</Switch>
