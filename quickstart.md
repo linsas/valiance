@@ -17,11 +17,14 @@ The working environemnt includes:
 ## Setup
 Create an .env file similar to .env.example.
 Change the database connection credentials to match your environment.
-Run the following commands to download the necessary dependencies and generate an application key:
+Run the following commands to download the necessary dependencies, generate an application key, and prepare the database tables:
 ```
 npm install
 composer install
 php artisan key:generate
+php artisan migrate:fresh
 ```
 
 Run webpack with the command `npm run watch` and run the web server with `php artisan serve`.
+
+You may also use the command `php artisan db:seed` to seed the database quickly.
