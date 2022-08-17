@@ -1,13 +1,53 @@
 import React from 'react'
-import { AppBar, IconButton, Toolbar, Tooltip, Typography } from '@material-ui/core'
+import { Link as RouterLink } from 'react-router-dom'
+import { AppBar, Hidden, IconButton, Link, Toolbar, Tooltip, Typography } from '@material-ui/core'
+import HomeIcon from '@material-ui/icons/Home'
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects'
 import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined'
+
+import navigation from '../utility/navigation'
+
+function HeaderNavLink({ title, to, icon: Icon }) {
+	return <>
+		<Hidden xsDown>
+			<Link color='inherit' component={RouterLink} to={to} style={{ display: 'inline-flex', margin: 4 }}>
+				<Icon />
+				<Typography component='span'>{title}</Typography>
+			</Link>
+		</Hidden>
+
+		<Hidden smUp>
+			<Tooltip title={title} arrow>
+				<IconButton component={RouterLink} to={to}>
+					<Icon />
+				</IconButton>
+			</Tooltip>
+		</Hidden>
+	</>
+}
 
 function Header({ isDark, setDark }) {
 	return <AppBar position='sticky' style={{ marginBottom: 45 }}>
 		<Toolbar>
 
-			<Typography variant='h6' style={{ flexGrow: 1 }}>Valiance</Typography>
+			<Hidden xsDown>
+				<Typography variant='h6'>
+					<Link color='inherit' component={RouterLink} to='/'>Valiance</Link>
+				</Typography>
+			</Hidden>
+			<Hidden smUp>
+				<Tooltip title='Home' arrow>
+					<IconButton component={RouterLink} to={'/'} edge='start'>
+						<HomeIcon />
+					</IconButton>
+				</Tooltip>
+			</Hidden>
+
+			<div style={{ flexGrow: 1, textAlign: 'center' }}>
+				{navigation.map((item) =>
+					<HeaderNavLink key={item.to} title={item.title} to={item.to} icon={item.icon} />
+				)}
+			</div>
 
 			<Tooltip title='Toggle dark mode' arrow>
 				<IconButton edge='end' onClick={() => setDark(!isDark)}>
