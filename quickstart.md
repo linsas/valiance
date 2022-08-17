@@ -5,6 +5,8 @@ As this project was created similarly to the original, some components might not
 The primary components used in the application are:
 - Laravel 7
 - React 16.2
+	- React Router 5.2
+	- Material UI v4
 
 The working environemnt includes:
 - PHP 7.4.8
