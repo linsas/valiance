@@ -1,10 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Container } from '@material-ui/core'
+
+import Welcome from './Welcome'
 
 function App() {
-	return <div>
-		<h1>React App</h1>
-	</div>
+	return <Container>
+		<BrowserRouter>
+			<Switch>
+				<Route component={Welcome} />
+			</Switch>
+		</BrowserRouter>
+	</Container>
 }
 
 if (document.getElementById('root')) {
