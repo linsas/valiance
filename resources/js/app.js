@@ -1,18 +1,48 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { Container } from '@material-ui/core'
+import { Box, Container, CssBaseline } from '@material-ui/core'
+import { createTheme } from '@material-ui/core/styles'
+import ThemeProvider from '@material-ui/styles/ThemeProvider'
 
-import Welcome from './Welcome'
+import Header from './main/Header'
+
+import Home from './pages/Welcome'
+import NotFound from './pages/NotFound'
+
+const mainPalette = {
+	primary: { main: '#F7484E', },
+	// secondary: { main: '#1976D2', },
+	error: { main: '#DB0092', },
+}
+
+const lightTheme = createTheme({ palette: { ...mainPalette, type: 'light', }, })
+const darkTheme = createTheme({ palette: { ...mainPalette, type: 'dark', }, })
 
 function App() {
-	return <Container>
-		<BrowserRouter>
-			<Switch>
-				<Route component={Welcome} />
-			</Switch>
-		</BrowserRouter>
-	</Container>
+	const [isDarkTheme, setDarkTheme] = React.useState(true)
+
+	return <>
+		{/* providers go here... */}
+		<ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+			<CssBaseline />
+
+			<BrowserRouter>
+				<ThemeProvider theme={darkTheme}>
+					<Header isDark={isDarkTheme} setDark={setDarkTheme} />
+				</ThemeProvider>
+
+				<Container maxWidth='md'>
+					<Switch>
+						<Route exact path='/' component={Home} />
+						<Route component={NotFound} />
+					</Switch>
+				</Container>
+			</BrowserRouter>
+
+			<Box p={4} /> {/* footer */}
+		</ThemeProvider>
+	</>
 }
 
 if (document.getElementById('root')) {
