@@ -5,6 +5,8 @@ import { Alert, Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
+import PlayerEdit from './PlayerEdit'
+import PlayerDelete from './PlayerDelete'
 
 function Player(props) {
 	const [player, setPlayer] = React.useState(null)
@@ -52,6 +54,11 @@ function Player(props) {
 						</ListItem>
 					)}
 				</List>
+
+				<Box px={2} pt={1}>
+					<PlayerEdit player={player} update={getPlayer} />
+					<PlayerDelete player={player} />
+				</Box>
 			</Box>
 		</Paper>
 	</>

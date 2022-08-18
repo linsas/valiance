@@ -5,6 +5,7 @@ import { Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
+import PlayerCreate from './PlayerCreate'
 
 function PlayerList() {
 	const [playersList, setPlayersList] = React.useState(null)
@@ -34,6 +35,7 @@ function PlayerList() {
 					Add some and they'll show up here.
 				</Typography>
 			</Box>
+			<PlayerCreate update={getPlayers} />
 		</Paper>
 
 	return <Paper>
@@ -60,6 +62,8 @@ function PlayerList() {
 				</ListItem>
 			))}
 		</List>
+
+		<PlayerCreate update={getPlayers} />
 	</Paper>
 }
 
