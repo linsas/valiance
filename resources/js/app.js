@@ -9,6 +9,8 @@ import Header from './main/Header'
 
 import Home from './pages/Welcome'
 import NotFound from './pages/NotFound'
+import Player from './pages/Player/Player'
+import PlayerList from './pages/Player/PlayerList'
 import Team from './pages/Team/Team'
 import TeamList from './pages/Team/TeamList'
 
@@ -36,6 +38,9 @@ function App() {
 
 				<Container maxWidth='md'>
 					<Switch>
+						<Route exact path='/Players/:id' component={Player} />
+						<Route exact path='/Players' component={PlayerList} />
+
 						<Route exact path='/Teams/:id' component={Team} />
 						<Route exact path='/Teams' component={TeamList} />
 
