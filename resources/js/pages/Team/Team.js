@@ -4,6 +4,8 @@ import { Box, Typography, Paper, List, ListItem, ListItemText } from '@material-
 import { Alert, AlertTitle, Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
+import TeamEdit from './TeamEdit'
+import TeamDelete from './TeamDelete'
 
 function TeamPlayers({ team }) {
 	if (team.players.length === 0) return <Paper>
@@ -66,6 +68,11 @@ function Team(props) {
 				<Box px={2} pb={1}>
 					<Typography color='textSecondary' gutterBottom>Team</Typography>
 					<Typography variant='h4'>{team.name}</Typography>
+				</Box>
+
+				<Box px={2} pt={1}>
+					<TeamEdit team={team} update={getTeam} />
+					<TeamDelete team={team} />
 				</Box>
 			</Box>
 		</Paper>

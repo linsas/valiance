@@ -4,6 +4,7 @@ import { Paper, Box, Typography, ListItem, ListItemText, Divider, List } from '@
 import { Alert, AlertTitle, Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
+import TeamCreate from './TeamCreate'
 
 function TeamList() {
 	const [teamsList, setTeamsList] = React.useState(null)
@@ -41,6 +42,7 @@ function TeamList() {
 					Add some and they'll show up here.
 				</Typography>
 			</Box>
+			<TeamCreate update={getTeams} />
 		</Paper>
 
 	return <Paper>
@@ -61,6 +63,8 @@ function TeamList() {
 				</ListItem>
 			))}
 		</List>
+
+		<TeamCreate update={getTeams} />
 	</Paper>
 }
 
