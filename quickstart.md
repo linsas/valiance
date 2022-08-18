@@ -16,6 +16,7 @@ The working environemnt includes:
 
 ## Setup
 Create an .env file similar to .env.example.
+Change the `APP_USERNAME` and `APP_PASSWORD` to your chosen values.
 Change the database connection credentials to match your environment.
 Run the following commands to download the necessary dependencies, generate an application key, and prepare the database tables:
 ```
