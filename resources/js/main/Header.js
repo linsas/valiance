@@ -4,7 +4,10 @@ import { AppBar, Hidden, IconButton, Link, Toolbar, Tooltip, Typography } from '
 import HomeIcon from '@material-ui/icons/Home'
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects'
 import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 
+import AppContext from '../main/AppContext'
 import navigation from '../utility/navigation'
 
 function HeaderNavLink({ title, to, icon: Icon }) {
@@ -26,7 +29,9 @@ function HeaderNavLink({ title, to, icon: Icon }) {
 	</>
 }
 
-function Header({ isDark, setDark }) {
+function Header({ isDark, setDark, onPressLogin, onPressLogout, }) {
+	const context = React.useContext(AppContext)
+
 	return <AppBar position='sticky' style={{ marginBottom: 45 }}>
 		<Toolbar>
 
@@ -50,10 +55,24 @@ function Header({ isDark, setDark }) {
 			</div>
 
 			<Tooltip title='Toggle dark mode' arrow>
-				<IconButton edge='end' onClick={() => setDark(!isDark)}>
+				<IconButton onClick={() => setDark(!isDark)}>
 					{isDark ? <EmojiObjectsOutlinedIcon /> : <EmojiObjectsIcon />}
 				</IconButton>
 			</Tooltip>
+
+			{context.jwt == null ? (
+				<Tooltip title='Login' arrow>
+					<IconButton edge='end' onClick={onPressLogin}>
+						<AccountCircleOutlinedIcon />
+					</IconButton>
+				</Tooltip>
+			) : (
+				<Tooltip title='Logout' arrow>
+					<IconButton edge='end' onClick={onPressLogout}>
+						<AccountCircle />
+					</IconButton>
+				</Tooltip>
+			)}
 
 		</Toolbar>
 	</AppBar>

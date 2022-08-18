@@ -15,3 +15,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('players', 'PlayerController');
 Route::apiResource('teams', 'TeamController');
+
+Route::post('login', 'AuthController@login');
