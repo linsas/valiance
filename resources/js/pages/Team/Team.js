@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { Box, Typography, Paper, List, ListItem, ListItemText } from '@material-ui/core'
-import { Alert, AlertTitle, Skeleton } from '@material-ui/lab'
+import { Alert, Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
+import AlertError from '../../components/AlertError'
 import TeamEdit from './TeamEdit'
 import TeamDelete from './TeamDelete'
 
@@ -42,15 +43,7 @@ function Team(props) {
 	}
 	React.useEffect(() => getTeam(), [])
 
-	if (errorFetch != null) {
-		if (errorFetch.name === 'ResponseNotOkError') {
-			return <Alert severity='error'>
-				<AlertTitle>{errorFetch.result.status} {errorFetch.result.statusText}</AlertTitle>
-				{errorFetch.result?.json?.message ?? 'That\'s an error.'}
-			</Alert>
-		}
-		return <Alert severity='error'>{errorFetch.message}</Alert>
-	}
+	if (errorFetch != null) return <AlertError error={errorFetch} />
 
 	if (isLoading) return <>
 		<Skeleton variant='rect' height={150} />

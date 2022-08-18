@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { Paper, Box, Typography, ListItem, ListItemText, Divider, List } from '@material-ui/core'
-import { Alert, AlertTitle, Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
+import AlertError from '../../components/AlertError'
 
 function PlayerList() {
 	const [playersList, setPlayersList] = React.useState(null)
@@ -21,15 +22,7 @@ function PlayerList() {
 		<Skeleton variant='rect' height={250} />
 	</>
 
-	if (errorFetch != null) {
-		if (errorFetch.name === 'ResponseNotOkError') {
-			return <Alert severity='error'>
-				<AlertTitle>{errorFetch.result.status} {errorFetch.result.statusText}</AlertTitle>
-				{errorFetch.result?.json?.message ?? 'That\'s an error.'}
-			</Alert>
-		}
-		return <Alert severity='error'>{errorFetch.message}</Alert>
-	}
+	if (errorFetch != null) return <AlertError error={errorFetch} />
 
 	if (playersList == null || playersList.length === 0)
 		return <Paper>
