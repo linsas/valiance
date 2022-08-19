@@ -23,7 +23,7 @@ function LoginControl({ isOpen, setOpen }) {
 	}
 
 	const onSubmit = (credentials) => {
-		fetchLogin(credentials).then(onResponse, console.error)
+		fetchLogin(credentials).then(onResponse, context.notifyFetchError)
 	}
 
 	return <LoginForm open={isOpen} onClose={() => setOpen(false)} onSubmit={onSubmit} />

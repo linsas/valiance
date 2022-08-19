@@ -2,9 +2,12 @@ import React from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 
+import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
 
 function PlayerForm({ open, player: defaultPlayer, onSubmit, onClose }) {
+	const context = React.useContext(AppContext)
+
 	if (defaultPlayer == null) defaultPlayer = {}
 	const [player, setPlayer] = React.useState(defaultPlayer)
 
@@ -20,7 +23,7 @@ function PlayerForm({ open, player: defaultPlayer, onSubmit, onClose }) {
 		if (!open) return
 		if (isLoadingTeams) return
 		if (teamsList != null) return
-		fetchTeams().then(response => setTeamsList(response.json.data), console.error)
+		fetchTeams().then(response => setTeamsList(response.json.data), context.notifyFetchError)
 	}, [open])
 
 	const changeAlias = alias => setPlayer(p => ({ ...p, alias: alias }))

@@ -8,6 +8,8 @@ import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import AppContext from './main/AppContext'
 import Header from './main/Header'
 import LoginControl from './main/LoginControl'
+import Notifications from './main/Notifications'
+import errorAsText from './utility/errorAsText'
 
 import Home from './pages/Welcome'
 import NotFound from './pages/NotFound'
@@ -28,6 +30,11 @@ const darkTheme = createTheme({ palette: { ...mainPalette, type: 'dark', }, })
 function App() {
 	const [isDarkTheme, setDarkTheme] = React.useState(true)
 	const [jwt, setJWT] = React.useState(null)
+	const [notificationQueue, setNotificationQueue] = React.useState([])
+
+	const notifyFetchError = (error) => {
+		setNotificationQueue(q => q.concat(errorAsText(error)))
+	}
 
 	const [isLoginFormOpen, setLoginFormOpen] = React.useState(false)
 	const onPressLogout = () => {
@@ -38,7 +45,7 @@ function App() {
 		{/* providers go here... */}
 		<ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
 			<CssBaseline />
-			<AppContext.Provider value={{ jwt, setJWT }}>
+			<AppContext.Provider value={{ notifyFetchError, jwt, setJWT }}>
 
 				<BrowserRouter>
 					<ThemeProvider theme={darkTheme}>
@@ -61,6 +68,7 @@ function App() {
 
 				<Box p={4} /> {/* footer */}
 
+				<Notifications queue={notificationQueue} setQueue={setNotificationQueue} />
 				<LoginControl isOpen={isLoginFormOpen} setOpen={setLoginFormOpen} />
 
 			</AppContext.Provider>
