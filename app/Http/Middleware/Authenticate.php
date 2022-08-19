@@ -2,20 +2,30 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
+use Illuminate\Support\Str;
+use Illuminate\Auth\Access\AuthorizationException;
+use App\Services\AuthService;
 
-class Authenticate extends Middleware
+class Authenticate
 {
-    /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
-     */
-    protected function redirectTo($request)
+    protected $service;
+
+    public function __construct(AuthService $service)
     {
-        if (! $request->expectsJson()) {
-            return route('login');
+        $this->service = $service;
+    }
+
+    public function handle($request, Closure $next)
+    {
+        if (!$request->headers->has('authorization')) {
+            throw new AuthorizationException('An authoriztion token must be provided.');
         }
+        $authHeader = $request->headers->get('authorization');
+        $token = Str::after($authHeader, 'JWT ');
+
+        $this->service->validateToken($token);
+
+        return $next($request);
     }
 }

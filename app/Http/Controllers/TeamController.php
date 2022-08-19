@@ -14,6 +14,7 @@ class TeamController extends Controller
     public function __construct(TeamService $service)
     {
         $this->service = $service;
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
     public function index()
