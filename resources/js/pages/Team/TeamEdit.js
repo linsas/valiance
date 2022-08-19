@@ -1,16 +1,21 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
 
+import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
 import TeamForm from './TeamForm'
 
 function TeamEdit({ team, update }) {
+	const context = React.useContext(AppContext)
+
 	const [formOpen, setFormOpen] = React.useState(false)
 	const [isSaving, fetchEdit] = useFetch('/api/teams/' + team.id, 'PUT')
 
 	const onSubmit = (team) => {
 		fetchEdit({ name: team.name }).then(() => update(), console.error)
 	}
+
+	if (context.jwt == null) return null
 
 	return <>
 		<Button color='primary' onClick={() => setFormOpen(true)}>Edit</Button>

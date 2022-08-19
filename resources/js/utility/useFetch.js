@@ -1,9 +1,13 @@
 import React from 'react'
 
+import AppContext from '../main/AppContext'
+
 const never = new Promise(() => { })
 
 export default function useFetch(url, method = 'GET') {
 	const [isLoading, setIsLoading] = React.useState(false)
+
+	const context = React.useContext(AppContext)
 
 	const controllerRef = React.useRef(new AbortController())
 	const isMountedRef = React.useRef(true)
@@ -19,6 +23,7 @@ export default function useFetch(url, method = 'GET') {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
 		}
+		if (context.jwt != null) headers['Authorization'] = 'JWT ' + context.jwt.raw
 
 		return fetch(url, {
 			signal: controllerRef.current.signal,
@@ -47,7 +52,7 @@ export default function useFetch(url, method = 'GET') {
 			setIsLoading(false)
 			return Promise.reject(error)
 		})
-	}, [url, method])
+	}, [url, method, context.jwt])
 
 	React.useEffect(() => {
 		isMountedRef.current = true

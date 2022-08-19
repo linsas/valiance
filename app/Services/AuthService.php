@@ -52,4 +52,51 @@ class AuthService
 
         return ['token' => $jwt];
     }
+
+    public function validateToken($token)
+    {
+        if (empty($token) || substr_count($token, '.') < 2) {
+            throw new AuthorizationException('A valid token must be provided.');
+        }
+
+        list($encodedHeader, $encodedPayload, $signatureUser) = explode('.', $token);
+
+        $headerJsonString = $this::base64UrlDecode($encodedHeader);
+        if (!$headerJsonString) {
+            throw new AuthorizationException('A valid token must be provided.');
+        }
+        $header = json_decode($headerJsonString, true, 2);
+        if (empty($header) || empty($header['alg']) || empty($header['typ']) || $header['typ'] != 'JWT') {
+            throw new AuthorizationException('A valid token must be provided.');
+        }
+        $encodedHeaderAndPayload = $encodedHeader . '.' . $encodedPayload;
+        if ($header['alg'] === 'HS256') {
+            $signature = hash_hmac('sha256', $encodedHeaderAndPayload, env('APP_KEY'), true);
+            $encodedSignature = $this::base64UrlEncode($signature);
+            if (!hash_equals($encodedSignature, $signatureUser)) {
+                throw new AuthorizationException('A valid token must be provided.');
+            }
+        } else { // other algorithms not supported
+            throw new AuthorizationException('A valid token must be provided.');
+        }
+
+        // signature is verified; check payload
+
+        $payloadJsonString = $this::base64UrlDecode($encodedPayload);
+        if (!$payloadJsonString) {
+            throw new AuthorizationException('A valid token must be provided.');
+        }
+        $payload = json_decode($payloadJsonString, true, 2);
+        if (empty($payload)) {
+            throw new AuthorizationException('A valid token must be provided.');
+        }
+
+        if (empty($payload['exp']) || (time() > $payload['exp'])) { // 'exp' is mandatory
+            throw new AuthorizationException('Token is expired.');
+        }
+
+        if (!empty($payload['nbf']) && (time() < $payload['nbf'])) { // 'nbf' is optional
+            throw new AuthorizationException('Token is invalid.');
+        }
+    }
 }
