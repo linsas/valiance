@@ -13,7 +13,7 @@ function TeamCreate({ update }) {
 	const [isCreating, fetchCreate] = useFetch('/api/teams', 'POST')
 
 	const onSubmit = (team) => {
-		fetchCreate({ name: team.name }).then(() => update(), console.error)
+		fetchCreate({ name: team.name }).then(() => update(), context.notifyFetchError)
 	}
 
 	if (context.jwt == null) return null

@@ -12,7 +12,7 @@ function PlayerEdit({ player, update }) {
 	const [isSaving, fetchEdit] = useFetch('/api/players/' + player.id, 'PUT')
 
 	const onSubmit = (player) => {
-		fetchEdit({ alias: player.alias, team: player.team?.id ?? null }).then(() => update(), console.error)
+		fetchEdit({ alias: player.alias, team: player.team?.id ?? null }).then(() => update(), context.notifyFetchError)
 	}
 
 	if (context.jwt == null) return null

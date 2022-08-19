@@ -12,7 +12,7 @@ function TeamEdit({ team, update }) {
 	const [isSaving, fetchEdit] = useFetch('/api/teams/' + team.id, 'PUT')
 
 	const onSubmit = (team) => {
-		fetchEdit({ name: team.name }).then(() => update(), console.error)
+		fetchEdit({ name: team.name }).then(() => update(), context.notifyFetchError)
 	}
 
 	if (context.jwt == null) return null

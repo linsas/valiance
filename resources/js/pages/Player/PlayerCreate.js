@@ -13,7 +13,7 @@ function PlayerCreate({ update }) {
 	const [isCreating, fetchCreate] = useFetch('/api/players', 'POST')
 
 	const onSubmit = (player) => {
-		fetchCreate({ alias: player.alias, team: player.team?.id ?? null }).then(() => update(), console.error)
+		fetchCreate({ alias: player.alias, team: player.team?.id ?? null }).then(() => update(), context.notifyFetchError)
 	}
 
 	if (context.jwt == null) return null
