@@ -15,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('players', 'PlayerController');
 Route::apiResource('teams', 'TeamController');
+Route::apiResource('tournaments', 'TournamentController');
 
 Route::post('login', 'AuthController@login');
