@@ -4,6 +4,8 @@ import AppContext from '../main/AppContext'
 import useFetch from '../utility/useFetch'
 import LoginForm from './LoginForm'
 
+const tokenCookieName = 'valiance_token'
+
 function LoginControl({ isOpen, setOpen }) {
 	const context = React.useContext(AppContext)
 
@@ -15,11 +17,19 @@ function LoginControl({ isOpen, setOpen }) {
 		return payload
 	}
 
+	React.useEffect(() => {
+		const cookieValue = document.cookie.split('; ').find((row) => row.startsWith(tokenCookieName + '='))?.split('=')[1]
+		if (cookieValue == null) return
+		const payload = parseToken(cookieValue)
+		context.setJWT({ raw: cookieValue, payload })
+	}, [])
+
 	const onResponse = (response) => {
 		setOpen(false)
 		const tokenString = response.json.token
 		const payload = parseToken(tokenString)
 		context.setJWT({ raw: tokenString, payload })
+		document.cookie = tokenCookieName + '=' + tokenString + ';path=/;samesite=strict;expires=' + new Date(payload.exp * 1000).toUTCString()
 	}
 
 	const onSubmit = (credentials) => {
