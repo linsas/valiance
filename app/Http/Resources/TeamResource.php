@@ -23,6 +23,15 @@ class TeamResource extends JsonResource
                     'alias' => $player->alias,
                 ];
             }),
+            'participations' => $this->tournamentTeams->map(function ($tt) {
+                return [
+                    'name' => $tt->name,
+                    'tournament' => [
+                        'id' => $tt->tournament->id,
+                        'name' => $tt->tournament->name,
+                    ],
+                ];
+            }),
         ];
     }
 }

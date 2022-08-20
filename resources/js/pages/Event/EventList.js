@@ -1,11 +1,11 @@
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import { Paper, Box, Typography, ListItem, ListItemText, Divider, List } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 
 import eventFormats from '../../data/eventFormats'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
+import ListItemLink from '../../components/ListItemLink'
 import EventCreate from './EventCreate'
 
 function EventList() {
@@ -49,7 +49,7 @@ function EventList() {
 			<Divider />
 
 			{eventsList.map((item) => (
-				<ListItem button component={RouterLink} key={item.id} dense to={'/Events/' + item.id}>
+				<ListItemLink key={item.id} dense noChevron to={'/Events/' + item.id}>
 					<ListItemText style={{ flexBasis: '50%' }}>
 						<Typography>
 							{item.name}
@@ -60,7 +60,7 @@ function EventList() {
 							{eventFormats.reduce((aggr, next) => (next.id === item.format ? next.name : aggr), item.format)}
 						</Typography>
 					</ListItemText>
-				</ListItem>
+				</ListItemLink>
 			))}
 		</List>
 

@@ -1,10 +1,10 @@
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import { Paper, Box, Typography, ListItem, ListItemText, Divider, List } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
+import ListItemLink from '../../components/ListItemLink'
 import PlayerCreate from './PlayerCreate'
 
 function PlayerList() {
@@ -48,7 +48,7 @@ function PlayerList() {
 			<Divider />
 
 			{playersList.map((item) => (
-				<ListItem button component={RouterLink} key={item.id} dense to={'/Players/' + item.id}>
+				<ListItemLink key={item.id} dense noChevron to={'/Players/' + item.id}>
 					<ListItemText style={{ flexBasis: '60%' }}>
 						<Typography>
 							{item.alias}
@@ -59,7 +59,7 @@ function PlayerList() {
 							{item.team != null ? item.team.name : null}
 						</Typography>
 					</ListItemText>
-				</ListItem>
+				</ListItemLink>
 			))}
 		</List>
 
