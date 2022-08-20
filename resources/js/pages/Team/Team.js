@@ -1,12 +1,43 @@
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import { Box, Typography, Paper, List, ListItem, ListItemText } from '@material-ui/core'
 import { Alert, Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
+import ListItemLink from '../../components/ListItemLink'
 import TeamEdit from './TeamEdit'
 import TeamDelete from './TeamDelete'
+
+function TeamParticipations({ team }) {
+	if (team.participations.length === 0) return <Paper>
+		<Box my={2} p={2}>
+			<Typography align='center' color='textSecondary'>This team has not participated in any events.</Typography>
+		</Box>
+	</Paper>
+
+	return <>
+		<Paper>
+			<List>
+				<ListItem>
+					<ListItemText>Participations:</ListItemText>
+				</ListItem>
+				{team.participations.map((participation) =>
+					<ListItemLink key={participation.tournament.id} to={'/Events/' + participation.tournament.id}>
+
+						<ListItemText>
+							<Typography component='span'>{participation.tournament.name}</Typography>
+							{team.name !== participation.name && <>
+								<Typography component='span' color='textSecondary'> at the time as </Typography>
+								<Typography component='span'>{participation.name}</Typography>
+							</>}
+						</ListItemText>
+
+					</ListItemLink>
+				)}
+			</List>
+		</Paper>
+	</>
+}
 
 function TeamPlayers({ team }) {
 	if (team.players.length === 0) return <Paper>
@@ -22,11 +53,11 @@ function TeamPlayers({ team }) {
 					<ListItemText>Players:</ListItemText>
 				</ListItem>
 				{team.players.map((player) =>
-					<ListItem button component={RouterLink} key={player.id} to={'/Players/' + player.id}>
+					<ListItemLink key={player.id} to={'/Players/' + player.id}>
 						<ListItemText>
 							<Typography component='span'>{player.alias}</Typography>
 						</ListItemText>
-					</ListItem>
+					</ListItemLink>
 				)}
 			</List>
 		</Paper>
@@ -72,6 +103,9 @@ function Team(props) {
 
 		<Box my={2} />
 		<TeamPlayers team={team} />
+
+		<Box my={2} />
+		<TeamParticipations team={team} />
 
 	</>
 }

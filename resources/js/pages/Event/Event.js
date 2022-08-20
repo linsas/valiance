@@ -7,6 +7,15 @@ import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import EventEdit from './EventEdit'
 import EventDelete from './EventDelete'
+import Participants from './Participants/Participants'
+
+function Section({ name }) {
+	return <Box display='flex' alignItems='center' gridGap={15} my={2}>
+		<Divider style={{ flexGrow: 1 }} />
+		<Typography color='textSecondary'>{name}</Typography>
+		<Divider style={{ flexGrow: 1 }} />
+	</Box>
+}
 
 function Event(props) {
 	const [event, setEvent] = React.useState(null)
@@ -53,6 +62,9 @@ function Event(props) {
 				</Box>
 			</Box>
 		</Paper>
+
+		<Section name='Participants' />
+		<Participants event={event} />
 
 	</>
 }

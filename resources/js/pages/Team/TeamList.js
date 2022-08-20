@@ -1,10 +1,10 @@
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import { Paper, Box, Typography, ListItem, ListItemText, Divider, List } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
+import ListItemLink from '../../components/ListItemLink'
 import TeamCreate from './TeamCreate'
 
 function TeamList() {
@@ -47,13 +47,13 @@ function TeamList() {
 			<Divider />
 
 			{teamsList.map((item) => (
-				<ListItem button component={RouterLink} key={item.id} dense to={'/Teams/' + item.id}>
+				<ListItemLink key={item.id} dense noChevron to={'/Teams/' + item.id}>
 					<ListItemText>
 						<Typography>
 							{item.name}
 						</Typography>
 					</ListItemText>
-				</ListItem>
+				</ListItemLink>
 			))}
 		</List>
 

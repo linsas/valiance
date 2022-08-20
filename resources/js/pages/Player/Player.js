@@ -1,12 +1,42 @@
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import { Box, Typography, Paper, List, ListItem, ListItemText } from '@material-ui/core'
 import { Alert, Skeleton } from '@material-ui/lab'
 
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
+import ListItemLink from '../../components/ListItemLink'
 import PlayerEdit from './PlayerEdit'
 import PlayerDelete from './PlayerDelete'
+
+function PlayerParticipations({ player }) {
+	if (player.participations.length === 0) return <Paper>
+		<Box my={2} p={2}>
+			<Typography align='center' color='textSecondary'>This player has not participated in any events.</Typography>
+		</Box>
+	</Paper>
+
+	return <>
+		<Paper>
+			<List>
+				<ListItem>
+					<ListItemText>Participations:</ListItemText>
+				</ListItem>
+				{player.participations.map((participation) =>
+					<ListItemLink key={participation.tournament.id} to={'/Events/' + participation.tournament.id}>
+
+						<ListItemText>
+							<Typography component='span' color='textSecondary'>As part of </Typography>
+							<Typography component='span'>{participation.team.name}</Typography>
+							<Typography component='span' color='textSecondary'> during </Typography>
+							<Typography component='span'>{participation.tournament.name}</Typography>
+						</ListItemText>
+
+					</ListItemLink>
+				)}
+			</List>
+		</Paper>
+	</>
+}
 
 function Player(props) {
 	const [player, setPlayer] = React.useState(null)
@@ -46,12 +76,12 @@ function Player(props) {
 							</ListItemText>
 						</ListItem>
 					</>) : (
-						<ListItem button component={RouterLink} to={'/Teams/' + player.team.id}>
+						<ListItemLink to={'/Teams/' + player.team.id}>
 							<ListItemText>
 								<Typography component='span' color='textSecondary'>Team: </Typography>
 								<Typography component='span'>{player.team.name}</Typography>
 							</ListItemText>
-						</ListItem>
+						</ListItemLink>
 					)}
 				</List>
 
@@ -61,6 +91,10 @@ function Player(props) {
 				</Box>
 			</Box>
 		</Paper>
+
+		<Box my={2} />
+		<PlayerParticipations player={player} />
+
 	</>
 }
 

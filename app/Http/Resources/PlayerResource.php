@@ -21,6 +21,18 @@ class PlayerResource extends JsonResource
                 'id' => $this->team->id,
                 'name' => $this->team->name,
             ],
+            'participations' => $this->tournamentTeamPlayers->map(function ($ttp) {
+                return [
+                    'team' => [
+                        'id' => $ttp->tournamentTeam->fk_team,
+                        'name' => $ttp->tournamentTeam->name,
+                    ],
+                    'tournament' => [
+                        'id' => $ttp->tournamentTeam->tournament->id,
+                        'name' => $ttp->tournamentTeam->tournament->name,
+                    ],
+                ];
+            }),
         ];
     }
 }
