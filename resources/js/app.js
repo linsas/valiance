@@ -19,6 +19,8 @@ import Team from './pages/Team/Team'
 import TeamList from './pages/Team/TeamList'
 import Event from './pages/Event/Event'
 import EventList from './pages/Event/EventList'
+import Matchup from './pages/Matchup/Matchup'
+import MatchupList from './pages/Matchup/MatchupList'
 
 const mainPalette = {
 	primary: { main: '#F7484E', },
@@ -64,6 +66,9 @@ function App() {
 
 							<Route exact path='/Events/:id' component={Event} />
 							<Route exact path='/Events' component={EventList} />
+
+							<Route exact path='/Matchups/:id' component={Matchup} />
+							<Route exact path='/Matchups' component={MatchupList} />
 
 							<Route exact path='/' component={Home} />
 							<Route component={NotFound} />

@@ -32,4 +32,22 @@ class Matchup extends Model
     {
         return $this->hasMany('App\Models\Game', 'fk_matchup');
     }
+
+    public function getScore1()
+    {
+        $score = 0;
+        foreach ($this->games as $game) {
+            if ($game->getOutcome() === 1) $score++;
+        }
+        return $score;
+    }
+
+    public function getScore2()
+    {
+        $score = 0;
+        foreach ($this->games as $game) {
+            if ($game->getOutcome() === -1) $score++;
+        }
+        return $score;
+    }
 }
