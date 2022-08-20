@@ -20,4 +20,7 @@ Route::apiResource('tournaments', 'TournamentController');
 Route::put('tournaments/{tournament}/teams', 'ParticipationController@reorder');
 Route::post('tournaments/{tournament}/advance', 'CompetitionController@advance');
 
+Route::get('matchups', 'MatchupController@index');
+Route::get('matchups/{matchup}', 'MatchupController@show');
+
 Route::post('login', 'AuthController@login');
