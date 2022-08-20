@@ -8,6 +8,7 @@ import AlertError from '../../components/AlertError'
 import EventEdit from './EventEdit'
 import EventDelete from './EventDelete'
 import Participants from './Participants/Participants'
+import Progression from './Progression/Progression'
 
 function Section({ name }) {
 	return <Box display='flex' alignItems='center' gridGap={15} my={2}>
@@ -65,6 +66,9 @@ function Event(props) {
 
 		<Section name='Participants' />
 		<Participants event={event} update={getEvent} />
+
+		<Section name='Progression' />
+		<Progression event={event} update={getEvent} />
 
 	</>
 }
