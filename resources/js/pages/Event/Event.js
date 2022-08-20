@@ -64,7 +64,7 @@ function Event(props) {
 		</Paper>
 
 		<Section name='Participants' />
-		<Participants event={event} />
+		<Participants event={event} update={getEvent} />
 
 	</>
 }

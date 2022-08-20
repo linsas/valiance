@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Typography, Paper, List, ListItemText, Divider, Grid } from '@material-ui/core'
 
 import ListItemLink from '../../../components/ListItemLink'
+import ParticipantsEdit from './ParticipantsEdit'
 
 function ParticipantCard({ participant }) {
 	return <Grid item xs={12} sm={6}>
@@ -35,8 +36,9 @@ function ParticipantCard({ participant }) {
 	</Grid>
 }
 
-function Participants({ event }) {
+function Participants({ event, update }) {
 	if (event.participants.length === 0) return <>
+		<ParticipantsEdit event={event} update={update} />
 		<Paper>
 			<Box my={2} p={2}>
 				<Typography align='center' color='textSecondary'>This event has no participants yet.</Typography>
@@ -45,6 +47,7 @@ function Participants({ event }) {
 	</>
 
 	return <>
+		<ParticipantsEdit event={event} update={update} />
 		<Grid container spacing={2}>
 			{event.participants.map((p) => <ParticipantCard key={p.team.id} participant={p} />)}
 		</Grid>
