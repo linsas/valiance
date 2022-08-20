@@ -50,6 +50,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof \App\Exceptions\InvalidStateException)
+            return response()->json(['message' => $exception->getMessage()], 409);
+
         return parent::render($request, $exception);
     }
 }
