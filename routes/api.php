@@ -17,4 +17,6 @@ Route::apiResource('players', 'PlayerController');
 Route::apiResource('teams', 'TeamController');
 Route::apiResource('tournaments', 'TournamentController');
 
+Route::put('tournaments/{tournament}/teams', 'ParticipationController@reorder');
+
 Route::post('login', 'AuthController@login');
