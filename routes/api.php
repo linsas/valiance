@@ -22,5 +22,7 @@ Route::post('tournaments/{tournament}/advance', 'CompetitionController@advance')
 
 Route::get('matchups', 'MatchupController@index');
 Route::get('matchups/{matchup}', 'MatchupController@show');
+Route::put('matchups/{matchup}', 'MatchupController@updateMaps');
+Route::put('matchups/{matchup}/game/{game}', 'MatchupController@updateScore');
 
 Route::post('login', 'AuthController@login');

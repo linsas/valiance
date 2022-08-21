@@ -7,6 +7,7 @@ import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
 import MatchupGame from './MatchupGame'
+import MatchupEditMaps from './MatchupEditMaps'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -68,6 +69,10 @@ function Matchup(props) {
 						</ListItemText>
 					</ListItemLink>
 				</List>
+
+				<Box px={2} pt={1}>
+					<MatchupEditMaps matchup={matchup} update={getMatchup} />
+				</Box>
 			</Box>
 		</Paper>
 
