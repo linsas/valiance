@@ -71,3 +71,17 @@ export function BracketSingleElim4Team({ semifinals1, semifinals2, finals }) {
 		<BracketMatchup area='1/2/3/3' matchup={finals} />
 	</div>
 }
+
+export function BracketSingleElim8Team({ quarterfinals1, quarterfinals2, quarterfinals3, quarterfinals4, semifinals1, semifinals2, finals }) {
+	const styles = useStyles()
+
+	return <div className={styles.bracket}>
+		<BracketMatchup area='1/1/2/2' matchup={quarterfinals1} />
+		<BracketMatchup area='2/1/3/2' matchup={quarterfinals2} />
+		<BracketMatchup area='3/1/4/2' matchup={quarterfinals3} />
+		<BracketMatchup area='4/1/5/2' matchup={quarterfinals4} />
+		<BracketMatchup area='1/2/3/3' matchup={semifinals1} />
+		<BracketMatchup area='3/2/5/3' matchup={semifinals2} />
+		<BracketMatchup area='1/3/5/4' matchup={finals} />
+	</div>
+}

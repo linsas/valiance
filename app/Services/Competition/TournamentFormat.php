@@ -143,8 +143,8 @@ abstract class TournamentFormat
         switch ($format) {
             case 1:
                 return new SingleElimination4TeamFormat();
-        //     case 2:
-        //         return new SingleElimination8TeamFormat();
+            case 2:
+                return new SingleElimination8TeamFormat();
         //     case 3:
         //         return new Minor8TeamFormat();
         //     case 4:
@@ -168,6 +168,31 @@ class SingleElimination4TeamFormat extends TournamentFormat
             [
                 new ProgressionRule('sf1', 1, $startingComposite, $startingComposite),
                 new ProgressionRule('sf2', 1, $startingComposite, $startingComposite),
+            ],
+            [
+                new ProgressionRule('f', 3, PoolComposite::fromMatchup('sf1'), PoolComposite::fromMatchup('sf2')),
+            ],
+        ];
+    }
+}
+
+class SingleElimination8TeamFormat extends TournamentFormat
+{
+    public $teamsNeeded = 8;
+
+    public function getRules()
+    {
+        $startingComposite = PoolComposite::fromSeed([1, 2, 3, 4, 5, 6, 7, 8]);
+        return [
+            [
+                new ProgressionRule('qf1', 1, $startingComposite, $startingComposite),
+                new ProgressionRule('qf2', 1, $startingComposite, $startingComposite),
+                new ProgressionRule('qf3', 1, $startingComposite, $startingComposite),
+                new ProgressionRule('qf4', 1, $startingComposite, $startingComposite),
+            ],
+            [
+                new ProgressionRule('sf1', 1, PoolComposite::fromMatchup('qf1'), PoolComposite::fromMatchup('qf2')),
+                new ProgressionRule('sf2', 1, PoolComposite::fromMatchup('qf3'), PoolComposite::fromMatchup('qf4')),
             ],
             [
                 new ProgressionRule('f', 3, PoolComposite::fromMatchup('sf1'), PoolComposite::fromMatchup('sf2')),
