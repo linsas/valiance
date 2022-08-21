@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Typography, Paper, Divider, Grid, makeStyles, useTheme, lighten, darken } from '@material-ui/core'
 
 import mapList from '../../data/maps'
+import MatchupEditScore from './MatchupEditScore'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -28,7 +29,7 @@ function MatchupGameMap({ gameMap, className }) {
 	</div>
 }
 
-function MatchupGame({ matchup, game }) {
+function MatchupGame({ matchup, game, update }) {
 	const styles = useStyles()
 
 	return <>
@@ -55,6 +56,7 @@ function MatchupGame({ matchup, game }) {
 			</Box>
 
 		</Paper>
+		<MatchupEditScore matchup={matchup} game={game} update={update} />
 	</>
 }
 
