@@ -145,10 +145,10 @@ abstract class TournamentFormat
                 return new SingleElimination4TeamFormat();
             case 2:
                 return new SingleElimination8TeamFormat();
-        //     case 3:
-        //         return new Minor8TeamFormat();
-        //     case 4:
-        //         return new Minor16TeamFormat();
+            case 3:
+                return new Minor8TeamFormat();
+            case 4:
+                return new Minor16TeamFormat();
         //     case 5:
         //         return new Major24TeamFormat();
             default:
@@ -196,6 +196,130 @@ class SingleElimination8TeamFormat extends TournamentFormat
             ],
             [
                 new ProgressionRule('f', 3, PoolComposite::fromMatchup('sf1'), PoolComposite::fromMatchup('sf2')),
+            ],
+        ];
+    }
+}
+
+class Minor8TeamFormat extends TournamentFormat
+{
+    public $teamsNeeded = 8;
+
+    public function getRules()
+    {
+        $groupA = PoolComposite::fromSeed([1, 3, 5, 7]);
+        $groupB = PoolComposite::fromSeed([2, 4, 6, 8]);
+
+        $round1AWinners = PoolComposite::fromMatchup('ao');
+        $round1ALosers = PoolComposite::fromMatchup('ao', false);
+        $round1BWinners = PoolComposite::fromMatchup('bo');
+        $round1BLosers = PoolComposite::fromMatchup('bo', false);
+
+        $semifinalists = new PoolComposite([
+            new PoolSourceMatchup('aw'),
+            new PoolSourceMatchup('bw'),
+            new PoolSourceMatchup('ad'),
+            new PoolSourceMatchup('bd'),
+        ]);
+
+        return [
+            [
+                new ProgressionRule('ao', 1, $groupA, $groupA),
+                new ProgressionRule('ao', 1, $groupA, $groupA),
+                new ProgressionRule('bo', 1, $groupB, $groupB),
+                new ProgressionRule('bo', 1, $groupB, $groupB),
+            ],
+            [
+                new ProgressionRule('aw', 1, $round1AWinners, $round1AWinners),
+                new ProgressionRule('al', 3, $round1ALosers, $round1ALosers),
+                new ProgressionRule('bw', 1, $round1BWinners, $round1BWinners),
+                new ProgressionRule('bl', 3, $round1BLosers, $round1BLosers),
+            ],
+            [
+                new ProgressionRule('ad', 3, PoolComposite::fromMatchup('aw', false), PoolComposite::fromMatchup('al')),
+                new ProgressionRule('bd', 3, PoolComposite::fromMatchup('bw', false), PoolComposite::fromMatchup('bl')),
+            ],
+            [
+                new ProgressionRule('sf1', 3, $semifinalists, $semifinalists),
+                new ProgressionRule('sf2', 3, $semifinalists, $semifinalists),
+            ],
+            [
+                new ProgressionRule('f', 5, PoolComposite::fromMatchup('sf1'), PoolComposite::fromMatchup('sf2')),
+            ],
+        ];
+    }
+}
+
+class Minor16TeamFormat extends TournamentFormat
+{
+    public $teamsNeeded = 16;
+
+    public function getRules()
+    {
+        $groupA = PoolComposite::fromSeed([1, 5, 9,  13]);
+        $groupB = PoolComposite::fromSeed([2, 6, 10, 14]);
+        $groupC = PoolComposite::fromSeed([3, 7, 11, 15]);
+        $groupD = PoolComposite::fromSeed([4, 8, 12, 16]);
+
+        $round1AWinners = PoolComposite::fromMatchup('ao');
+        $round1ALosers = PoolComposite::fromMatchup('ao', false);
+        $round1BWinners = PoolComposite::fromMatchup('bo');
+        $round1BLosers = PoolComposite::fromMatchup('bo', false);
+        $round1CWinners = PoolComposite::fromMatchup('co');
+        $round1CLosers = PoolComposite::fromMatchup('co', false);
+        $round1DWinners = PoolComposite::fromMatchup('do');
+        $round1DLosers = PoolComposite::fromMatchup('do', false);
+
+        $quarterfinalists = new PoolComposite([
+            new PoolSourceMatchup('aw'),
+            new PoolSourceMatchup('bw'),
+            new PoolSourceMatchup('cw'),
+            new PoolSourceMatchup('dw'),
+            new PoolSourceMatchup('ad'),
+            new PoolSourceMatchup('bd'),
+            new PoolSourceMatchup('cd'),
+            new PoolSourceMatchup('dd'),
+        ]);
+
+        return [
+            [
+                new ProgressionRule('ao', 1, $groupA, $groupA),
+                new ProgressionRule('ao', 1, $groupA, $groupA),
+                new ProgressionRule('bo', 1, $groupB, $groupB),
+                new ProgressionRule('bo', 1, $groupB, $groupB),
+                new ProgressionRule('co', 1, $groupC, $groupC),
+                new ProgressionRule('co', 1, $groupC, $groupC),
+                new ProgressionRule('do', 1, $groupD, $groupD),
+                new ProgressionRule('do', 1, $groupD, $groupD),
+            ],
+            [
+                new ProgressionRule('aw', 1, $round1AWinners, $round1AWinners),
+                new ProgressionRule('al', 3, $round1ALosers, $round1ALosers),
+                new ProgressionRule('bw', 1, $round1BWinners, $round1BWinners),
+                new ProgressionRule('bl', 3, $round1BLosers, $round1BLosers),
+                new ProgressionRule('cw', 1, $round1CWinners, $round1CWinners),
+                new ProgressionRule('cl', 3, $round1CLosers, $round1CLosers),
+                new ProgressionRule('dw', 1, $round1DWinners, $round1DWinners),
+                new ProgressionRule('dl', 3, $round1DLosers, $round1DLosers),
+            ],
+            [
+                new ProgressionRule('ad', 3, PoolComposite::fromMatchup('aw', false), PoolComposite::fromMatchup('al')),
+                new ProgressionRule('bd', 3, PoolComposite::fromMatchup('bw', false), PoolComposite::fromMatchup('bl')),
+                new ProgressionRule('cd', 3, PoolComposite::fromMatchup('cw', false), PoolComposite::fromMatchup('cl')),
+                new ProgressionRule('dd', 3, PoolComposite::fromMatchup('dw', false), PoolComposite::fromMatchup('dl')),
+            ],
+            [
+                new ProgressionRule('qf1', 3, $quarterfinalists, $quarterfinalists),
+                new ProgressionRule('qf2', 3, $quarterfinalists, $quarterfinalists),
+                new ProgressionRule('qf3', 3, $quarterfinalists, $quarterfinalists),
+                new ProgressionRule('qf4', 3, $quarterfinalists, $quarterfinalists),
+            ],
+            [
+                new ProgressionRule('sf1', 3, PoolComposite::fromMatchup('qf1'), PoolComposite::fromMatchup('qf2')),
+                new ProgressionRule('sf2', 3, PoolComposite::fromMatchup('qf3'), PoolComposite::fromMatchup('qf4')),
+            ],
+            [
+                new ProgressionRule('f', 5, PoolComposite::fromMatchup('sf1'), PoolComposite::fromMatchup('sf2')),
             ],
         ];
     }
