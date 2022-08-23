@@ -149,8 +149,8 @@ abstract class TournamentFormat
                 return new Minor8TeamFormat();
             case 4:
                 return new Minor16TeamFormat();
-        //     case 5:
-        //         return new Major24TeamFormat();
+            case 5:
+                return new Major24TeamFormat();
             default:
                 throw new \App\Exceptions\InvalidStateException('Invalid tournament format.'); // this should probably be logged
         }
@@ -313,6 +313,156 @@ class Minor16TeamFormat extends TournamentFormat
                 new ProgressionRule('qf2', 3, $quarterfinalists, $quarterfinalists),
                 new ProgressionRule('qf3', 3, $quarterfinalists, $quarterfinalists),
                 new ProgressionRule('qf4', 3, $quarterfinalists, $quarterfinalists),
+            ],
+            [
+                new ProgressionRule('sf1', 3, PoolComposite::fromMatchup('qf1'), PoolComposite::fromMatchup('qf2')),
+                new ProgressionRule('sf2', 3, PoolComposite::fromMatchup('qf3'), PoolComposite::fromMatchup('qf4')),
+            ],
+            [
+                new ProgressionRule('f', 5, PoolComposite::fromMatchup('sf1'), PoolComposite::fromMatchup('sf2')),
+            ],
+        ];
+    }
+}
+
+class Major24TeamFormat extends TournamentFormat
+{
+    public $teamsNeeded = 24;
+
+    public function getRules()
+    {
+        $bestEight = new PoolSourceSeed([1, 2, 3, 4, 5, 6, 7, 8]);
+        $middleEight = new PoolSourceSeed([9, 10, 11, 12, 13, 14, 15, 16]);
+        $worstEight = new PoolSourceSeed([17, 18, 19, 20, 21, 22, 23, 24]);
+
+        // challengers' stage
+        $challengersStage = new PoolComposite([$middleEight, $worstEight]);
+
+        $challengers10 = PoolComposite::fromMatchup('c00');
+        $challengers01 = PoolComposite::fromMatchup('c00', false);
+
+        $challengers20 = PoolComposite::fromMatchup('c10');
+        $challengers11 = new PoolComposite([new PoolSourceMatchup('c01'), new PoolSourceMatchup('c10', false),]);
+        $challengers02 = PoolComposite::fromMatchup('c01', false);
+
+        $challengers21 = new PoolComposite([new PoolSourceMatchup('c11'), new PoolSourceMatchup('c20', false),]);
+        $challengers12 = new PoolComposite([new PoolSourceMatchup('c02'), new PoolSourceMatchup('c11', false),]);
+
+        $challengers22 = new PoolComposite([new PoolSourceMatchup('c12'), new PoolSourceMatchup('c21', false),]);
+
+        // legends' stage
+        $legendsStage = new PoolComposite([$bestEight, new PoolSourceMatchup('c20'), new PoolSourceMatchup('c21'), new PoolSourceMatchup('c22'),]);
+
+        $legends10 = PoolComposite::fromMatchup('l00');
+        $legends01 = PoolComposite::fromMatchup('l00', false);
+
+        $legends20 = PoolComposite::fromMatchup('l10');
+        $legends11 = new PoolComposite([new PoolSourceMatchup('l01'), new PoolSourceMatchup('l10', false),]);
+        $legends02 = PoolComposite::fromMatchup('l01', false);
+
+        $legends21 = new PoolComposite([new PoolSourceMatchup('l11'), new PoolSourceMatchup('l20', false),]);
+        $legends12 = new PoolComposite([new PoolSourceMatchup('l02'), new PoolSourceMatchup('l11', false),]);
+
+        $legends22 = new PoolComposite([new PoolSourceMatchup('l12'), new PoolSourceMatchup('l21', false),]);
+
+        // final stage
+        $playoffsStage = new PoolComposite([new PoolSourceMatchup('l20'), new PoolSourceMatchup('l21'), new PoolSourceMatchup('l22'),]);
+
+        return [
+            // CHALLENGERS' STAGE
+            [
+                new ProgressionRule('c00', 1, $challengersStage, $challengersStage),
+                new ProgressionRule('c00', 1, $challengersStage, $challengersStage),
+                new ProgressionRule('c00', 1, $challengersStage, $challengersStage),
+                new ProgressionRule('c00', 1, $challengersStage, $challengersStage),
+                new ProgressionRule('c00', 1, $challengersStage, $challengersStage),
+                new ProgressionRule('c00', 1, $challengersStage, $challengersStage),
+                new ProgressionRule('c00', 1, $challengersStage, $challengersStage),
+                new ProgressionRule('c00', 1, $challengersStage, $challengersStage),
+            ],
+            [
+                new ProgressionRule('c10', 1, $challengers10, $challengers10),
+                new ProgressionRule('c10', 1, $challengers10, $challengers10),
+                new ProgressionRule('c10', 1, $challengers10, $challengers10),
+                new ProgressionRule('c10', 1, $challengers10, $challengers10),
+                new ProgressionRule('c01', 1, $challengers01, $challengers01),
+                new ProgressionRule('c01', 1, $challengers01, $challengers01),
+                new ProgressionRule('c01', 1, $challengers01, $challengers01),
+                new ProgressionRule('c01', 1, $challengers01, $challengers01),
+            ],
+            [
+                new ProgressionRule('c20', 1, $challengers20, $challengers20),
+                new ProgressionRule('c20', 1, $challengers20, $challengers20),
+                new ProgressionRule('c11', 1, $challengers11, $challengers11),
+                new ProgressionRule('c11', 1, $challengers11, $challengers11),
+                new ProgressionRule('c11', 1, $challengers11, $challengers11),
+                new ProgressionRule('c11', 1, $challengers11, $challengers11),
+                new ProgressionRule('c02', 3, $challengers02, $challengers02),
+                new ProgressionRule('c02', 3, $challengers02, $challengers02),
+            ],
+            [
+                new ProgressionRule('c21', 1, $challengers21, $challengers21),
+                new ProgressionRule('c21', 1, $challengers21, $challengers21),
+                new ProgressionRule('c21', 1, $challengers21, $challengers21),
+                new ProgressionRule('c12', 3, $challengers12, $challengers12),
+                new ProgressionRule('c12', 3, $challengers12, $challengers12),
+                new ProgressionRule('c12', 3, $challengers12, $challengers12),
+            ],
+            [
+                new ProgressionRule('c22', 3, $challengers22, $challengers22),
+                new ProgressionRule('c22', 3, $challengers22, $challengers22),
+                new ProgressionRule('c22', 3, $challengers22, $challengers22),
+            ],
+            // LEGENDS' STAGE
+            [
+                new ProgressionRule('l00', 1, $legendsStage, $legendsStage),
+                new ProgressionRule('l00', 1, $legendsStage, $legendsStage),
+                new ProgressionRule('l00', 1, $legendsStage, $legendsStage),
+                new ProgressionRule('l00', 1, $legendsStage, $legendsStage),
+                new ProgressionRule('l00', 1, $legendsStage, $legendsStage),
+                new ProgressionRule('l00', 1, $legendsStage, $legendsStage),
+                new ProgressionRule('l00', 1, $legendsStage, $legendsStage),
+                new ProgressionRule('l00', 1, $legendsStage, $legendsStage),
+            ],
+            [
+                new ProgressionRule('l10', 1, $legends10, $legends10),
+                new ProgressionRule('l10', 1, $legends10, $legends10),
+                new ProgressionRule('l10', 1, $legends10, $legends10),
+                new ProgressionRule('l10', 1, $legends10, $legends10),
+                new ProgressionRule('l01', 1, $legends01, $legends01),
+                new ProgressionRule('l01', 1, $legends01, $legends01),
+                new ProgressionRule('l01', 1, $legends01, $legends01),
+                new ProgressionRule('l01', 1, $legends01, $legends01),
+            ],
+            [
+                new ProgressionRule('l20', 1, $legends20, $legends20),
+                new ProgressionRule('l20', 1, $legends20, $legends20),
+                new ProgressionRule('l11', 1, $legends11, $legends11),
+                new ProgressionRule('l11', 1, $legends11, $legends11),
+                new ProgressionRule('l11', 1, $legends11, $legends11),
+                new ProgressionRule('l11', 1, $legends11, $legends11),
+                new ProgressionRule('l02', 3, $legends02, $legends02),
+                new ProgressionRule('l02', 3, $legends02, $legends02),
+            ],
+            [
+                new ProgressionRule('l21', 1, $legends21, $legends21),
+                new ProgressionRule('l21', 1, $legends21, $legends21),
+                new ProgressionRule('l21', 1, $legends21, $legends21),
+                new ProgressionRule('l12', 3, $legends12, $legends12),
+                new ProgressionRule('l12', 3, $legends12, $legends12),
+                new ProgressionRule('l12', 3, $legends12, $legends12),
+            ],
+            [
+                new ProgressionRule('l22', 3, $legends22, $legends22),
+                new ProgressionRule('l22', 3, $legends22, $legends22),
+                new ProgressionRule('l22', 3, $legends22, $legends22),
+            ],
+            // PLAYOFFS
+            [
+                new ProgressionRule('qf1', 3, $playoffsStage, $playoffsStage),
+                new ProgressionRule('qf2', 3, $playoffsStage, $playoffsStage),
+                new ProgressionRule('qf3', 3, $playoffsStage, $playoffsStage),
+                new ProgressionRule('qf4', 3, $playoffsStage, $playoffsStage),
             ],
             [
                 new ProgressionRule('sf1', 3, PoolComposite::fromMatchup('qf1'), PoolComposite::fromMatchup('qf2')),
