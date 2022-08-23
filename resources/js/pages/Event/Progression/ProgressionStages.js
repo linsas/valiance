@@ -36,6 +36,28 @@ const useStyles = makeStyles(theme => ({
 	bracketScore: {
 		textAlign: 'center',
 	},
+	swiss: {
+		display: 'grid',
+		gridAutoColumns: '1fr',
+		gap: theme.spacing(2),
+	},
+	swissMatchupButton: {
+		display: 'grid',
+		gridTemplateColumns: '1fr auto 1fr',
+		gap: theme.spacing(1),
+		marginBottom: theme.spacing(1),
+		padding: theme.spacing(1),
+		border: '1px solid dimgrey',
+		'&:hover': {
+			backgroundColor: alpha(theme.palette.text.primary, theme.palette.action.hoverOpacity),
+			'@media (hover: none)': {
+				backgroundColor: 'transparent',
+			},
+		},
+		'&:focus-visible': {
+			backgroundColor: theme.palette.action.selected,
+		},
+	},
 }))
 
 
@@ -95,5 +117,39 @@ export function BracketDoubleElim4Team({ opening1, opening2, upper, lower, decid
 		<BracketMatchup area='1/2/3/3' matchup={upper} />
 		<BracketMatchup area='3/2/5/3' matchup={lower} />
 		<BracketMatchup area='3/3/4/4' matchup={deciding} />
+	</div>
+}
+
+export function SwissMatchups({ matchups, area }) {
+	const styles = useStyles()
+
+	return <div style={{ gridArea: area }}>
+		{matchups.map(m =>
+			<ButtonBase key={m.id} className={styles.swissMatchupButton} component={RouterLink} to={'/Matchups/' + m.id}>
+				<Typography component='span' align='center'>{m.team1}</Typography>
+				<Typography component='span' color='textSecondary'>{m.score1} : {m.score2}</Typography>
+				<Typography component='span' align='center'>{m.team2}</Typography>
+			</ButtonBase>
+		)}
+	</div>
+}
+
+export function SwissStage({ zerZer, zerOne, oneZer, zerTwo, oneOne, twoZer, oneTwo, twoOne, twoTwo }) {
+	const styles = useStyles()
+
+	return <div className={styles.swiss}>
+		<SwissMatchups area='1/3/2/5' matchups={zerZer} />
+
+		<SwissMatchups area='2/2/3/4' matchups={zerOne} />
+		<SwissMatchups area='2/4/3/6' matchups={oneZer} />
+
+		<SwissMatchups area='3/1/4/3' matchups={zerTwo} />
+		<SwissMatchups area='3/3/4/5' matchups={oneOne} />
+		<SwissMatchups area='3/5/4/7' matchups={twoZer} />
+
+		<SwissMatchups area='4/2/5/4' matchups={oneTwo} />
+		<SwissMatchups area='4/4/5/6' matchups={twoOne} />
+
+		<SwissMatchups area='5/3/6/5' matchups={twoTwo} />
 	</div>
 }
