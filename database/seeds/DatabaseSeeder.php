@@ -20,26 +20,8 @@ class DatabaseSeeder extends Seeder
             if (rand(1, 5) <= 4) $player->update([ 'fk_team' => Team::inRandomOrder()->first()->id ]);
         });
 
-        factory(Tournament::class, 15)->create()->each(function ($tournament) {
-            $allTeams = \App\Models\Team::inRandomOrder()->get();
-            for ($i = 0; $i < 8; $i++) { // fills 8 teams per tournament
-                $team = $allTeams[$i];
-                $participant = \App\Models\TournamentTeam::create([
-                    'fk_tournament' => $tournament->id,
-                    'fk_team' => $team->id,
-                    'name' => $team->name,
-                    'seed' => $i + 1,
-                ]);
-                for ($j = 0; $j < $team->players->count(); $j++) {
-                    $player = $team->players[$j];
-                    \App\Models\TournamentTeamPlayer::create([
-                        'fk_player' => $player->id,
-                        'fk_tournament_team' => $participant->id,
-                    ]);
-                }
-            }
-        });
-
-        factory(Tournament::class, 5)->create();
+        factory(Tournament::class, 15)->states('withAllParticipants', 'withSomeRounds')->create();
+        factory(Tournament::class, 7)->states('withAllParticipants')->create();
+        factory(Tournament::class, 3)->states('withAllParticipants')->create();
     }
 }
