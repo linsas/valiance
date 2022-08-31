@@ -23,6 +23,6 @@ class PlayerResourceCollection extends ResourceCollection
                     'name' => $item->team->name,
                 ],
             ];
-        });
+        })->toArray();
     }
 }
