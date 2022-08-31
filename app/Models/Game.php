@@ -4,6 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property int $number
+ * @property int $fk_matchup
+ * @property \App\Models\Matchup $matchup
+ * @property string|null $map
+ * @property int|null $score1
+ * @property int|null $score2
+ */
 class Game extends Model
 {
     public $timestamps = false;

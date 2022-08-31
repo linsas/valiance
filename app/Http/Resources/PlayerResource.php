@@ -4,6 +4,12 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property int $id
+ * @property string $alias
+ * @property \App\Models\Team|null $team
+ * @property \Illuminate\Database\Eloquent\Collection $tournamentTeamPlayers
+ */
 class PlayerResource extends JsonResource
 {
     /**
