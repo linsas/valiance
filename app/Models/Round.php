@@ -4,6 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property int $number
+ * @property int $fk_tournament
+ * @property \App\Models\Tournament $tournament
+ * @property \Illuminate\Database\Eloquent\Collection $matchups
+ */
 class Round extends Model
 {
     public $timestamps = false;

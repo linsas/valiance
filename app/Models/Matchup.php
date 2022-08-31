@@ -4,6 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property int $fk_team1
+ * @property int $fk_team2
+ * @property int $fk_round
+ * @property \App\Models\Team $team1
+ * @property \App\Models\Team $team2
+ * @property \App\Models\Round $round
+ * @property string $key
+ * @property \Illuminate\Database\Eloquent\Collection $games
+ * @method int getScore1()
+ * @method int getScore2()
+ */
 class Matchup extends Model
 {
     public $timestamps = false;

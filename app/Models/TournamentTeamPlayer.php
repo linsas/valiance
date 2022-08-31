@@ -4,6 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property int $fk_player
+ * @property int $fk_tournament_team
+ * @property \App\Models\Player $player
+ * @property \App\Models\TournamentTeam $tournamentTeam
+ */
 class TournamentTeamPlayer extends Model
 {
     public $timestamps = false;
