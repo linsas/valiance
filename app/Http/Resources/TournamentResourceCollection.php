@@ -20,6 +20,6 @@ class TournamentResourceCollection extends ResourceCollection
                 'name' => $item->name,
                 'format' => $item->format,
             ];
-        });
+        })->toArray();
     }
 }

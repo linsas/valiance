@@ -19,6 +19,6 @@ class TeamResourceCollection extends ResourceCollection
                 'id' => $item->id,
                 'name' => $item->name,
             ];
-        });
+        })->toArray();
     }
 }

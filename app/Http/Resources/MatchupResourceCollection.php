@@ -24,6 +24,6 @@ class MatchupResourceCollection extends ResourceCollection
                     return $game->map;
                 }),
             ];
-        });
+        })->toArray();
     }
 }

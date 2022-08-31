@@ -30,8 +30,7 @@ class Game extends Model
     }
 
     /**
-     * @return true if score information is entered
-     * @return false otherwise
+     * @return bool `true` if score information is entered, `false` otherwise
      */
     public function isCompleted()
     {
