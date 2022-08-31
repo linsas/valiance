@@ -6,20 +6,26 @@ namespace App\Services\Competition;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\InvalidStateException;
-use App\Models\Tournament;
+use App\Services\TournamentService;
 use App\Models\Round;
 use App\Models\Matchup;
 use App\Models\Game;
 
 class CompetitionService
 {
+    private $tournamentService;
+
+    public function __construct(TournamentService $tournamentService) {
+        $this->tournamentService = $tournamentService;
+    }
+
     public function advance($tournamentId)
     {
         if (!ctype_digit($tournamentId)) {
             throw ValidationException::withMessages(['The id is invalid.']);
         }
 
-        $tournament = Tournament::findOrFail($tournamentId);
+        $tournament = $this->tournamentService->findOrFail($tournamentId);
         $format = TournamentFormat::getFormat($tournament->format);
         $rules = $format->getRules();
 
