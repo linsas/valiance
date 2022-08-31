@@ -6,29 +6,29 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\InvalidStateException;
-use App\Models\Team;
-use App\Models\Tournament;
+use App\Services\TeamService;
+use App\Services\TournamentService;
 use App\Models\TournamentTeam;
 use App\Models\TournamentTeamPlayer;
 
 class ParticipationService
 {
+    private $tournamentService;
+    private $teamService;
+
+    public function __construct(TournamentService $tournamentService, TeamService $teamService) {
+        $this->tournamentService = $tournamentService;
+        $this->teamService = $teamService;
+    }
+
     public function findOrFailTournament($id)
     {
-        if (!ctype_digit($id) && !is_int($id)) {
-            throw ValidationException::withMessages(['The id is invalid.']);
-        }
-        $entry = Tournament::findOrFail($id);
-        return $entry;
+        return $this->tournamentService->findOrFail($id);
     }
 
     public function findOrFailTeam($id)
     {
-        if (!ctype_digit($id) && !is_int($id)) {
-            throw ValidationException::withMessages(['The id is invalid.']);
-        }
-        $entry = Team::findOrFail($id);
-        return $entry;
+        return $this->teamService->findOrFail($id);
     }
 
     public function updateParticipations($inputData, $tournamentId)

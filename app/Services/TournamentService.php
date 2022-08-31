@@ -32,7 +32,7 @@ class TournamentService
 
     public function findOrFail($id)
     {
-        if (!ctype_digit($id)) {
+        if (!ctype_digit($id) && !is_int($id)) {
             throw ValidationException::withMessages(['The id is invalid.']);
         }
         $entry = Tournament::findOrFail($id);
