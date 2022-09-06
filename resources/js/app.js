@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { Box, Container, CssBaseline } from '@material-ui/core'
+import { Container, CssBaseline } from '@material-ui/core'
 import { createTheme } from '@material-ui/core/styles'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 
 import AppContext from './main/AppContext'
 import Header from './main/Header'
+import Footer from './main/Footer'
 import LoginControl from './main/LoginControl'
 import Notifications from './main/Notifications'
 import errorAsText from './utility/errorAsText'
@@ -50,37 +51,41 @@ function App() {
 		<ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
 			<CssBaseline />
 			<AppContext.Provider value={{ notifyFetchError, jwt, setJWT }}>
-
 				<BrowserRouter>
-					<ThemeProvider theme={darkTheme}>
-						<Header isDark={isDarkTheme} setDark={setDarkTheme} onPressLogin={() => setLoginFormOpen(true)} onPressLogout={onPressLogout} />
-					</ThemeProvider>
 
-					<Container maxWidth='md'>
-						<Switch>
-							<Route exact path='/Players/:id' component={Player} />
-							<Route exact path='/Players' component={PlayerList} />
+					<div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 
-							<Route exact path='/Teams/:id' component={Team} />
-							<Route exact path='/Teams' component={TeamList} />
+						<ThemeProvider theme={darkTheme}>
+							<Header isDark={isDarkTheme} setDark={setDarkTheme} onPressLogin={() => setLoginFormOpen(true)} onPressLogout={onPressLogout} />
+						</ThemeProvider>
 
-							<Route exact path='/Events/:id' component={Event} />
-							<Route exact path='/Events' component={EventList} />
+						<Container style={{ flex: '1 0 auto' }} maxWidth='md'>
+							<Switch>
+								<Route exact path='/Players/:id' component={Player} />
+								<Route exact path='/Players' component={PlayerList} />
 
-							<Route exact path='/Matchups/:id' component={Matchup} />
-							<Route exact path='/Matchups' component={MatchupList} />
+								<Route exact path='/Teams/:id' component={Team} />
+								<Route exact path='/Teams' component={TeamList} />
 
-							<Route exact path='/' component={Home} />
-							<Route component={NotFound} />
-						</Switch>
-					</Container>
+								<Route exact path='/Events/:id' component={Event} />
+								<Route exact path='/Events' component={EventList} />
+
+								<Route exact path='/Matchups/:id' component={Matchup} />
+								<Route exact path='/Matchups' component={MatchupList} />
+
+								<Route exact path='/' component={Home} />
+								<Route component={NotFound} />
+							</Switch>
+						</Container>
+
+						<Footer />
+
+					</div>
+
+					<Notifications queue={notificationQueue} setQueue={setNotificationQueue} />
+					<LoginControl isOpen={isLoginFormOpen} setOpen={setLoginFormOpen} />
+
 				</BrowserRouter>
-
-				<Box p={4} /> {/* footer */}
-
-				<Notifications queue={notificationQueue} setQueue={setNotificationQueue} />
-				<LoginControl isOpen={isLoginFormOpen} setOpen={setLoginFormOpen} />
-
 			</AppContext.Provider>
 		</ThemeProvider>
 	</>
