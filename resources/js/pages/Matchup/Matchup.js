@@ -53,7 +53,7 @@ function Matchup(props) {
 						<Typography variant='h4'>{matchup.team2.name}</Typography>
 
 						<Typography variant='h4'>{matchup.score1}</Typography>
-						<Box m={1}>
+						<Box p={1}>
 							<Typography>{matchKeys.reduce((aggr, next) => next.id === matchup.key ? next.name : aggr, matchup.key)}</Typography>
 							<Typography color='textSecondary'>Best of {matchup.games.length}</Typography>
 						</Box>
