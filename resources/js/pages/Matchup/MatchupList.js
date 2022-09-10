@@ -29,10 +29,10 @@ function MatchupList() {
 		return <Paper>
 			<Box p={4} textAlign='center'>
 				<Typography variant='h5' color='textSecondary' gutterBottom>
-					There are no matchup yet.
+					There are no matchups yet.
 				</Typography>
 				<Typography color='textSecondary'>
-					Add some and they'll show up here.
+					Create and run some events and they'll show up here.
 				</Typography>
 			</Box>
 		</Paper>
