@@ -30,3 +30,12 @@ php artisan migrate:fresh
 Run webpack with command `npm run dev` or `npm run watch`, and run the web server with `php artisan serve`.
 
 You can also use the command `php artisan db:seed` to quickly fill the database with random players, teams, and events.
+
+# Deployment
+Configure the web server to serve files from the `public` directory.
+
+Run `composer install --no-dev` to install/update composer dependencies, run `npm ci` to install/update npm dependencies.
+
+Run webpack `npm run prod`.
+
+Sometimes it might be necessary to clear the framework cache `php artisan cache:clear`.
