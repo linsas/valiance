@@ -32,7 +32,7 @@ function HeaderNavLink({ title, to, icon: Icon }) {
 function Header({ isDark, setDark, onPressLogin, onPressLogout, }) {
 	const context = React.useContext(AppContext)
 
-	return <AppBar position='sticky' style={{ marginBottom: 45 }}>
+	return <AppBar position='sticky' style={{ marginBottom: 32 }}>
 		<Toolbar>
 
 			<Hidden xsDown>
@@ -48,11 +48,11 @@ function Header({ isDark, setDark, onPressLogin, onPressLogout, }) {
 				</Tooltip>
 			</Hidden>
 
-			<div style={{ flexGrow: 1, textAlign: 'center' }}>
+			<nav style={{ flexGrow: 1, textAlign: 'center' }}>
 				{navigation.map((item) =>
 					<HeaderNavLink key={item.to} title={item.title} to={item.to} icon={item.icon} />
 				)}
-			</div>
+			</nav>
 
 			<Tooltip title='Toggle dark mode' arrow>
 				<IconButton onClick={() => setDark(!isDark)}>
