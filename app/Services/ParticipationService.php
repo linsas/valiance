@@ -15,10 +15,12 @@ class ParticipationService
 {
     private $tournamentService;
     private $teamService;
+    private $historyService;
 
-    public function __construct(TournamentService $tournamentService, TeamService $teamService) {
+    public function __construct(TournamentService $tournamentService, TeamService $teamService, PlayerTeamHistoryService $historyService) {
         $this->tournamentService = $tournamentService;
         $this->teamService = $teamService;
+        $this->historyService = $historyService;
     }
 
     public function findOrFailTournament($id)
@@ -83,8 +85,9 @@ class ParticipationService
             $participant->fk_team = $team->id;
             $participant->fk_tournament = $tournament->id;
             $participant->save();
-            // todo: change participation logic to consider history
-            foreach ($team->players as $player) {
+
+            $players = $this->historyService->getPlayersInTeam($team);
+            foreach ($players as $player) {
                 $ttp = new TournamentTeamPlayer;
                 $ttp->fk_player = $player->id;
                 $ttp->fk_tournament_team = $participant->id;
