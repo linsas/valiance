@@ -18,6 +18,7 @@ class PlayerResourceCollection extends ResourceCollection
             return [
                 'id' => $item->id,
                 'alias' => $item->alias,
+                // todo: change to new player history
                 'team' => $item->team == null ? null : [
                     'id' => $item->fk_team,
                     'name' => $item->team->name,

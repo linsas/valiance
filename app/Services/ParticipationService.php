@@ -83,6 +83,7 @@ class ParticipationService
             $participant->fk_team = $team->id;
             $participant->fk_tournament = $tournament->id;
             $participant->save();
+            // todo: change participation logic to consider history
             foreach ($team->players as $player) {
                 $ttp = new TournamentTeamPlayer;
                 $ttp->fk_player = $player->id;

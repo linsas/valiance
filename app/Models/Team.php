@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property string $name
- * @property \Illuminate\Database\Eloquent\Collection $players
+ * @property \Illuminate\Database\Eloquent\Collection $history
  * @property \Illuminate\Database\Eloquent\Collection $tournamentTeams
  */
 class Team extends Model
@@ -17,9 +17,9 @@ class Team extends Model
 
     protected $visible = ['id', 'name'];
 
-    public function players()
+    public function history()
     {
-        return $this->hasMany('App\Models\Player', 'fk_team');
+        return $this->hasMany('App\Models\PlayerTeamHistory', 'fk_team');
     }
 
     public function tournamentTeams()

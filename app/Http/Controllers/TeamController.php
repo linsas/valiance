@@ -33,6 +33,7 @@ class TeamController extends Controller
     public function show($id)
     {
         $entry = $this->service->findOrFail($id);
+        // todo: get player team history
         return new TeamResource($entry);
     }
 
