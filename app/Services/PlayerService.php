@@ -23,6 +23,7 @@ class PlayerService
 
         $entry = new Player;
         $entry->alias = $validData['alias'];
+        // todo: change to new team history
         $entry->fk_team = $validData['team'] ?? null;
         $entry->save();
     }

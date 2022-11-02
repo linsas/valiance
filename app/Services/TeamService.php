@@ -49,6 +49,7 @@ class TeamService
 
     public function destroy($id)
     {
+        // todo: check player team history?
         $entry = $this->findOrFail($id);
         $entry->delete();
     }

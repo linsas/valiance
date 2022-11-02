@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property int $id
  * @property string $alias
+ * todo: change to new player history
  * @property \App\Models\Team|null $team
  * @property \Illuminate\Database\Eloquent\Collection $tournamentTeamPlayers
  */

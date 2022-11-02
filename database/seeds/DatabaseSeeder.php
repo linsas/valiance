@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         factory(Team::class, 50)->create();
 
+        // todo: change seeder & factory logic to consider history
         factory(Player::class, 150)->create()->each(function ($player) {
             if (rand(1, 5) <= 4) $player->update([ 'fk_team' => Team::inRandomOrder()->first()->id ]);
         });
