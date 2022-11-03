@@ -64,6 +64,39 @@ function TeamPlayers({ team }) {
 	</>
 }
 
+function TeamTransfer({ team, transfer }) {
+	if (transfer == null) return null
+
+	return <ListItemLink to={'/Players/' + transfer.player.id}>
+		<ListItemText>
+			<Typography component='span'>{transfer.date}:</Typography>{' '}
+			<Typography component='span'>{transfer.player.alias}</Typography>{' '}
+			{transfer.team !== team.id ?
+				<Typography component='span' color='textSecondary'>left</Typography>
+			:
+				<Typography component='span' color='textSecondary'>joined</Typography>
+			}
+		</ListItemText>
+	</ListItemLink>
+}
+
+function TeamHistory({ team }) {
+	if (team.history.length === 0) return null
+
+	return <>
+		<Paper>
+			<List>
+				<ListItem>
+					<ListItemText>Team history:</ListItemText>
+				</ListItem>
+				{team.history.map((transfer, index) =>
+					<TeamTransfer key={index} team={team} transfer={transfer} />
+				)}
+			</List>
+		</Paper>
+	</>
+}
+
 function Team(props) {
 	const [team, setTeam] = React.useState(null)
 	const [errorFetch, setError] = React.useState(null)
@@ -106,6 +139,9 @@ function Team(props) {
 
 		<Box my={2} />
 		<TeamParticipations team={team} />
+
+		<Box my={2} />
+		<TeamHistory team={team} />
 
 	</>
 }

@@ -13,39 +13,42 @@ class PlayerTeamHistoryService
         return PlayerTeamHistory::where('fk_player', $player->id)->orderBy('date_since')->get();
     }
 
+    public function getEarlierPlayerEntry(PlayerTeamHistory $entry)
+    {
+        return PlayerTeamHistory::where('fk_player', $entry->fk_player)->where('date_since', '<', $entry->date_since)->orderBy('date_since')->get()->last();
+    }
+
+    public function getLaterPlayerEntry(PlayerTeamHistory $entry)
+    {
+        return PlayerTeamHistory::where('fk_player', $entry->fk_player)->where('date_since', '>', $entry->date_since)->orderBy('date_since')->get()->first();
+    }
+
     public function getLatestPlayerHistory(Player $player)
     {
         return $this->getAllHistoryByPlayer($player)->last();
     }
 
-    public function getAllTeamRelatedHistory(Team $team)
+    public function getTeamRelevantHistory(Team $team)
     {
         $all = collect();
-        $surface = PlayerTeamHistory::where('fk_player', $team->id);
+        $surface = PlayerTeamHistory::where('fk_team', $team->id)->get();
         foreach ($surface as $item) {
             $all->add($item);
-            $next = $item->getLaterByPlayer();
+            $next = $this->getLaterPlayerEntry($item);
             if ($next != null && $next->fk_team !== $team->id) $all->add($next);
         }
         return $all;
     }
 
-    public function getPlayersInTeamByTeamHistory(Team $team, \Illuminate\Support\Collection $history)
-    {
-        $historyByPlayer = $history->groupBy('fk_player');
-        $players = collect();
-        foreach ($historyByPlayer as $playerHistory) {
-            $lastPlayerHistory = $playerHistory->last();
-            if ($lastPlayerHistory->fk_team === $team->id) {
-                $players->add($lastPlayerHistory->player);
-            }
-        }
-        return $players;
-    }
-
     public function getPlayersInTeam(Team $team)
     {
-        return $this->getPlayersInTeamByTeamHistory($team, $this->getAllTeamRelatedHistory($team));
+        $players = collect();
+        $surface = PlayerTeamHistory::where('fk_team', $team->id)->get()->unique('fk_player'); // every time a player joined a team (once per player)
+        foreach ($surface as $item) {
+            $playerLatest = $this->getLatestPlayerHistory($item->player);
+            if ($playerLatest->fk_team === $team->id) $players->add($item->player);
+        }
+        return $players;
     }
 
     public function changePlayerTeam(Player $player, ?int $teamId = null)

@@ -28,13 +28,4 @@ class PlayerTeamHistory extends Model
     {
         return $this->belongsTo('App\Models\Team', 'fk_team');
     }
-
-    public function getLaterByPlayer()
-    {
-        return static::where('fk_player', $this->fk_player)
-            ->where('date_since', '>', $this->date_since)
-            ->orderBy('date_since')
-            ->first()
-        ;
-    }
 }
