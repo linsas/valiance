@@ -32,9 +32,44 @@ class TeamController extends Controller
 
     public function show($id)
     {
-        $entry = $this->service->findOrFail($id);
-        // todo: get player team history
-        return new TeamResource($entry);
+        $team = $this->service->findOrFail($id);
+
+        $players = $this->service->getPlayers($team);
+        $history = $this->service->getRelevantHistory($team);
+
+        return ['data' => [
+            'id' => $team->id,
+            'name' => $team->name,
+            'players' => $players->map(function ($player) {
+                return [
+                    'id' => $player->id,
+                    'alias' => $player->alias,
+                ];
+            }),
+            'history' => $history->sortBy('date_since')->reverse()->map(function ($entry) {
+                return [
+                    'date' => $entry->date_since,
+                    'player' => [
+                        'id' => $entry->player->id,
+                        'alias' => $entry->player->alias,
+                    ],
+                    'team' => $entry->team == null ? null : $entry->team->id,
+                    // 'team' => $entry->team == null ? null : [
+                    //     'id' => $entry->team->id,
+                    //     'name' => $entry->team->name,
+                    // ],
+                ];
+            })->values()->toArray(),
+            'participations' => $team->tournamentTeams->map(function ($tteam) {
+                return [
+                    'name' => $tteam->name,
+                    'tournament' => [
+                        'id' => $tteam->tournament->id,
+                        'name' => $tteam->tournament->name,
+                    ],
+                ];
+            })->toArray(),
+        ]];
     }
 
     public function update(Request $request, $id)

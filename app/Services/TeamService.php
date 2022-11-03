@@ -8,6 +8,13 @@ use App\Models\Team;
 
 class TeamService
 {
+    private $historyService;
+
+    public function __construct(PlayerTeamHistoryService $historyService)
+    {
+        $this->historyService = $historyService;
+    }
+
     public function index()
     {
         return Team::all();
@@ -20,9 +27,9 @@ class TeamService
         ]);
         $validData = $validator->validate();
 
-        $entry = new Team;
-        $entry->name = $validData['name'];
-        $entry->save();
+        $team = new Team;
+        $team->name = $validData['name'];
+        $team->save();
     }
 
     public function findOrFail($id)
@@ -30,27 +37,47 @@ class TeamService
         if (!ctype_digit($id) && !is_int($id)) {
             throw ValidationException::withMessages(['The id is invalid.']);
         }
-        $entry = Team::findOrFail($id);
-        return $entry;
+        $team = Team::findOrFail($id);
+        return $team;
     }
 
     public function update($inputData, $id)
     {
-        $entry = $this->findOrFail($id);
+        $team = $this->findOrFail($id);
 
         $validator = Validator::make($inputData, [
             'name' => 'required|string|max:255',
         ]);
         $validData = $validator->validate();
 
-        $entry->name = $validData['name'];
-        $entry->save();
+        $team->name = $validData['name'];
+        $team->save();
     }
 
     public function destroy($id)
     {
-        // todo: check player team history?
-        $entry = $this->findOrFail($id);
-        $entry->delete();
+        $team = $this->findOrFail($id);
+
+        $teamHistory = $this->historyService->getTeamRelevantHistory($team);
+        foreach ($teamHistory as $teamHistoryEntry) {
+            $earlierEntry = $this->historyService->getEarlierPlayerEntry($teamHistoryEntry);
+            if ($earlierEntry == null || $earlierEntry->fk_team == null) {
+                $teamHistoryEntry->delete();
+            } else {
+                $teamHistoryEntry->fk_team = null;
+            }
+        }
+
+        $team->delete();
+    }
+
+    public function getPlayers(Team $team)
+    {
+        return $this->historyService->getPlayersInTeam($team);
+    }
+
+    public function getRelevantHistory(Team $team)
+    {
+        return $this->historyService->getTeamRelevantHistory($team);
     }
 }

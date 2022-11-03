@@ -7,8 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property int $id
  * @property string $name
- * todo: change to new player history
- * @property \Illuminate\Database\Eloquent\Collection $players
+ * @property \Illuminate\Database\Eloquent\Collection $history
  * @property \Illuminate\Database\Eloquent\Collection $tournamentTeams
  */
 class TeamResource extends JsonResource
@@ -24,21 +23,32 @@ class TeamResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'players' => $this->players->map(function ($player) {
+            'players' => [],
+            // 'players' => $this->players->map(function ($player) {
+            //     return [
+            //         'id' => $player->id,
+            //         'alias' => $player->alias,
+            //     ];
+            // }),
+            'history' => $this->history->reverse()->map(function ($entry) {
                 return [
-                    'id' => $player->id,
-                    'alias' => $player->alias,
+                    'date' => $entry->date_since,
+                    'player' => [
+                        'id' => $entry->player->id,
+                        'alias' => $entry->player->alias,
+                    ],
+                    'team' => $entry->team == null ? null : $entry->team->id,
                 ];
-            }),
-            'participations' => $this->tournamentTeams->map(function ($tt) {
+            })->toArray(),
+            'participations' => $this->tournamentTeams->map(function ($tteam) {
                 return [
-                    'name' => $tt->name,
+                    'name' => $tteam->name,
                     'tournament' => [
-                        'id' => $tt->tournament->id,
-                        'name' => $tt->tournament->name,
+                        'id' => $tteam->tournament->id,
+                        'name' => $tteam->tournament->name,
                     ],
                 ];
-            }),
+            })->toArray(),
         ];
     }
 }
