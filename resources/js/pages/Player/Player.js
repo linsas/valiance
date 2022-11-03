@@ -38,6 +38,42 @@ function PlayerParticipations({ player }) {
 	</>
 }
 
+function PlayerTransfer({ transfer, earlier }) {
+	if (transfer == null) return null
+
+	if (transfer.team == null) return <ListItem>
+		<ListItemText>
+			<Typography component='span'>{transfer.date}:</Typography>{' '}
+			<Typography component='span' color='textSecondary'>Left {earlier.team.name}</Typography>
+		</ListItemText>
+	</ListItem>
+
+	return <ListItemLink to={'/Teams/' + transfer.team.id}>
+		<ListItemText>
+			<Typography component='span'>{transfer.date}:</Typography>{' '}
+			<Typography component='span' color='textSecondary'>{earlier == null || earlier.team == null ? 'Joined' : 'Transferred to'}</Typography>{' '}
+			<Typography component='span'>{transfer.team.name}</Typography>
+		</ListItemText>
+	</ListItemLink>
+}
+
+function PlayerTeamHistory({ player }) {
+	if (player.history.length === 0) return null
+
+	return <>
+		<Paper>
+			<List>
+				<ListItem>
+					<ListItemText>Team history:</ListItemText>
+				</ListItem>
+				{player.history.map((transfer, index, array) =>
+					<PlayerTransfer key={index} transfer={transfer} earlier={index != array.length - 1 ? array[index + 1] : null} />
+				)}
+			</List>
+		</Paper>
+	</>
+}
+
 function Player(props) {
 	const [player, setPlayer] = React.useState(null)
 	const [errorFetch, setError] = React.useState(null)
@@ -78,7 +114,7 @@ function Player(props) {
 					</>) : (
 						<ListItemLink to={'/Teams/' + player.team.id}>
 							<ListItemText>
-								<Typography component='span' color='textSecondary'>Team: </Typography>
+								<Typography component='span' color='textSecondary'>Current team: </Typography>
 								<Typography component='span'>{player.team.name}</Typography>
 							</ListItemText>
 						</ListItemLink>
@@ -94,6 +130,9 @@ function Player(props) {
 
 		<Box my={2} />
 		<PlayerParticipations player={player} />
+
+		<Box my={2} />
+		<PlayerTeamHistory player={player} />
 
 	</>
 }

@@ -7,8 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property int $id
  * @property string $alias
- * todo: change to new player history
- * @property \App\Models\Team|null $team
+ * @property \Illuminate\Database\Eloquent\Collection $history
  * @property \Illuminate\Database\Eloquent\Collection $tournamentTeamPlayers
  */
 class PlayerResource extends JsonResource
@@ -24,10 +23,19 @@ class PlayerResource extends JsonResource
         return [
             'id' => $this->id,
             'alias' => $this->alias,
-            'team' => $this->team == null ? null : [
-                'id' => $this->team->id,
-                'name' => $this->team->name,
+            'team' => ($this->history->last() == null || $this->history->last()->team == null) ? null : [
+                'id' => $this->history->last()->team->id,
+                'name' => $this->history->last()->team->name,
             ],
+            'history' => $this->history->reverse()->map(function ($entry) {
+                return [
+                    'date' => $entry->date_since,
+                    'team' => $entry->team == null ? null : [
+                        'id' => $entry->team->id,
+                        'name' => $entry->team->name,
+                    ],
+                ];
+            })->toArray(),
             'participations' => $this->tournamentTeamPlayers->map(function ($ttp) {
                 return [
                     'team' => [
@@ -39,7 +47,7 @@ class PlayerResource extends JsonResource
                         'name' => $ttp->tournamentTeam->tournament->name,
                     ],
                 ];
-            }),
+            })->toArray(),
         ];
     }
 }
