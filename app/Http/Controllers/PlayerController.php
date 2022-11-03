@@ -32,8 +32,8 @@ class PlayerController extends Controller
 
     public function show($id)
     {
-        $entry = $this->service->findOrFail($id);
-        return new PlayerResource($entry);
+        $player = $this->service->findOrFail($id);
+        return new PlayerResource($player);
     }
 
     public function update(Request $request, $id)

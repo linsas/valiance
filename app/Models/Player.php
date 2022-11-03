@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $alias
  * @property \Illuminate\Database\Eloquent\Collection $history
+ * @property \Illuminate\Database\Eloquent\Collection $tournamentTeamPlayers
  */
 class Player extends Model
 {

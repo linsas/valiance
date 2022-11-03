@@ -8,6 +8,12 @@ use App\Models\Player;
 
 class PlayerService
 {
+    private $historyService;
+
+    public function __construct(PlayerTeamHistoryService $historyService) {
+        $this->historyService = $historyService;
+    }
+
     public function index()
     {
         return Player::all();
@@ -21,11 +27,13 @@ class PlayerService
         ]);
         $validData = $validator->validate();
 
-        $entry = new Player;
-        $entry->alias = $validData['alias'];
-        // todo: change to new team history
-        $entry->fk_team = $validData['team'] ?? null;
-        $entry->save();
+        $player = new Player;
+        $player->alias = $validData['alias'];
+        $player->save();
+
+        if ($validData['team'] != null) {
+            $this->historyService->changePlayerTeam($player, $validData['team']);
+        }
     }
 
     public function findOrFail($id)
@@ -33,13 +41,13 @@ class PlayerService
         if (!ctype_digit($id)) {
             throw ValidationException::withMessages(['The id is invalid.']);
         }
-        $entry = Player::findOrFail($id);
-        return $entry;
+        $player = Player::findOrFail($id);
+        return $player;
     }
 
     public function update($inputData, $id)
     {
-        $entry = $this->findOrFail($id);
+        $player = $this->findOrFail($id);
 
         $validator = Validator::make($inputData, [
             'alias' => 'required|string|max:255',
@@ -47,14 +55,21 @@ class PlayerService
         ]);
         $validData = $validator->validate();
 
-        $entry->alias = $validData['alias'];
-        $entry->fk_team = $validData['team']; // ?? null;
-        $entry->save();
+        $player->alias = $validData['alias'];
+        $player->save();
+
+        $this->historyService->changePlayerTeam($player, $validData['team']);
     }
 
     public function destroy($id)
     {
-        $entry = $this->findOrFail($id);
-        $entry->delete();
+        $player = $this->findOrFail($id);
+
+        $playerHistory = $this->historyService->getAllHistoryByPlayer($player);
+        foreach ($playerHistory as $playerHistoryEntry) {
+            $playerHistoryEntry->delete();
+        }
+
+        $player->delete();
     }
 }
