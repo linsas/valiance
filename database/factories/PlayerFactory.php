@@ -7,6 +7,5 @@ use App\Models\Player;
 $factory->define(Player::class, function (Faker $faker) {
     return [
         'alias' => $faker->userName,
-        'fk_team' => null,
     ];
 });
