@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import { Autocomplete } from '@material-ui/lab'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'

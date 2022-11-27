@@ -1,5 +1,7 @@
 import React from 'react'
-import { Box, Typography, Paper, Divider, Grid, makeStyles, useTheme, lighten, darken } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
+import { useTheme, lighten, darken } from '@material-ui/core'
+import { Box, Typography, Paper, Divider, Grid } from '@material-ui/core'
 
 import mapList from '../../data/maps'
 import MatchupEditScore from './MatchupEditScore'
