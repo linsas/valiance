@@ -1,5 +1,6 @@
 import React from 'react'
-import { Box, Typography, Paper, List, ListItemText, makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
+import { Box, Typography, Paper, List, ListItemText } from '@material-ui/core'
 import { Alert, Skeleton } from '@material-ui/lab'
 
 import matchKeys from '../../data/matchKeys'

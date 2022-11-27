@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { Box, Typography, Grid, Paper, ButtonBase, makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
+import { Box, Typography, Grid, Paper, ButtonBase } from '@material-ui/core'
 
 import navigation from '../utility/navigation'
 

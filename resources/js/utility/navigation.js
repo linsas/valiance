@@ -1,4 +1,7 @@
-import { Person as PlayerIcon, Group as TeamIcon, Event as EventIcon, ViewAgenda as MatchupIcon } from '@material-ui/icons'
+import PlayerIcon from '@material-ui/icons/Person'
+import TeamIcon from '@material-ui/icons/Group'
+import EventIcon from '@material-ui/icons/Event'
+import MatchupIcon from '@material-ui/icons/ViewAgenda'
 
 export default [
 	{ title: 'Players', to: '/Players', icon: PlayerIcon },
