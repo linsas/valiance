@@ -27,9 +27,10 @@ composer install
 php artisan migrate:fresh
 ```
 
+# Run locally
 Run webpack with command `npm run dev` or `npm run watch`, and run the web server with `php artisan serve`.
 
-You can also use the command `php artisan db:seed` to quickly fill the database with random players, teams, and events.
+The command `php artisan db:seed` can be used to quickly fill the database with random players, teams, and events.
 
 # Deployment
 Configure the web server to serve files from the `public` directory.
