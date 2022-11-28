@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container as DndContainer, Draggable } from 'react-smooth-dnd'
+import { Container as DndContainer, Draggable } from '@edorivai/react-smooth-dnd'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import DragHandleIcon from '@material-ui/icons/DragHandle'
