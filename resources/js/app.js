@@ -29,11 +29,11 @@ const mainPalette = {
 	error: { main: '#DB0092', },
 }
 
-const lightTheme = createTheme({ palette: { ...mainPalette, type: 'light', }, })
-const darkTheme = createTheme({ palette: { ...mainPalette, type: 'dark', }, })
+const lightTheme = createTheme({ palette: { ...mainPalette, mode: 'light', }, })
+const darkTheme = createTheme({ palette: { ...mainPalette, mode: 'dark', }, })
 
 function App() {
-	const [isDarkTheme, setDarkTheme] = React.useState(true)
+	const [isDarkTheme, setDarkTheme] = React.useState(false)
 	const [jwt, setJWT] = React.useState(null)
 	const [notificationQueue, setNotificationQueue] = React.useState([])
 
@@ -55,9 +55,9 @@ function App() {
 
 					<div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 
-						<ThemeProvider theme={darkTheme}>
+						{/* <ThemeProvider theme={lightTheme}> */}
 							<Header isDark={isDarkTheme} setDark={setDarkTheme} onPressLogin={() => setLoginFormOpen(true)} onPressLogout={onPressLogout} />
-						</ThemeProvider>
+						{/* </ThemeProvider> */}
 
 						<Container style={{ flex: '1 0 auto' }} maxWidth='md'>
 							<Switch>

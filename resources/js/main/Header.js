@@ -21,7 +21,7 @@ function HeaderNavLink({ title, to, icon: Icon }) {
 
 		<Hidden smUp>
 			<Tooltip title={title} arrow>
-				<IconButton component={RouterLink} to={to}>
+				<IconButton color='inherit' component={RouterLink} to={to}>
 					<Icon />
 				</IconButton>
 			</Tooltip>
@@ -42,7 +42,7 @@ function Header({ isDark, setDark, onPressLogin, onPressLogout, }) {
 			</Hidden>
 			<Hidden smUp>
 				<Tooltip title='Home' arrow>
-					<IconButton component={RouterLink} to={'/'} edge='start'>
+					<IconButton color='inherit' component={RouterLink} to={'/'} edge='start'>
 						<HomeIcon />
 					</IconButton>
 				</Tooltip>
@@ -55,20 +55,20 @@ function Header({ isDark, setDark, onPressLogin, onPressLogout, }) {
 			</nav>
 
 			<Tooltip title='Toggle dark mode' arrow>
-				<IconButton onClick={() => setDark(!isDark)}>
+				<IconButton color='inherit' onClick={() => setDark(!isDark)}>
 					{isDark ? <EmojiObjectsOutlinedIcon /> : <EmojiObjectsIcon />}
 				</IconButton>
 			</Tooltip>
 
 			{context.jwt == null ? (
 				<Tooltip title='Login' arrow>
-					<IconButton edge='end' onClick={onPressLogin}>
+					<IconButton color='inherit' edge='end' onClick={onPressLogin}>
 						<AccountCircleOutlinedIcon />
 					</IconButton>
 				</Tooltip>
 			) : (
 				<Tooltip title='Logout' arrow>
-					<IconButton edge='end' onClick={onPressLogout}>
+					<IconButton color='inherit' edge='end' onClick={onPressLogout}>
 						<AccountCircle />
 					</IconButton>
 				</Tooltip>

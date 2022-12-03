@@ -22,7 +22,7 @@ function MatchupGameMap({ gameMap, className }) {
 	const mapColor = gameMap == null ? '#808080' : map.color
 
 	const theme = useTheme()
-	const bgColor = theme.palette.type === 'light' ? lighten(mapColor, 0.8) : darken(mapColor, 0.8)
+	const bgColor = theme.palette.mode === 'light' ? lighten(mapColor, 0.8) : darken(mapColor, 0.8)
 
 	return <div className={className} style={{ backgroundColor: bgColor }}>
 		<Typography color={gameMap == null ? 'textSecondary' : undefined}>
