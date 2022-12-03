@@ -11,7 +11,7 @@ import Participants from './Participants/Participants'
 import Progression from './Progression/Progression'
 
 function Section({ name }) {
-	return <Box display='flex' alignItems='center' gridGap={15} my={2}>
+	return <Box display='flex' alignItems='center' gap={2} my={2}>
 		<Divider style={{ flexGrow: 1 }} />
 		<Typography color='textSecondary'>{name}</Typography>
 		<Divider style={{ flexGrow: 1 }} />
