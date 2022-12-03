@@ -47,7 +47,7 @@ function PlayerForm({ open, player: defaultPlayer, onSubmit, onClose }) {
 					options={teamsList ?? []}
 					value={player.team}
 					getOptionLabel={option => option.name || ''}
-					getOptionSelected={(option, value) => option.id === value?.id}
+					isOptionEqualToValue={(option, value) => option.id === value?.id}
 					onChange={(_event, option) => changeTeam(option)}
 					renderInput={params => <TextField {...params} margin='normal' variant='filled' label='Team' />}
 				/>
