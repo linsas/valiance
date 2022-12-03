@@ -24,7 +24,7 @@ function Notifications({ queue, setQueue }) {
 	}
 
 	return <Portal>
-		<Snackbar open={desiredOpen} TransitionProps={{ onExited: handleExited }}>
+		<Snackbar open={desiredOpen} TransitionProps={{ onExited: handleExited }} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
 			<Alert severity='error' onClose={() => setOpen(false)}>
 				{message} {queue.length > 0 ? <Chip size='small' label={queue.length} /> : null}
 			</Alert>
