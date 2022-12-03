@@ -95,9 +95,9 @@ function ParticipantsForm({ open, list, onSubmit, onClose }) {
 				</List>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose} color='primary'>Cancel</Button>
-				<Button onClick={shuffle} color='primary'>Shuffle</Button>
-				<Button type='submit' onClick={() => onSubmit(items)} color='primary'>Submit</Button>
+				<Button onClick={onClose}>Cancel</Button>
+				<Button onClick={shuffle}>Shuffle</Button>
+				<Button type='submit' onClick={() => onSubmit(items)}>Submit</Button>
 			</DialogActions>
 		</Dialog>
 	</>

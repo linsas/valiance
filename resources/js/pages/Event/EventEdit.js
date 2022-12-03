@@ -18,7 +18,7 @@ function EventEdit({ event, update }) {
 	if (context.jwt == null) return null
 
 	return <>
-		<Button color='primary' onClick={() => setFormOpen(true)}>Edit</Button>
+		<Button onClick={() => setFormOpen(true)}>Edit</Button>
 		<EventForm open={formOpen} event={event} onSubmit={onSubmit} onClose={() => setFormOpen(false)} />
 	</>
 }

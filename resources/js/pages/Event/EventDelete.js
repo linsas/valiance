@@ -18,7 +18,7 @@ function EventDelete({ event }) {
 	if (context.jwt == null) return null
 
 	return <>
-		<Button color='primary' onClick={() => handleDelete()}>Delete</Button>
+		<Button onClick={() => handleDelete()}>Delete</Button>
 	</>
 }
 

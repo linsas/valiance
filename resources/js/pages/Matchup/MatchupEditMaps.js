@@ -18,7 +18,7 @@ function MatchupEditMaps({ matchup, update }) {
 	if (context.jwt == null) return null
 
 	return <>
-		<Button color='primary' onClick={() => setFormOpen(true)}>Edit</Button>
+		<Button onClick={() => setFormOpen(true)}>Edit</Button>
 		<MatchupMapForm open={formOpen} matchup={matchup} onSubmit={onSubmit} onClose={() => setFormOpen(false)} />
 	</>
 }

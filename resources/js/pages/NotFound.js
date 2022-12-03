@@ -7,7 +7,7 @@ function NotFound() {
 	return <Alert severity='error'>
 		<AlertTitle>There's nothing here!</AlertTitle>
 		<Box my={1}>Looks like you've taken a wrong turn.</Box>
-		<Button variant='outlined' color='primary' component={RouterLink} to='/'>Back to Home</Button>
+		<Button variant='outlined' component={RouterLink} to='/'>Back to Home</Button>
 	</Alert>
 }
 

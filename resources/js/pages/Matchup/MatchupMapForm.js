@@ -35,8 +35,8 @@ function MatchupMapForm({ open, matchup, onSubmit, onClose }) {
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose} color='primary'>Cancel</Button>
-				<Button type='submit' onClick={() => onSubmit(items)} color='primary'>Submit</Button>
+				<Button onClick={onClose}>Cancel</Button>
+				<Button type='submit' onClick={() => onSubmit(items)}>Submit</Button>
 			</DialogActions>
 		</Dialog>
 	</>

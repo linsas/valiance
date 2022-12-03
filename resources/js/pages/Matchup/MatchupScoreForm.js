@@ -41,8 +41,8 @@ function MatchupScoreForm({ open, matchup, game: defaultGame, onSubmit, onClose 
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose} color='primary'>Cancel</Button>
-				<Button type='submit' onClick={() => onSubmit(game)} color='primary'>Submit</Button>
+				<Button onClick={onClose}>Cancel</Button>
+				<Button type='submit' onClick={() => onSubmit(game)}>Submit</Button>
 			</DialogActions>
 		</Dialog>
 	</>

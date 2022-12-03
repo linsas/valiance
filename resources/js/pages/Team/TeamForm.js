@@ -28,8 +28,8 @@ function TeamForm({ open, team: defaultTeam, onSubmit, onClose }) {
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose} color='primary'>Cancel</Button>
-				<Button type='submit' onClick={() => onSubmit(team)} color='primary'>Submit</Button>
+				<Button onClick={onClose}>Cancel</Button>
+				<Button type='submit' onClick={() => onSubmit(team)}>Submit</Button>
 			</DialogActions>
 		</Dialog>
 	</>

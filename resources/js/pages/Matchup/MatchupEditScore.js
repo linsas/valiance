@@ -18,7 +18,7 @@ function MatchupEditScore({ matchup, game, update }) {
 	if (context.jwt == null) return null
 
 	return <>
-		<Button color='primary' onClick={() => setFormOpen(true)}>Edit</Button>
+		<Button onClick={() => setFormOpen(true)}>Edit</Button>
 		<MatchupScoreForm open={formOpen} matchup={matchup} game={game} onSubmit={onSubmit} onClose={() => setFormOpen(false)} />
 	</>
 }

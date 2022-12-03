@@ -43,8 +43,8 @@ function EventForm({ open, event: defaultEvent, onSubmit, onClose }) {
 				</FormControl>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose} color='primary'>Cancel</Button>
-				<Button type='submit' onClick={() => onSubmit(event)} color='primary'>Submit</Button>
+				<Button onClick={onClose}>Cancel</Button>
+				<Button type='submit' onClick={() => onSubmit(event)}>Submit</Button>
 			</DialogActions>
 		</Dialog>
 	</>
