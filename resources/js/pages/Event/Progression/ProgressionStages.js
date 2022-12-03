@@ -127,7 +127,7 @@ export function BracketSingleElim4Team({ semifinals1, semifinals2, finals }) {
 	const styles = useStyles()
 
 	return <>
-		<Hidden smDown>
+		<Hidden mdDown>
 			<div className={styles.bracket}>
 				<BracketMatchup area='1/1/2/2' matchup={semifinals1} />
 				<BracketMatchup area='2/1/3/2' matchup={semifinals2} />
@@ -145,7 +145,7 @@ export function BracketSingleElim8Team({ quarterfinals1, quarterfinals2, quarter
 	const styles = useStyles()
 
 	return <>
-		<Hidden smDown>
+		<Hidden mdDown>
 			<div className={styles.bracket}>
 				<BracketMatchup area='1/1/2/2' matchup={quarterfinals1} />
 				<BracketMatchup area='2/1/3/2' matchup={quarterfinals2} />
@@ -168,7 +168,7 @@ export function BracketDoubleElim4Team({ opening1, opening2, upper, lower, decid
 	const styles = useStyles()
 
 	return <>
-		<Hidden smDown>
+		<Hidden mdDown>
 			<div className={styles.bracket}>
 				<BracketMatchup area='1/1/2/2' matchup={opening1} />
 				<BracketMatchup area='2/1/3/2' matchup={opening2} />
@@ -206,7 +206,7 @@ export function SwissStage({ zerZer, zerOne, oneZer, zerTwo, oneOne, twoZer, one
 	const styles = useStyles()
 
 	return <>
-		<Hidden smDown>
+		<Hidden mdDown>
 			<div className={styles.swiss}>
 				<SwissMatchups area='1/3/2/5' matchups={zerZer} />
 
