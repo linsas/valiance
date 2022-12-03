@@ -1,6 +1,6 @@
 import React from 'react'
-import { Chip, Portal, Snackbar } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { Chip, Portal, Snackbar } from '@mui/material'
+import { Alert } from '@mui/material'
 
 function Notifications({ queue, setQueue }) {
 	const [desiredOpen, setOpen] = React.useState(false)

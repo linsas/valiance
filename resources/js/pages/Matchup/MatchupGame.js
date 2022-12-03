@@ -1,7 +1,7 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core'
-import { useTheme, lighten, darken } from '@material-ui/core'
-import { Box, Typography, Paper, Divider, Grid } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { useTheme, lighten, darken } from '@mui/material'
+import { Box, Typography, Paper, Divider, Grid } from '@mui/material'
 
 import mapList from '../../data/maps'
 import MatchupEditScore from './MatchupEditScore'

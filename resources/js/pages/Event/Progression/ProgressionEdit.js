@@ -1,6 +1,6 @@
 import React from 'react'
-import { Fab, Tooltip } from '@material-ui/core'
-import PlayIcon from '@material-ui/icons/PlayArrow'
+import { Fab, Tooltip } from '@mui/material'
+import PlayIcon from '@mui/icons-material/PlayArrow'
 
 import AppContext from '../../../main/AppContext'
 import useFetch from '../../../utility/useFetch'

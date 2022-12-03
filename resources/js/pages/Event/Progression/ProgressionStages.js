@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core'
-import { alpha } from '@material-ui/core'
-import { ButtonBase, Typography, Hidden } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import { alpha } from '@mui/material'
+import { ButtonBase, Typography, Hidden } from '@mui/material'
 
 const useStyles = makeStyles(theme => ({
 	bracket: {

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Fab } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
+import { Fab } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'

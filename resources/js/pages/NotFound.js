@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { Button, Box } from '@material-ui/core'
-import { Alert, AlertTitle } from '@material-ui/lab'
+import { Button, Box } from '@mui/material'
+import { Alert, AlertTitle } from '@mui/material'
 
 function NotFound() {
 	return <Alert severity='error'>

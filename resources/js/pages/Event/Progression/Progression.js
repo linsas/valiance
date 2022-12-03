@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography, Paper } from '@material-ui/core'
+import { Box, Typography, Paper } from '@mui/material'
 
 import ProgressionEdit from './ProgressionEdit'
 import ProgressionMatchups from './ProgressionMatchups'
