@@ -20,6 +20,7 @@ function MatchupScoreForm({ open, matchup, game: defaultGame, onSubmit, onClose 
 
 				<Box display='grid' gridAutoFlow='column' gridTemplateColumns='1fr auto 1fr' gap={2} alignItems='end'>
 					<TextField
+						variant='filled'
 						autoFocus
 						fullWidth
 						margin='dense'
@@ -30,6 +31,7 @@ function MatchupScoreForm({ open, matchup, game: defaultGame, onSubmit, onClose 
 					/>
 					<span style={{ alignSelf: 'end' }}>:</span>
 					<TextField
+						variant='filled'
 						fullWidth
 						margin='dense'
 						label={matchup.team2.name + ' score'}
