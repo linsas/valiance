@@ -13,7 +13,7 @@ import navigation from '../utility/navigation'
 function HeaderNavLink({ title, to, icon: Icon }) {
 	return <>
 		<Hidden xsDown>
-			<Link color='inherit' component={RouterLink} to={to} style={{ display: 'inline-flex', margin: 4 }}>
+			<Link color='inherit' component={RouterLink} to={to} underline='hover' style={{ display: 'inline-flex', margin: 4 }}>
 				<Icon />
 				<Typography component='span'>{title}</Typography>
 			</Link>
@@ -37,7 +37,7 @@ function Header({ isDark, setDark, onPressLogin, onPressLogout, }) {
 
 			<Hidden xsDown>
 				<Typography variant='h6'>
-					<Link color='inherit' component={RouterLink} to='/'>Valiance</Link>
+					<Link color='inherit' component={RouterLink} to='/' underline='hover'>Valiance</Link>
 				</Typography>
 			</Hidden>
 			<Hidden smUp>
