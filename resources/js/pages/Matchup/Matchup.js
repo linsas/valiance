@@ -34,9 +34,9 @@ function Matchup(props) {
 	if (errorFetch != null) return <AlertError error={errorFetch} />
 
 	if (isLoading) return <>
-		<Skeleton variant='rect' height={190} />
+		<Skeleton variant='rectangular' height={190} />
 		<Box py={2} />
-		<Skeleton variant='rect' height={80} />
+		<Skeleton variant='rectangular' height={80} />
 	</>
 
 	if (matchup == null) return <Alert severity='warning'>

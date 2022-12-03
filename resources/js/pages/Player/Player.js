@@ -87,9 +87,9 @@ function Player(props) {
 	if (errorFetch != null) return <AlertError error={errorFetch} />
 
 	if (isLoading) return <>
-		<Skeleton variant='rect' height={150} />
+		<Skeleton variant='rectangular' height={150} />
 		<Box py={1} />
-		<Skeleton variant='rect' height={50} />
+		<Skeleton variant='rectangular' height={50} />
 	</>
 
 	if (player == null) return <Alert severity='warning'>
