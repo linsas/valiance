@@ -18,7 +18,7 @@ function PlayerEdit({ player, update }) {
 	if (context.jwt == null) return null
 
 	return <>
-		<Button color='primary' onClick={() => setFormOpen(true)}>Edit</Button>
+		<Button onClick={() => setFormOpen(true)}>Edit</Button>
 		<PlayerForm open={formOpen} player={player} onSubmit={onSubmit} onClose={() => setFormOpen(false)} />
 	</>
 }

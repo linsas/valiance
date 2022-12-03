@@ -49,8 +49,8 @@ function LoginForm({ open, onSubmit, onClose }) {
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose} color='primary'>Cancel</Button>
-				<Button type='submit' onClick={() => onSubmit(credentials)} color='primary'>Login</Button>
+				<Button onClick={onClose}>Cancel</Button>
+				<Button type='submit' onClick={() => onSubmit(credentials)}>Login</Button>
 			</DialogActions>
 		</Dialog>
 	</>

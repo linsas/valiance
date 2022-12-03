@@ -53,8 +53,8 @@ function PlayerForm({ open, player: defaultPlayer, onSubmit, onClose }) {
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose} color='primary'>Cancel</Button>
-				<Button type='submit' onClick={() => onSubmit(player)} color='primary'>Submit</Button>
+				<Button onClick={onClose}>Cancel</Button>
+				<Button type='submit' onClick={() => onSubmit(player)}>Submit</Button>
 			</DialogActions>
 		</Dialog>
 	</>

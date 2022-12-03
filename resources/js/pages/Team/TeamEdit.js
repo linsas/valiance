@@ -18,7 +18,7 @@ function TeamEdit({ team, update }) {
 	if (context.jwt == null) return null
 
 	return <>
-		<Button color='primary' onClick={() => setFormOpen(true)}>Edit</Button>
+		<Button onClick={() => setFormOpen(true)}>Edit</Button>
 		<TeamForm open={formOpen} team={team} onSubmit={onSubmit} onClose={() => setFormOpen(false)} />
 	</>
 }
