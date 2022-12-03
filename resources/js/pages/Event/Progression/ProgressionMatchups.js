@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 
 import { BracketSingleElim4Team, BracketSingleElim8Team, BracketDoubleElim4Team, SwissStage } from './ProgressionStages'
 

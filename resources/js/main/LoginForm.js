@@ -1,7 +1,7 @@
 import React from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, FormControl, InputLabel, FilledInput, InputAdornment, IconButton } from '@material-ui/core'
-import Visibility from '@material-ui/icons/Visibility'
-import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, FormControl, InputLabel, FilledInput, InputAdornment, IconButton } from '@mui/material'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 function LoginForm({ open, onSubmit, onClose }) {
 	const [credentials, setCredentials] = React.useState({ username: '', password: '' })

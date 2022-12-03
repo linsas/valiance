@@ -1,9 +1,9 @@
 import React from 'react'
 import { Container as DndContainer, Draggable } from '@edorivai/react-smooth-dnd'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, TextField } from '@material-ui/core'
-import { Autocomplete } from '@material-ui/lab'
-import DragHandleIcon from '@material-ui/icons/DragHandle'
-import DeleteIcon from '@material-ui/icons/Delete'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, TextField } from '@mui/material'
+import { Autocomplete } from '@mui/material'
+import DragHandleIcon from '@mui/icons-material/DragHandle'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 import AppContext from '../../../main/AppContext'
 import useFetch from '../../../utility/useFetch'

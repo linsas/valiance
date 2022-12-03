@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 
 function MatchupScoreForm({ open, matchup, game: defaultGame, onSubmit, onClose }) {
 	if (defaultGame == null) defaultGame = {}

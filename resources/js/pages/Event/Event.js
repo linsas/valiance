@@ -1,6 +1,6 @@
 import React from 'react'
-import { Box, Typography, Paper, List, ListItem, ListItemText, Divider } from '@material-ui/core'
-import { Alert, Skeleton } from '@material-ui/lab'
+import { Box, Typography, Paper, List, ListItem, ListItemText, Divider } from '@mui/material'
+import { Alert, Skeleton } from '@mui/material'
 
 import eventFormats from '../../data/eventFormats'
 import useFetch from '../../utility/useFetch'

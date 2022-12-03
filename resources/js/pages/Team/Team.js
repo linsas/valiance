@@ -1,6 +1,6 @@
 import React from 'react'
-import { Box, Typography, Paper, List, ListItem, ListItemText } from '@material-ui/core'
-import { Alert, Skeleton } from '@material-ui/lab'
+import { Box, Typography, Paper, List, ListItem, ListItemText } from '@mui/material'
+import { Alert, Skeleton } from '@mui/material'
 
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'

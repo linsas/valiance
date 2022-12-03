@@ -1,7 +1,7 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core'
-import { Box, Typography, Paper, List, ListItemText } from '@material-ui/core'
-import { Alert, Skeleton } from '@material-ui/lab'
+import { makeStyles } from '@mui/styles'
+import { Box, Typography, Paper, List, ListItemText } from '@mui/material'
+import { Alert, Skeleton } from '@mui/material'
 
 import matchKeys from '../../data/matchKeys'
 import useFetch from '../../utility/useFetch'

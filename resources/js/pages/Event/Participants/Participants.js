@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Typography, Paper, List, ListItemText, Divider, Grid } from '@material-ui/core'
+import { Box, Typography, Paper, List, ListItemText, Divider, Grid } from '@mui/material'
 
 import ListItemLink from '../../../components/ListItemLink'
 import ParticipantsEdit from './ParticipantsEdit'
@@ -55,4 +55,3 @@ function Participants({ event, update }) {
 }
 
 export default Participants
-
