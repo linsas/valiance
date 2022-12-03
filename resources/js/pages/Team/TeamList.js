@@ -18,9 +18,9 @@ function TeamList() {
 	React.useEffect(() => getTeams(), [])
 
 	if (isLoading) return <>
-		<Skeleton variant='rect' height={50} />
+		<Skeleton variant='rectangular' height={50} />
 		<Box py={1} />
-		<Skeleton variant='rect' height={250} />
+		<Skeleton variant='rectangular' height={250} />
 	</>
 
 	if (errorFetch != null) return <AlertError error={errorFetch} />
