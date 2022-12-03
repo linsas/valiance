@@ -12,7 +12,7 @@ import navigation from '../utility/navigation'
 
 function HeaderNavLink({ title, to, icon: Icon }) {
 	return <>
-		<Hidden xsDown>
+		<Hidden smDown>
 			<Link color='inherit' component={RouterLink} to={to} underline='hover' style={{ display: 'inline-flex', margin: 4 }}>
 				<Icon />
 				<Typography component='span'>{title}</Typography>
@@ -35,7 +35,7 @@ function Header({ isDark, setDark, onPressLogin, onPressLogout, }) {
 	return <AppBar position='sticky' style={{ marginBottom: 32 }}>
 		<Toolbar>
 
-			<Hidden xsDown>
+			<Hidden smDown>
 				<Typography variant='h6'>
 					<Link color='inherit' component={RouterLink} to='/' underline='hover'>Valiance</Link>
 				</Typography>
