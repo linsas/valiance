@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch as RouterSwitch, Route } from 'react-router-dom'
 import { Container, CssBaseline } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
 import { ThemeProvider } from '@mui/material/styles'
@@ -60,7 +60,7 @@ function App() {
 						{/* </ThemeProvider> */}
 
 						<Container style={{ flex: '1 0 auto' }} maxWidth='md'>
-							<Switch>
+							<RouterSwitch>
 								<Route exact path='/Players/:id' component={Player} />
 								<Route exact path='/Players' component={PlayerList} />
 
@@ -75,7 +75,7 @@ function App() {
 
 								<Route exact path='/' component={Home} />
 								<Route component={NotFound} />
-							</Switch>
+							</RouterSwitch>
 						</Container>
 
 						<Footer />
