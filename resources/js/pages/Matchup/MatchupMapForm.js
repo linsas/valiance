@@ -19,12 +19,10 @@ function MatchupMapForm({ open, matchup, onSubmit, onClose }) {
 			<DialogContent>
 
 				{items.map((map, index) =>
-					<FormControl key={index} fullWidth margin='normal'>
-						<InputLabel variant='filled' id='label-select-map-i'>Map {index + 1}</InputLabel>
+					<FormControl key={index} variant='filled' margin='normal' fullWidth>
+						<InputLabel id={'label-select-map-'+index}>Map {index + 1}</InputLabel>
 						<Select
-							variant='filled'
-							labelId='label-select-map-i'
-							id='select-map'
+							labelId={'label-select-map-'+index}
 							value={map || ''}
 							onChange={event => changeMap(index, event.target.value)}
 						>

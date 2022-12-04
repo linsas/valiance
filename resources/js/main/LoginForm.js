@@ -30,9 +30,7 @@ function LoginForm({ open, onSubmit, onClose }) {
 					<FilledInput
 						id='login-password'
 						type={showPassword ? 'text' : 'password'}
-						// value={credentials.password}
 						onChange={event => changePassword(event.target.value)}
-						fullWidth
 						endAdornment={
 							<InputAdornment position='end'>
 								<IconButton

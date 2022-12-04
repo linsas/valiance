@@ -29,12 +29,10 @@ function EventForm({ open, event: defaultEvent, onSubmit, onClose }) {
 					onChange={event => changeName(event.target.value)}
 					fullWidth
 				/>
-				<FormControl fullWidth margin='normal'>
-					<InputLabel variant='filled' id='format-select-label'>Format</InputLabel>
+				<FormControl variant='filled' margin='normal' fullWidth>
+					<InputLabel id='format-select-label'>Format</InputLabel>
 					<Select
-						variant='filled'
 						labelId='format-select-label'
-						id='format-select'
 						value={event.format || ''}
 						onChange={event => changeFormat(event.target.value)}
 					>
