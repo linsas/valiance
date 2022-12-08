@@ -28,14 +28,43 @@ class PlayerTeamHistoryService
         return $this->getAllHistoryByPlayer($player)->last();
     }
 
+    public function getTeamDirectHistory(Team $team)
+    {
+        return PlayerTeamHistory::where('fk_team', $team->id)->get();
+    }
+
+    private function getTransferItem(Player $player, Team $otherTeam = null, string $date, bool $isTransferringAway)
+    {
+        return [
+            'player' => [
+                'id' => $player->id,
+                'alias' => $player->alias,
+            ],
+            'otherTeam' => $otherTeam == null ? null : [
+                'id' => $otherTeam->id,
+                'name' => $otherTeam->name,
+            ],
+            'date' => $date,
+            'isTransferringAway' => $isTransferringAway,
+        ];
+    }
+
     public function getTeamRelevantHistory(Team $team)
     {
         $all = collect();
-        $surface = PlayerTeamHistory::where('fk_team', $team->id)->get();
-        foreach ($surface as $item) {
-            $all->add($item);
+        $teamHistory = $this->getTeamDirectHistory($team);
+        foreach ($teamHistory as $item) {
+            $prev = $this->getEarlierPlayerEntry($item);
+            if ($prev == null) {
+                $all->add($this->getTransferItem($item->player, null, $item->date_since, false)); // special case for first entry for player
+            } else if ($prev->fk_team !== $team->id) {
+                $all->add($this->getTransferItem($item->player, $prev->team, $item->date_since, false));
+            }
+
             $next = $this->getLaterPlayerEntry($item);
-            if ($next != null && $next->fk_team !== $team->id) $all->add($next);
+            if ($next != null && $next->fk_team !== $team->id) {
+                $all->add($this->getTransferItem($item->player, $next->team, $next->date_since, true));
+            }
         }
         return $all;
     }
