@@ -46,20 +46,7 @@ class TeamController extends Controller
                     'alias' => $player->alias,
                 ];
             }),
-            'history' => $history->sortBy('date_since')->reverse()->map(function ($entry) {
-                return [
-                    'date' => $entry->date_since,
-                    'player' => [
-                        'id' => $entry->player->id,
-                        'alias' => $entry->player->alias,
-                    ],
-                    'team' => $entry->team == null ? null : $entry->team->id,
-                    // 'team' => $entry->team == null ? null : [
-                    //     'id' => $entry->team->id,
-                    //     'name' => $entry->team->name,
-                    // ],
-                ];
-            })->values()->toArray(),
+            'transfers' => $history->sortBy('date')->reverse()->values()->toArray(),
             'participations' => $team->tournamentTeams->map(function ($tteam) {
                 return [
                     'name' => $tteam->name,

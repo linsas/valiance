@@ -1,6 +1,9 @@
 import React from 'react'
-import { Box, Typography, Paper, List, ListItem, ListItemText } from '@mui/material'
+import { Box, Grid, Typography, Paper, List, ListItem, ListItemText } from '@mui/material'
 import { Alert, Skeleton } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
@@ -64,24 +67,42 @@ function TeamPlayers({ team }) {
 	</>
 }
 
-function TeamTransfer({ team, transfer }) {
+function TeamTransfer({ transfer }) {
 	if (transfer == null) return null
 
 	return <ListItemLink to={'/Players/' + transfer.player.id}>
-		<ListItemText>
-			<Typography component='span'>{transfer.date}:</Typography>{' '}
-			<Typography component='span'>{transfer.player.alias}</Typography>{' '}
-			{transfer.team !== team.id ?
-				<Typography component='span' color='textSecondary'>left</Typography>
-			:
-				<Typography component='span' color='textSecondary'>joined</Typography>
-			}
-		</ListItemText>
+		<Grid container>
+			<Grid item xs={2}>
+				<Typography>{transfer.date}</Typography>
+			</Grid>
+			<Grid item xs={3}>
+				{!transfer.isTransferringAway && transfer.otherTeam != null && <>
+					<Typography sx={{ textAlign: 'center', display: 'inline-flex' }}>
+						{transfer.otherTeam.name}
+						<ArrowForwardIcon fontSize='small' />
+					</Typography>
+				</>}
+			</Grid>
+			<Grid item xs={4}>
+				<Typography sx={{ textAlign: 'center', display: 'inline-flex' }}>
+					{transfer.isTransferringAway ? <RemoveIcon /> : <AddIcon />}
+					{transfer.player.alias}
+				</Typography>
+			</Grid>
+			<Grid item xs={3}>
+				{transfer.isTransferringAway && transfer.otherTeam != null && <>
+					<Typography sx={{ textAlign: 'center', display: 'inline-flex' }}>
+						<ArrowForwardIcon fontSize='small' />
+						{transfer.otherTeam.name}
+					</Typography>
+				</>}
+			</Grid>
+		</Grid>
 	</ListItemLink>
 }
 
 function TeamHistory({ team }) {
-	if (team.history.length === 0) return null
+	if (team.transfers.length === 0) return null
 
 	return <>
 		<Paper>
@@ -89,8 +110,8 @@ function TeamHistory({ team }) {
 				<ListItem>
 					<ListItemText>Team history:</ListItemText>
 				</ListItem>
-				{team.history.map((transfer, index) =>
-					<TeamTransfer key={index} team={team} transfer={transfer} />
+				{team.transfers.map((transfer, index) =>
+					<TeamTransfer key={index} transfer={transfer} />
 				)}
 			</List>
 		</Paper>

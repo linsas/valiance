@@ -58,13 +58,19 @@ class TeamService
     {
         $team = $this->findOrFail($id);
 
-        $teamHistory = $this->historyService->getTeamRelevantHistory($team);
+        $teamHistory = $this->historyService->getTeamDirectHistory($team);
         foreach ($teamHistory as $teamHistoryEntry) {
+            $teamHistoryEntry->fk_team = null;
+            $teamHistoryEntry->save();
+
+            $laterEntry = $this->historyService->getLaterPlayerEntry($teamHistoryEntry);
+            if ($laterEntry != null && $laterEntry->fk_team == null) {
+                $laterEntry->delete();
+            }
+
             $earlierEntry = $this->historyService->getEarlierPlayerEntry($teamHistoryEntry);
             if ($earlierEntry == null || $earlierEntry->fk_team == null) {
                 $teamHistoryEntry->delete();
-            } else {
-                $teamHistoryEntry->fk_team = null;
             }
         }
 
