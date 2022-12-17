@@ -1,5 +1,5 @@
 import React from 'react'
-import { BracketSingleElim8Team } from '../ProgressionStages'
+import { BracketSingleElimination8Team } from '../Stage/StageBracket'
 
 export default function SingleElimination8Team({ matchups }) {
 	const qf1 = matchups.find(m => m.key === 'qf1')
@@ -10,7 +10,7 @@ export default function SingleElimination8Team({ matchups }) {
 	const sf2 = matchups.find(m => m.key === 'sf2')
 	const finals = matchups.find(m => m.key === 'f')
 
-	return <BracketSingleElim8Team
+	return <BracketSingleElimination8Team
 		quarterfinals1={qf1}
 		quarterfinals2={qf2}
 		quarterfinals3={qf3}

@@ -1,6 +1,6 @@
 import React from 'react'
-import { BracketSingleElim4Team, BracketDoubleElim4Team } from '../ProgressionStages'
-import { StageSeparator } from '../ProgressionMatchups';
+import { BracketSingleElimination4Team, BracketDoubleElimination4Team } from '../Stage/StageBracket'
+import { StageSeparator } from '../Stage/StageComponents';
 
 export default function Minor8Team({ matchups }) {
 	const a1 = matchups.filter(m => m.key === 'ao')[0]
@@ -21,7 +21,7 @@ export default function Minor8Team({ matchups }) {
 	const finals = matchups.find(m => m.key === 'f')
 	return <>
 		<StageSeparator title='Group A' />
-		<BracketDoubleElim4Team
+		<BracketDoubleElimination4Team
 			opening1={a1}
 			opening2={a2}
 			upper={aw}
@@ -29,7 +29,7 @@ export default function Minor8Team({ matchups }) {
 			deciding={ad}
 		/>
 		<StageSeparator title='Group B' />
-		<BracketDoubleElim4Team
+		<BracketDoubleElimination4Team
 			opening1={b1}
 			opening2={b2}
 			upper={bw}
@@ -37,7 +37,7 @@ export default function Minor8Team({ matchups }) {
 			deciding={bd}
 		/>
 		<StageSeparator title='Playoffs' />
-		<BracketSingleElim4Team
+		<BracketSingleElimination4Team
 			semifinals1={sf1}
 			semifinals2={sf2}
 			finals={finals}
