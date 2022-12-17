@@ -1,22 +1,11 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
 import { useTheme, lighten, darken } from '@mui/material'
 import { Box, Typography, Paper, Divider, Grid } from '@mui/material'
 
 import mapList from '../../data/maps'
 import MatchupEditScore from './MatchupEditScore'
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		marginTop: theme.spacing(4),
-	},
-	map: {
-		textAlign: 'center',
-		padding: 4,
-	},
-}))
-
-function MatchupGameMap({ gameMap, className }) {
+function MatchupGameMap({ gameMap }) {
 	const map = mapList.find(map => map.id === gameMap)
 	const mapName = gameMap == null ? 'Undecided' : map.name
 	const mapColor = gameMap == null ? '#808080' : map.color
@@ -24,19 +13,17 @@ function MatchupGameMap({ gameMap, className }) {
 	const theme = useTheme()
 	const bgColor = theme.palette.mode === 'light' ? lighten(mapColor, 0.8) : darken(mapColor, 0.8)
 
-	return <div className={className} style={{ backgroundColor: bgColor }}>
+	return <Box style={{ backgroundColor: bgColor }} sx={{ textAlign: 'center', padding: 0.5 }}>
 		<Typography color={gameMap == null ? 'textSecondary' : undefined}>
 			{mapName}
 		</Typography>
-	</div>
+	</Box>
 }
 
 function MatchupGame({ matchup, game, update }) {
-	const styles = useStyles()
-
 	return <>
-		<Paper square className={styles.root}>
-			<MatchupGameMap className={styles.map} gameMap={game.map} />
+		<Paper square sx={{ marginTop: 4 }}>
+			<MatchupGameMap gameMap={game.map} />
 			<Divider />
 
 			<Box p={1}>

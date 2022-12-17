@@ -1,31 +1,14 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { makeStyles } from '@mui/styles'
 import { Box, Typography, Grid, Paper, ButtonBase } from '@mui/material'
 
 import navigation from '../utility/navigation'
 
-const useStyles = makeStyles(theme => ({
-	gridLink: {
-		display: 'flex',
-		alignItems: 'center',
-	},
-	button: {
-		height: 100,
-		width: '100%',
-		color: theme.palette.primary.main,
-		'&:hover': {
-			textDecoration: 'underline',
-		},
-	}
-}))
-
 function GridLink({ title, to, icon: Icon }) {
-	const classes = useStyles()
 	return <Grid item xs={12} sm={6} md={3}>
 		<Paper>
-			<ButtonBase component={RouterLink} to={to} focusRipple className={classes.button}>
-				<Typography variant='h6' className={classes.gridLink}>
+			<ButtonBase component={RouterLink} to={to} focusRipple sx={{ height: '100px', width: 1, color: 'primary.main', '&:hover': { textDecoration: 'underline', }, }}>
+				<Typography variant='h6' sx={{ display: 'flex', alignItems: 'center' }}>
 					<Icon fontSize='medium' />
 					{title}
 				</Typography>

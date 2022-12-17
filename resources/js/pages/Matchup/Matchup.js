@@ -1,5 +1,4 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
 import { Box, Typography, Paper, List, ListItemText } from '@mui/material'
 import { Alert, Skeleton } from '@mui/material'
 
@@ -10,18 +9,7 @@ import ListItemLink from '../../components/ListItemLink'
 import MatchupGame from './MatchupGame'
 import MatchupEditMaps from './MatchupEditMaps'
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		display: 'grid',
-		gridTemplateColumns: '1fr 1fr 1fr',
-		alignItems: 'center',
-		textAlign: 'center',
-	},
-}))
-
 function Matchup(props) {
-	const styles = useStyles()
-
 	const [matchup, setMatchup] = React.useState(null)
 	const [errorFetch, setError] = React.useState(null)
 	const [isLoading, fetchMatchup] = useFetch('/api/matchups/' + props.match.params.id)
@@ -48,7 +36,7 @@ function Matchup(props) {
 			<Box py={2}>
 				<Box px={2} pb={1}>
 					<Typography color='textSecondary' gutterBottom>Matchup</Typography>
-					<Box className={styles.root}>
+					<Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', alignItems: 'center', textAlign: 'center' }}>
 						<Typography variant='h4'>{matchup.team1.name}</Typography>
 						<Typography variant='h5' color='textSecondary'> vs </Typography>
 						<Typography variant='h4'>{matchup.team2.name}</Typography>
