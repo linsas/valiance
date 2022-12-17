@@ -1,5 +1,7 @@
 import React from 'react'
-import { Box, Typography, Paper, List, ListItemText, Divider, Grid } from '@mui/material'
+import { Box, Typography, Paper, List, ListItemText, ListItemIcon, Divider, Grid } from '@mui/material'
+import PlayerIcon from '@mui/icons-material/Person'
+import TeamIcon from '@mui/icons-material/Group'
 
 import ListItemLink from '../../../components/ListItemLink'
 import ParticipantsEdit from './ParticipantsEdit'
@@ -9,8 +11,11 @@ function ParticipantCard({ participant }) {
 		<Paper>
 			<List disablePadding>
 				<ListItemLink to={'/Teams/' + participant.team.id}>
+					<ListItemIcon>
+						<TeamIcon />
+					</ListItemIcon>
 					<ListItemText>
-						<Typography component='span'>{participant.name}</Typography>
+						{participant.name}
 						{participant.name !== participant.team.name && <>
 							<Typography variant='body2' component='span' color='textSecondary'> now known as </Typography>
 							<Typography variant='body2' component='span'>{participant.team.name}</Typography>
@@ -26,8 +31,11 @@ function ParticipantCard({ participant }) {
 					</Box>
 				) : (
 					participant.players.map(player => <ListItemLink key={player.id} dense to={'/Players/' + player.id}>
+						<ListItemIcon>
+							<PlayerIcon />
+						</ListItemIcon>
 						<ListItemText>
-							<Typography component='span'>{player.alias}</Typography>
+							{player.alias}
 						</ListItemText>
 					</ListItemLink>)
 				)}
