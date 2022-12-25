@@ -1,6 +1,6 @@
 import React from 'react'
 
-import AppContext from '../main/AppContext'
+import AppContext from './AppContext'
 import useFetch from '../utility/useFetch'
 import LoginForm from './LoginForm'
 
