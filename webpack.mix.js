@@ -12,7 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix
-    .ts('resources/js/app.js', 'public/js')
+    .ts('resources/js/app.tsx', 'public/js')
     .react()
     .sourceMaps()
     .disableNotifications()

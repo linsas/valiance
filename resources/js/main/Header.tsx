@@ -7,7 +7,7 @@ import EmojiObjectsOutlinedIcon from '@mui/icons-material/EmojiObjectsOutlined'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 
-import AppContext from '../main/AppContext'
+import AppContext from './AppContext'
 import navigation from '../utility/navigation'
 
 function HeaderNavLink({ title, to, icon: Icon }) {
