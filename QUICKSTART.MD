@@ -3,15 +3,13 @@ This project might not work with the latest verisons of PHP, npm, etc.
 
 The primary components used in the application are:
 - Laravel 7
-- React 16.2
-	- React Router 5.2
-	- Material UI v4
+- React 17.0
+	- MUI v5
 
 The working environemnt includes:
-- PHP 7.4.8
-- MariaDB 10.4.13
-- Node.js v14.16
-	- npm 6.14.11
+- PHP 7.4
+- Node.js v16.17
+	- npm 8.15
 
 # First time setup
 Copy the contents of `.env.example` to `.env` and run `php artisan key:generate`.
