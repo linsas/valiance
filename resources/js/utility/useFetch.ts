@@ -4,7 +4,7 @@ import AppContext from '../main/AppContext'
 
 const never = new Promise(() => { })
 
-export default function useFetch(url, method = 'GET') {
+export default function useFetch(url, method = 'GET') : [boolean, (data?: any) => Promise<any>] {
 	const [isLoading, setIsLoading] = React.useState(false)
 
 	const context = React.useContext(AppContext)
@@ -36,6 +36,7 @@ export default function useFetch(url, method = 'GET') {
 				status: response.status,
 				statusText: response.statusText,
 				url: response.url,
+				json: null,
 			}
 
 			if (response.headers.get('Content-Type') === 'application/json')
