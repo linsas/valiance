@@ -50,7 +50,7 @@ function App() {
 		{/* providers go here... */}
 		<ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
 			<CssBaseline />
-			<AppContext.Provider value={{ notifyFetchError, jwt, setJWT }}>
+			<AppContext.Provider value={{ jwt, setJWT, notifyFetchError }}>
 				<BrowserRouter>
 
 					<div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
