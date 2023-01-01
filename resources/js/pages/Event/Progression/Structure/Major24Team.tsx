@@ -1,7 +1,7 @@
 import React from 'react';
-import { BracketSingleElimination8Team } from '../Stage/StageBracket';
-import { SwissStage } from '../Stage/StageSwiss';
-import { StageSeparator } from '../Stage/StageComponents';
+import { BracketSingleElimination8Team } from '../Components/BracketStage';
+import { SwissStage } from '../Components/SwissStage';
+import { StageSeparator } from "../Components/StageSeparator";
 
 export default function Major24Team({ matchups }) {
 	const c00 = matchups.filter(m => m.key === 'c00')

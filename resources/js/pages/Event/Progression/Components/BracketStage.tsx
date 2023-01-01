@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles'
 import { alpha } from '@mui/material'
 import { ButtonBase, Typography, Hidden } from '@mui/material'
 
-import { CompactMatchups } from './StageComponents'
+import { CompactMatchupsList } from './CompactMatchupsList'
 
 const useStyles = makeStyles(theme => ({
 	bracketContainer: {
@@ -77,8 +77,8 @@ export function BracketSingleElimination4Team({ semifinals1, semifinals2, finals
 			</div>
 		</Hidden>
 		<Hidden mdUp>
-			<CompactMatchups title='Semifinals' matchups={[semifinals1, semifinals2]} />
-			<CompactMatchups title='Grand Final' matchups={[finals]} />
+			<CompactMatchupsList title='Semifinals' matchups={[semifinals1, semifinals2]} />
+			<CompactMatchupsList title='Grand Final' matchups={[finals]} />
 		</Hidden>
 	</>
 }
@@ -99,9 +99,9 @@ export function BracketSingleElimination8Team({ quarterfinals1, quarterfinals2, 
 			</div>
 		</Hidden>
 		<Hidden mdUp>
-			<CompactMatchups title='Quarterfinals' matchups={[quarterfinals1, quarterfinals2, quarterfinals3, quarterfinals4]} />
-			<CompactMatchups title='Semifinals' matchups={[semifinals1, semifinals2]} />
-			<CompactMatchups title='Grand Final' matchups={[finals]} />
+			<CompactMatchupsList title='Quarterfinals' matchups={[quarterfinals1, quarterfinals2, quarterfinals3, quarterfinals4]} />
+			<CompactMatchupsList title='Semifinals' matchups={[semifinals1, semifinals2]} />
+			<CompactMatchupsList title='Grand Final' matchups={[finals]} />
 		</Hidden>
 	</>
 }
@@ -120,12 +120,12 @@ export function BracketDoubleElimination4Team({ opening1, opening2, upper, lower
 			</div>
 		</Hidden>
 		<Hidden mdUp>
-			<CompactMatchups title='Opening matches' matchups={[opening1, opening2]} />
+			<CompactMatchupsList title='Opening matches' matchups={[opening1, opening2]} />
 
-			<CompactMatchups title='Upper Bracket match' matchups={[upper]} />
-			<CompactMatchups title='Lower Bracket match' matchups={[lower]} />
+			<CompactMatchupsList title='Upper Bracket match' matchups={[upper]} />
+			<CompactMatchupsList title='Lower Bracket match' matchups={[lower]} />
 
-			<CompactMatchups title='Deciding match' matchups={[deciding]} />
+			<CompactMatchupsList title='Deciding match' matchups={[deciding]} />
 		</Hidden>
 	</>
 }

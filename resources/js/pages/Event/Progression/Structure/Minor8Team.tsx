@@ -1,6 +1,6 @@
 import React from 'react'
-import { BracketSingleElimination4Team, BracketDoubleElimination4Team } from '../Stage/StageBracket'
-import { StageSeparator } from '../Stage/StageComponents';
+import { BracketSingleElimination4Team, BracketDoubleElimination4Team } from '../Components/BracketStage'
+import { StageSeparator } from "../Components/StageSeparator";
 
 export default function Minor8Team({ matchups }) {
 	const a1 = matchups.filter(m => m.key === 'ao')[0]
