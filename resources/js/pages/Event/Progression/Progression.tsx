@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Typography, Paper } from '@mui/material'
 
 import ProgressionEdit from './ProgressionEdit'
-import ProgressionMatchups from './ProgressionMatchups'
+import ProgressionStructure from './ProgressionStructure'
 
 function Progression({ event, update }) {
 	if (event.matchups.length === 0)
@@ -17,7 +17,7 @@ function Progression({ event, update }) {
 
 	return <>
 		<ProgressionEdit event={event} update={update} />
-		<ProgressionMatchups event={event} />
+		<ProgressionStructure event={event} />
 	</>
 }
 

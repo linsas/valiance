@@ -6,7 +6,7 @@ import Minor8Team from './Structure/Minor8Team'
 import Minor16Team from './Structure/Minor16Team'
 import Major24Team from './Structure/Major24Team'
 
-function ProgressionMatchups({ event }) {
+function ProgressionStructure({ event }) {
 	const matchups = event.matchups
 
 	if (event.format === 1) {
@@ -23,4 +23,4 @@ function ProgressionMatchups({ event }) {
 	return null
 }
 
-export default ProgressionMatchups
+export default ProgressionStructure
