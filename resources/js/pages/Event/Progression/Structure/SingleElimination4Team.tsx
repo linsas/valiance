@@ -1,5 +1,5 @@
 import React from 'react'
-import { BracketSingleElimination4Team } from '../Stage/StageBracket'
+import { BracketSingleElimination4Team } from '../Components/BracketStage'
 
 export default function SingleElimination4Team({ matchups }) {
 	const sf1 = matchups.find(m => m.key === 'sf1')

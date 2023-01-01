@@ -1,12 +1,6 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { ButtonBase, Box, Typography } from '@mui/material'
-
-export function StageSeparator({ title }) {
-	return <Box my={2} textAlign='center'>
-		<Typography component='span' variant='overline' style={{ padding: '8px 32px', borderLeft: '2px solid grey', borderRight: '2px solid grey' }}>{title}</Typography>
-	</Box>
-}
+import { ButtonBase, Typography } from '@mui/material'
 
 const compactMatchupButtonSx = {
 	display: 'flex',
@@ -23,7 +17,7 @@ const compactMatchupButtonSx = {
 	},
 }
 
-export function CompactMatchups({ matchups, title }) {
+export function CompactMatchupsList({ matchups, title }) {
 	if (matchups.filter(m => m != null).length == 0) return null
 
 	return <>
