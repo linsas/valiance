@@ -71,33 +71,19 @@ function TeamTransfer({ transfer }) {
 	if (transfer == null) return null
 
 	return <ListItemLink to={'/Players/' + transfer.player.id}>
-		<Grid container>
-			<Grid item xs={2}>
-				<Typography>{transfer.date}</Typography>
-			</Grid>
-			<Grid item xs={3}>
-				{!transfer.isTransferringAway && transfer.otherTeam != null && <>
-					<Typography sx={{ textAlign: 'center', display: 'inline-flex' }}>
-						{transfer.otherTeam.name}
-						<ArrowForwardIcon fontSize='small' />
-					</Typography>
-				</>}
-			</Grid>
-			<Grid item xs={4}>
-				<Typography sx={{ textAlign: 'center', display: 'inline-flex' }}>
-					{transfer.isTransferringAway ? <RemoveIcon /> : <AddIcon />}
-					{transfer.player.alias}
-				</Typography>
-			</Grid>
-			<Grid item xs={3}>
-				{transfer.isTransferringAway && transfer.otherTeam != null && <>
-					<Typography sx={{ textAlign: 'center', display: 'inline-flex' }}>
-						<ArrowForwardIcon fontSize='small' />
-						{transfer.otherTeam.name}
-					</Typography>
-				</>}
-			</Grid>
-		</Grid>
+		<Typography style={{ flex: '1 1 auto', display: 'flex', whiteSpace: 'pre-wrap' }}>
+			{transfer.date}:
+			{transfer.isTransferringAway ? <RemoveIcon /> : <AddIcon />}
+			{transfer.player.alias}
+			{' '}
+			<Typography component='span' color='textSecondary'>
+				{transfer.isTransferringAway ? 'left' : 'joined'}
+				{transfer.otherTeam != null ? <>
+					{' '}
+					({transfer.isTransferringAway ? 'to' : 'from'} {transfer.otherTeam.name})
+				</> : null}
+			</Typography>
+		</Typography>
 	</ListItemLink>
 }
 
