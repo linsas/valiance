@@ -90,6 +90,8 @@ function Player(props) {
 		<Skeleton variant='rectangular' height={150} />
 		<Box py={1} />
 		<Skeleton variant='rectangular' height={50} />
+		<Box py={1} />
+		<Skeleton variant='rectangular' height={50} />
 	</>
 
 	if (player == null) return <Alert severity='warning'>

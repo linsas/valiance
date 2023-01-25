@@ -120,6 +120,10 @@ function Team(props) {
 		<Skeleton variant='rectangular' height={150} />
 		<Box py={1} />
 		<Skeleton variant='rectangular' height={50} />
+		<Box py={1} />
+		<Skeleton variant='rectangular' height={50} />
+		<Box py={1} />
+		<Skeleton variant='rectangular' height={50} />
 	</>
 
 	if (team == null) return <Alert severity='warning'>
