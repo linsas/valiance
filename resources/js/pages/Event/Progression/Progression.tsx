@@ -1,10 +1,14 @@
 import React from 'react'
 import { Box, Typography, Paper } from '@mui/material'
 
+import { IEvent } from '../EventTypes'
 import ProgressionEdit from './ProgressionEdit'
 import ProgressionStructure from './ProgressionStructure'
 
-function Progression({ event, update }) {
+function Progression({ event, update }:{
+	event: IEvent
+	update: () => void
+}) {
 	if (event.matchups.length === 0)
 		return <>
 			<ProgressionEdit event={event} update={update} />

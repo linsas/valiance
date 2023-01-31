@@ -6,16 +6,24 @@ export interface IEventBasic {
 
 export type IEventPayload = Omit<IEventBasic, 'id'>
 
-export interface IEvent extends IEventBasic {
-	participants: Array<{
+export type IParticipant = {
+	name: string;
+	team: {
+		id: number;
 		name: string;
-		team: {
-			id: string;
-			name: string;
-		};
-		players: Array<{
-			id: string;
-			alias: string;
-		}>;
+	};
+	players: Array<{
+		id: number;
+		alias: string;
 	}>;
+}
+
+export type IParticipantPayload = {
+	id: number;
+	name: string;
+}
+
+export interface IEvent extends IEventBasic {
+	participants: Array<IParticipant>;
+	matchups: Array<{}>;
 }

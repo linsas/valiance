@@ -4,15 +4,19 @@ import EditIcon from '@mui/icons-material/Edit'
 
 import AppContext from '../../../main/AppContext'
 import useFetch from '../../../utility/useFetch'
+import { IEvent, IParticipantPayload } from '../EventTypes'
 import ParticipantsForm from './ParticipantsForm'
 
-function ParticipantsEdit({ event, update }) {
+function ParticipantsEdit({ event, update } : {
+	event: IEvent
+	update: () => void
+}) {
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState(false)
 	const [isSaving, fetchEdit] = useFetch('/api/tournaments/' + event.id + '/teams', 'PUT')
 
-	const onSubmit = (list) => {
+	const onSubmit = (list: Array<IParticipantPayload>) => {
 		fetchEdit({ participants: list.map(p => p.id) }).then(() => update(), context.notifyFetchError)
 	}
 

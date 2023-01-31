@@ -7,29 +7,42 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 import AppContext from '../../../main/AppContext'
 import useFetch from '../../../utility/useFetch'
+import { ITeamBasic } from '../../Team/TeamTypes'
+import { IParticipant, IParticipantPayload } from '../EventTypes'
 
-function ParticipantsForm({ open, list, onSubmit, onClose }) {
+function ParticipantsForm({ open, list, onSubmit, onClose }: {
+	open: boolean
+	list: Array<IParticipant>
+	onSubmit: (list: Array<IParticipantPayload>) => void
+	onClose: () => void
+}) {
 	const context = React.useContext(AppContext)
 
-	const [items, setItems] = React.useState([])
+	const [items, setItems] = React.useState<Array<IParticipantPayload>>([])
 
 	React.useEffect(() => {
 		if (!open) return
 		setItems(list.map(p => ({ id: p.team.id, name: p.name })))
 	}, [open])
 
-	const [teamsList, setTeamsList] = React.useState(null)
+	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>>([])
 	const [searchValue, setSearchValue] = React.useState('')
-	const [isLoadingTeams, fetchTeams] = useFetch('/api/teams')
+	const [isLoadingTeams, fetchTeams] = useFetch<{ data: Array<ITeamBasic> }>('/api/teams')
 
 	React.useEffect(() => {
 		if (!open) return
 		if (isLoadingTeams) return
 		if (teamsList != null) return
-		fetchTeams().then(response => setTeamsList(response.json.data), context.notifyFetchError)
+		fetchTeams().then(response => setTeamsList(response.json?.data ?? []), context.notifyFetchError)
 	}, [open])
 
-	const onDrop = ({ removedIndex, addedIndex }) => {
+	const onDrop = ({ removedIndex, addedIndex }: {
+		removedIndex: number | null
+		addedIndex: number | null
+	}) => {
+		if (removedIndex == null) return
+		if (addedIndex == null) return
+
 		let newItems = items.slice()
 		newItems.splice(addedIndex, 0, newItems.splice(removedIndex, 1)[0])
 		setItems(newItems)
@@ -45,13 +58,13 @@ function ParticipantsForm({ open, list, onSubmit, onClose }) {
 		setItems(newItems)
 	}
 
-	const remove = (removedIndex) => {
+	const remove = (removedIndex: number) => {
 		let newItems = items.slice()
 		newItems.splice(removedIndex, 1)
 		setItems(newItems)
 	}
 
-	const insert = (option) => {
+	const insert = (option: IParticipantPayload | null) => {
 		if (option == null) return
 		let newItems = items.concat([option])
 		setSearchValue('')

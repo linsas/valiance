@@ -4,8 +4,12 @@ import PlayIcon from '@mui/icons-material/PlayArrow'
 
 import AppContext from '../../../main/AppContext'
 import useFetch from '../../../utility/useFetch'
+import { IEvent } from '../EventTypes'
 
-function ProgressionEdit({ event, update }) {
+function ProgressionEdit({ event, update }:{
+	event: IEvent
+	update: () => void
+}) {
 	const context = React.useContext(AppContext)
 
 	const [isAdvancing, fetchAdvance] = useFetch('/api/tournaments/' + event.id + '/advance', 'POST')

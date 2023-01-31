@@ -4,9 +4,12 @@ import PlayerIcon from '@mui/icons-material/Person'
 import TeamIcon from '@mui/icons-material/Group'
 
 import ListItemLink from '../../../components/ListItemLink'
+import { IEvent, IParticipant } from '../EventTypes'
 import ParticipantsEdit from './ParticipantsEdit'
 
-function ParticipantCard({ participant }) {
+function ParticipantCard({ participant }:{
+	participant: IParticipant
+}) {
 	return <Grid item xs={12} sm={6}>
 		<Paper>
 			<List disablePadding>
@@ -44,7 +47,10 @@ function ParticipantCard({ participant }) {
 	</Grid>
 }
 
-function Participants({ event, update }) {
+function Participants({ event, update } : {
+	event: IEvent
+	update: () => void
+}) {
 	if (event.participants.length === 0) return <>
 		<ParticipantsEdit event={event} update={update} />
 		<Paper>

@@ -1,12 +1,15 @@
 import React from 'react'
 
+import { IEvent } from '../EventTypes'
 import SingleElim4Team from './Structure/SingleElimination4Team'
 import SingleElim8Team from './Structure/SingleElimination8Team'
 import Minor8Team from './Structure/Minor8Team'
 import Minor16Team from './Structure/Minor16Team'
 import Major24Team from './Structure/Major24Team'
 
-function ProgressionStructure({ event }) {
+function ProgressionStructure({ event }:{
+	event: IEvent
+}) {
 	const matchups = event.matchups
 
 	if (event.format === 1) {
