@@ -4,8 +4,11 @@ import { Button } from '@mui/material'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
+import { IEvent } from './EventTypes'
 
-function EventDelete({ event }) {
+function EventDelete({ event }: {
+	event: IEvent
+}) {
 	const context = React.useContext(AppContext)
 	const history = useHistory()
 

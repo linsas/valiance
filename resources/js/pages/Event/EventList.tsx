@@ -6,15 +6,16 @@ import eventFormats from '../../data/eventFormats'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
+import { IEventBasic } from './EventTypes'
 import EventCreate from './EventCreate'
 
 function EventList() {
-	const [eventsList, setEventsList] = React.useState(null)
+	const [eventsList, setEventsList] = React.useState<Array<IEventBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchEvents] = useFetch('/api/tournaments')
+	const [isLoading, fetchEvents] = useFetch<{ data: Array<IEventBasic> }>('/api/tournaments')
 
 	const getEvents = () => {
-		fetchEvents().then(response => setEventsList(response.json.data), setError)
+		fetchEvents().then(response => setEventsList(response.json?.data ?? []), setError)
 	}
 	React.useEffect(() => getEvents(), [])
 
@@ -57,7 +58,7 @@ function EventList() {
 					</ListItemText>
 					<ListItemText style={{ flexBasis: '50%' }}>
 						<Typography variant='body2' color='textSecondary'>
-							{eventFormats.reduce((aggr, next) => (next.id === item.format ? next.name : aggr), item.format)}
+							{eventFormats.reduce((aggr, next) => (next.id === item.format ? next.name : aggr), String(item.format))}
 						</Typography>
 					</ListItemText>
 				</ListItemLink>

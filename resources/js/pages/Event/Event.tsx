@@ -5,12 +5,13 @@ import { Alert, Skeleton } from '@mui/material'
 import eventFormats from '../../data/eventFormats'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
+import { IEvent } from './EventTypes'
 import EventEdit from './EventEdit'
 import EventDelete from './EventDelete'
 import Participants from './Participants/Participants'
 import Progression from './Progression/Progression'
 
-function Section({ name }) {
+function Section({ name }: { name: string }) {
 	return <Box display='flex' alignItems='center' gap={2} my={2}>
 		<Divider style={{ flexGrow: 1 }} />
 		<Typography color='textSecondary'>{name}</Typography>
@@ -18,13 +19,13 @@ function Section({ name }) {
 	</Box>
 }
 
-function Event(props) {
-	const [event, setEvent] = React.useState(null)
+function Event(props: any) {
+	const [event, setEvent] = React.useState<IEvent | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchEvent] = useFetch('/api/tournaments/' + props.match.params.id)
+	const [isLoading, fetchEvent] = useFetch<{ data: IEvent }>('/api/tournaments/' + props.match.params.id)
 
 	const getEvent = () => {
-		fetchEvent().then(response => setEvent(response.json.data), err => setError(err))
+		fetchEvent().then(response => setEvent(response.json?.data ?? null), err => setError(err))
 	}
 	React.useEffect(() => getEvent(), [])
 
@@ -52,7 +53,7 @@ function Event(props) {
 					<ListItem>
 						<ListItemText>
 							<Typography component='span' color='textSecondary'>Format: </Typography>
-							<Typography component='span'>{eventFormats.find(f => f.id === event.format).name}</Typography>
+							<Typography component='span'>{eventFormats.find(f => f.id === event.format)?.name}</Typography>
 						</ListItemText>
 					</ListItem>
 				</List>
