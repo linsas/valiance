@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { ButtonBase, Box, Typography, Hidden } from '@mui/material'
+import { ButtonBase, Box, Typography } from '@mui/material'
+import { IMatchup } from '../../../Matchup/MatchupTypes'
 
 const bracketMatchupSx = {
 	border: '1px solid dimgrey',
@@ -23,7 +24,9 @@ const bracketMatchupButtonSx = {
 	},
 }
 
-export function BracketContainer({ children }) {
+export function BracketContainer({ children }: {
+	children: React.ReactNode
+}) {
 	return <Box sx={{
 		display: 'grid',
 		alignItems: 'center',
@@ -35,7 +38,10 @@ export function BracketContainer({ children }) {
 	</Box>
 }
 
-export function BracketMatchup({ matchup, area }) {
+export function BracketMatchup({ matchup, area }: {
+	matchup: IMatchup | null,
+	area: string,
+}) {
 	if (matchup == null)
 		return <>
 			<Box sx={bracketMatchupSx} style={{ gridArea: area }}>

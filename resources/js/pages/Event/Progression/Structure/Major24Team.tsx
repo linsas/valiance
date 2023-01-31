@@ -1,9 +1,12 @@
 import React from 'react';
+import { IMatchup } from '../../../Matchup/MatchupTypes';
 import { BracketSingleElimination8Team } from '../Components/BracketStage';
 import { SwissStage } from '../Components/SwissStage';
 import { StageSeparator } from "../Components/StageSeparator";
 
-export default function Major24Team({ matchups }) {
+export default function Major24Team({ matchups }: {
+	matchups: Array<IMatchup>
+}) {
 	const c00 = matchups.filter(m => m.key === 'c00')
 	const c01 = matchups.filter(m => m.key === 'c01')
 	const c10 = matchups.filter(m => m.key === 'c10')
@@ -24,13 +27,13 @@ export default function Major24Team({ matchups }) {
 	const l12 = matchups.filter(m => m.key === 'l12')
 	const l22 = matchups.filter(m => m.key === 'l22')
 
-	const qf1 = matchups.find(m => m.key === 'qf1')
-	const qf2 = matchups.find(m => m.key === 'qf2')
-	const qf3 = matchups.find(m => m.key === 'qf3')
-	const qf4 = matchups.find(m => m.key === 'qf4')
-	const sf1 = matchups.find(m => m.key === 'sf1')
-	const sf2 = matchups.find(m => m.key === 'sf2')
-	const finals = matchups.find(m => m.key === 'f')
+	const qf1 = matchups.find(m => m.key === 'qf1') ?? null
+	const qf2 = matchups.find(m => m.key === 'qf2') ?? null
+	const qf3 = matchups.find(m => m.key === 'qf3') ?? null
+	const qf4 = matchups.find(m => m.key === 'qf4') ?? null
+	const sf1 = matchups.find(m => m.key === 'sf1') ?? null
+	const sf2 = matchups.find(m => m.key === 'sf2') ?? null
+	const finals = matchups.find(m => m.key === 'f') ?? null
 	return <>
 		<StageSeparator title="Challengers' Stage" />
 		<SwissStage

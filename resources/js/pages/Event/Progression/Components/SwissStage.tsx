@@ -2,6 +2,7 @@ import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { ButtonBase, Box, Typography, Hidden } from '@mui/material'
 
+import { IMatchup } from '../../../Matchup/MatchupTypes'
 import { CompactMatchupsList } from './CompactMatchupsList'
 
 const swissMatchupButtonSx = {
@@ -20,7 +21,10 @@ const swissMatchupButtonSx = {
 	},
 }
 
-export function SwissMatchupsList({ matchups, area }) {
+export function SwissMatchupsList({ matchups, area }: {
+	matchups: Array<IMatchup>,
+	area: string,
+}) {
 	return <div style={{ gridArea: area }}>
 		{matchups.map(m =>
 			<ButtonBase key={m.id} sx={swissMatchupButtonSx} component={RouterLink} to={'/Matchups/' + m.id}>
@@ -32,7 +36,17 @@ export function SwissMatchupsList({ matchups, area }) {
 	</div>
 }
 
-export function SwissStage({ zerZer, zerOne, oneZer, zerTwo, oneOne, twoZer, oneTwo, twoOne, twoTwo }) {
+export function SwissStage({ zerZer, zerOne, oneZer, zerTwo, oneOne, twoZer, oneTwo, twoOne, twoTwo }: {
+	zerZer: Array<IMatchup>,
+	zerOne: Array<IMatchup>,
+	oneZer: Array<IMatchup>,
+	zerTwo: Array<IMatchup>,
+	oneOne: Array<IMatchup>,
+	twoZer: Array<IMatchup>,
+	oneTwo: Array<IMatchup>,
+	twoOne: Array<IMatchup>,
+	twoTwo: Array<IMatchup>,
+}) {
 	return <>
 		<Hidden mdDown>
 			<Box sx={{ display: 'grid', gridAutoColumns: '1fr', gap: 2, }}>

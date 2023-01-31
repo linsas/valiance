@@ -1,39 +1,42 @@
 import React from 'react';
+import { IMatchup } from '../../../Matchup/MatchupTypes';
 import { BracketSingleElimination8Team, BracketDoubleElimination4Team } from '../Components/BracketStage';
 import { StageSeparator } from "../Components/StageSeparator";
 
-export default function Minor16Team({ matchups }) {
+export default function Minor16Team({ matchups }: {
+	matchups: Array<IMatchup>
+}) {
 	const a1 = matchups.filter(m => m.key === 'ao')[0]
 	const a2 = matchups.filter(m => m.key === 'ao')[1]
-	const aw = matchups.find(m => m.key === 'aw')
-	const al = matchups.find(m => m.key === 'al')
-	const ad = matchups.find(m => m.key === 'ad')
+	const aw = matchups.find(m => m.key === 'aw') ?? null
+	const al = matchups.find(m => m.key === 'al') ?? null
+	const ad = matchups.find(m => m.key === 'ad') ?? null
 
 	const b1 = matchups.filter(m => m.key === 'bo')[0]
 	const b2 = matchups.filter(m => m.key === 'bo')[1]
-	const bw = matchups.find(m => m.key === 'bw')
-	const bl = matchups.find(m => m.key === 'bl')
-	const bd = matchups.find(m => m.key === 'bd')
+	const bw = matchups.find(m => m.key === 'bw') ?? null
+	const bl = matchups.find(m => m.key === 'bl') ?? null
+	const bd = matchups.find(m => m.key === 'bd') ?? null
 
 	const c1 = matchups.filter(m => m.key === 'co')[0]
 	const c2 = matchups.filter(m => m.key === 'co')[1]
-	const cw = matchups.find(m => m.key === 'cw')
-	const cl = matchups.find(m => m.key === 'cl')
-	const cd = matchups.find(m => m.key === 'cd')
+	const cw = matchups.find(m => m.key === 'cw') ?? null
+	const cl = matchups.find(m => m.key === 'cl') ?? null
+	const cd = matchups.find(m => m.key === 'cd') ?? null
 
 	const d1 = matchups.filter(m => m.key === 'do')[0]
 	const d2 = matchups.filter(m => m.key === 'do')[1]
-	const dw = matchups.find(m => m.key === 'dw')
-	const dl = matchups.find(m => m.key === 'dl')
-	const dd = matchups.find(m => m.key === 'dd')
+	const dw = matchups.find(m => m.key === 'dw') ?? null
+	const dl = matchups.find(m => m.key === 'dl') ?? null
+	const dd = matchups.find(m => m.key === 'dd') ?? null
 
-	const qf1 = matchups.find(m => m.key === 'qf1')
-	const qf2 = matchups.find(m => m.key === 'qf2')
-	const qf3 = matchups.find(m => m.key === 'qf3')
-	const qf4 = matchups.find(m => m.key === 'qf4')
-	const sf1 = matchups.find(m => m.key === 'sf1')
-	const sf2 = matchups.find(m => m.key === 'sf2')
-	const finals = matchups.find(m => m.key === 'f')
+	const qf1 = matchups.find(m => m.key === 'qf1') ?? null
+	const qf2 = matchups.find(m => m.key === 'qf2') ?? null
+	const qf3 = matchups.find(m => m.key === 'qf3') ?? null
+	const qf4 = matchups.find(m => m.key === 'qf4') ?? null
+	const sf1 = matchups.find(m => m.key === 'sf1') ?? null
+	const sf2 = matchups.find(m => m.key === 'sf2') ?? null
+	const finals = matchups.find(m => m.key === 'f') ?? null
 	return <>
 		<StageSeparator title='Group A' />
 		<BracketDoubleElimination4Team

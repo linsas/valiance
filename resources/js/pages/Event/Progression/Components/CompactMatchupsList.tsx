@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { ButtonBase, Typography } from '@mui/material'
+import { IMatchup } from '../../../Matchup/MatchupTypes'
 
 const compactMatchupButtonSx = {
 	display: 'flex',
@@ -17,12 +18,16 @@ const compactMatchupButtonSx = {
 	},
 }
 
-export function CompactMatchupsList({ matchups, title }) {
-	if (matchups.filter(m => m != null).length == 0) return null
+export function CompactMatchupsList({ matchups, title }: {
+	matchups: Array<IMatchup | null>,
+	title: string,
+}) {
+	const filteredList = matchups.filter((m): m is IMatchup => m != null)
+	if (filteredList.length == 0) return null
 
 	return <>
 		<Typography sx={{ textDecoration: 'underline', paddingTop: 2, paddingBottom: 2 }}>{title}</Typography>
-		{matchups.filter(m => m != null).map(m =>
+		{filteredList.map(m =>
 			<ButtonBase
 				sx={compactMatchupButtonSx}
 				key={m.id}
