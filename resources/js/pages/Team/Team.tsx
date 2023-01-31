@@ -1,10 +1,9 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
-import { Box, Grid, Typography, Paper, List, ListItem, ListItemText } from '@mui/material'
+import { Box, Typography, Paper, List, ListItem, ListItemText } from '@mui/material'
 import { Alert, Skeleton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
@@ -79,19 +78,21 @@ function TeamTransfer({ transfer }: {
 	if (transfer == null) return null
 
 	return <ListItemLink to={'/Players/' + transfer.player.id}>
-		<Typography style={{ flex: '1 1 auto', display: 'flex', whiteSpace: 'pre-wrap' }}>
-			{transfer.date}:
-			{transfer.isTransferringAway ? <RemoveIcon /> : <AddIcon />}
-			{transfer.player.alias}
-			{' '}
-			<Typography component='span' color='textSecondary'>
-				{transfer.isTransferringAway ? 'left' : 'joined'}
-				{transfer.otherTeam != null ? <>
-					{' '}
-					({transfer.isTransferringAway ? 'to' : 'from'} {transfer.otherTeam.name})
-				</> : null}
+		<ListItemText>
+			<Typography style={{ flex: '1 1 auto', display: 'flex', whiteSpace: 'pre-wrap' }}>
+				{transfer.date}:
+				{transfer.isTransferringAway ? <RemoveIcon /> : <AddIcon />}
+				{transfer.player.alias}
+				{' '}
+				<Typography component='span' color='textSecondary'>
+					{transfer.isTransferringAway ? 'left' : 'joined'}
+					{transfer.otherTeam != null ? <>
+						{' '}
+						({transfer.isTransferringAway ? 'transferred to' : 'transferred from'} {transfer.otherTeam.name})
+					</> : null}
+				</Typography>
 			</Typography>
-		</Typography>
+		</ListItemText>
 	</ListItemLink>
 }
 
