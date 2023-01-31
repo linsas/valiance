@@ -3,12 +3,16 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, F
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
-function LoginForm({ open, onSubmit, onClose }) {
+function LoginForm({ open, onSubmit, onClose }:{
+	open: boolean,
+	onSubmit: (credentials: { username: string, password: string }) => void,
+	onClose: () => void,
+}) {
 	const [credentials, setCredentials] = React.useState({ username: '', password: '' })
 	const [showPassword, setShowPassword] = React.useState(false)
 
-	const changeUsername = username => setCredentials(p => ({ ...p, username: username }))
-	const changePassword = password => setCredentials(p => ({ ...p, password: password }))
+	const changeUsername = (username: string) => setCredentials(p => ({ ...p, username: username }))
+	const changePassword = (password: string) => setCredentials(p => ({ ...p, password: password }))
 
 	return <>
 		<Dialog open={open} fullWidth>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { AppBar, Hidden, IconButton, Link, Toolbar, Tooltip, Typography } from '@mui/material'
+import { AppBar, Hidden, IconButton, Link, SvgIcon, Toolbar, Tooltip, Typography } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects'
 import EmojiObjectsOutlinedIcon from '@mui/icons-material/EmojiObjectsOutlined'
@@ -10,7 +10,11 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import AppContext from './AppContext'
 import navigation from '../utility/navigation'
 
-function HeaderNavLink({ title, to, icon: Icon }) {
+function HeaderNavLink({ title, to, icon: Icon }:{
+	title: string,
+	to: string,
+	icon: typeof SvgIcon,
+}) {
 	return <>
 		<Hidden smDown>
 			<Link color='inherit' component={RouterLink} to={to} underline='hover' style={{ display: 'inline-flex', margin: 4 }}>
@@ -29,7 +33,12 @@ function HeaderNavLink({ title, to, icon: Icon }) {
 	</>
 }
 
-function Header({ isDark, setDark, onPressLogin, onPressLogout, }) {
+function Header({ isDark, setDark, onPressLogin, onPressLogout, }:{
+	isDark: boolean,
+	setDark: (darkMode: boolean) => void,
+	onPressLogin: () => void,
+	onPressLogout: () => void,
+}) {
 	const context = React.useContext(AppContext)
 
 	return <AppBar position='sticky' style={{ marginBottom: 32 }}>

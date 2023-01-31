@@ -1,10 +1,14 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { Box, Typography, Grid, Paper, ButtonBase } from '@mui/material'
+import { Box, Typography, Grid, Paper, ButtonBase, SvgIcon } from '@mui/material'
 
 import navigation from '../utility/navigation'
 
-function GridLink({ title, to, icon: Icon }) {
+function GridLink({ title, to, icon: Icon }: {
+	title: string
+	to: string
+	icon: typeof SvgIcon
+}) {
 	return <Grid item xs={12} sm={6} md={3}>
 		<Paper>
 			<ButtonBase component={RouterLink} to={to} focusRipple sx={{ height: '100px', width: 1, color: 'primary.main', '&:hover': { textDecoration: 'underline', }, }}>

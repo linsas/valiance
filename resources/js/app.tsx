@@ -5,12 +5,11 @@ import { Container, CssBaseline } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
 import { ThemeProvider } from '@mui/material/styles'
 
-import AppContext, { JWT } from './main/AppContext'
+import AppContext, { ApplicationError, JWT } from './main/AppContext'
 import Header from './main/Header'
 import Footer from './main/Footer'
 import LoginControl from './main/LoginControl'
 import NotificationBar from './main/NotificationBar'
-import errorAsText from './utility/errorAsText'
 
 import Home from './pages/Welcome'
 import NotFound from './pages/NotFound'
@@ -35,10 +34,10 @@ const darkTheme = createTheme({ palette: { ...mainPalette, mode: 'dark', }, })
 function App() {
 	const [isDarkTheme, setDarkTheme] = React.useState<boolean>(false)
 	const [jwt, setJWT] = React.useState<JWT | null>(null)
-	const [notificationQueue, setNotificationQueue] = React.useState<Array<string>>([])
+	const [notificationQueue, setNotificationQueue] = React.useState<Array<ApplicationError>>([])
 
-	const notifyFetchError = (error) => {
-		setNotificationQueue(q => q.concat(errorAsText(error)))
+	const notifyFetchError = (error: ApplicationError) => {
+		setNotificationQueue(q => q.concat(error))
 	}
 
 	const [isLoginFormOpen, setLoginFormOpen] = React.useState(false)

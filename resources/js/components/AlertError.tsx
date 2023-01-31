@@ -2,7 +2,9 @@ import React from 'react'
 import { Typography } from '@mui/material'
 import { Alert, AlertTitle } from '@mui/material'
 
-function AlertError({ error }) {
+function AlertError({ error }:{
+	error: any
+}) {
 	if (error.name === 'ResponseNotOkError') {
 		if (error.result?.json?.message != null)
 			return <Alert severity='error'>

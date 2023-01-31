@@ -11,12 +11,17 @@ export interface JWT {
     payload: JWTPayload;
 }
 
-interface ApplicationContext {
-    jwt?: JWT | null;
-    setJWT?: React.Dispatch<JWT>;
-    notifyFetchError?: (error: any) => void;
+export interface ApplicationError {
+	name: string;
+	message: string;
 }
 
-const AppContext = React.createContext<ApplicationContext>({})
+interface ApplicationContext {
+    jwt: JWT | null;
+    setJWT: React.Dispatch<JWT>;
+    notifyFetchError: (error: ApplicationError) => void;
+}
+
+const AppContext = React.createContext<ApplicationContext>({} as ApplicationContext)
 
 export default AppContext

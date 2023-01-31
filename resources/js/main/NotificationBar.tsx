@@ -1,10 +1,14 @@
 import React from 'react'
 import { Chip, Portal, Snackbar } from '@mui/material'
 import { Alert } from '@mui/material'
+import { ApplicationError } from './AppContext'
 
-function Notifications({ queue, setQueue }) {
+function Notifications({ queue, setQueue }:{
+	queue: Array<ApplicationError>
+	setQueue: React.Dispatch<React.SetStateAction<ApplicationError[]>>
+}) {
 	const [desiredOpen, setOpen] = React.useState(false)
-	const [message, setMessage] = React.useState(null)
+	const [message, setMessage] = React.useState<string | null>(null)
 
 	const displayNext = () => {
 		if (queue.length === 0) return
