@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import { Box, Typography, Paper, List, ListItemText } from '@mui/material'
 import { Alert, Skeleton } from '@mui/material'
 
@@ -10,10 +11,12 @@ import { IMatchup } from './MatchupTypes'
 import MatchupGame from './MatchupGame'
 import MatchupEditMaps from './MatchupEditMaps'
 
-function Matchup(props: any) {
+function Matchup() {
+	const routeParams = useParams<{ id: string }>()
+
 	const [matchup, setMatchup] = React.useState<IMatchup | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchMatchup] = useFetch<{ data: IMatchup }>('/api/matchups/' + props.match.params.id)
+	const [isLoading, fetchMatchup] = useFetch<{ data: IMatchup }>('/api/matchups/' + routeParams.id)
 
 	const getMatchup = () => {
 		fetchMatchup().then(response => setMatchup(response.json?.data ?? null), setError)

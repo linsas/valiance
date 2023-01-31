@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import { Box, Typography, Paper, List, ListItem, ListItemText } from '@mui/material'
 import { Alert, Skeleton } from '@mui/material'
 
@@ -89,10 +90,12 @@ interface FetchPlayerResponse {
 	data: IPlayer;
 }
 
-function Player(props: any) {
+function Player() {
+	const routeParams = useParams<{ id: string }>()
+
 	const [player, setPlayer] = React.useState<IPlayer | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchPlayer] = useFetch<FetchPlayerResponse>('/api/players/' + props.match.params.id)
+	const [isLoading, fetchPlayer] = useFetch<FetchPlayerResponse>('/api/players/' + routeParams.id)
 
 	const getPlayer = () => {
 		fetchPlayer().then(response => setPlayer(response.json?.data || null), setError)

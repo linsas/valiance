@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from 'react-router-dom';
 import { Box, Grid, Typography, Paper, List, ListItem, ListItemText } from '@mui/material'
 import { Alert, Skeleton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
@@ -117,10 +118,12 @@ interface FetchResponse {
 	data: ITeam;
 }
 
-function Team(props: any) {
+function Team() {
+	const routeParams = useParams<{ id: string }>()
+
 	const [team, setTeam] = React.useState<ITeam | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchTeam] = useFetch<FetchResponse>('/api/teams/' + props.match.params.id)
+	const [isLoading, fetchTeam] = useFetch<FetchResponse>('/api/teams/' + routeParams.id)
 
 	const getTeam = () => {
 		fetchTeam().then(response => setTeam(response.json?.data || null), setError)

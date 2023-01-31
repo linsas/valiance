@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import { Box, Typography, Paper, List, ListItem, ListItemText, Divider } from '@mui/material'
 import { Alert, Skeleton } from '@mui/material'
 
@@ -19,10 +20,12 @@ function Section({ name }: { name: string }) {
 	</Box>
 }
 
-function Event(props: any) {
+function Event() {
+	const routeParams = useParams<{ id: string }>()
+
 	const [event, setEvent] = React.useState<IEvent | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchEvent] = useFetch<{ data: IEvent }>('/api/tournaments/' + props.match.params.id)
+	const [isLoading, fetchEvent] = useFetch<{ data: IEvent }>('/api/tournaments/' + routeParams.id)
 
 	const getEvent = () => {
 		fetchEvent().then(response => setEvent(response.json?.data ?? null), err => setError(err))
