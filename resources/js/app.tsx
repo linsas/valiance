@@ -9,7 +9,7 @@ import AppContext from './main/AppContext'
 import Header from './main/Header'
 import Footer from './main/Footer'
 import LoginControl from './main/LoginControl'
-import Notifications from './main/Notifications'
+import NotificationBar from './main/NotificationBar'
 import errorAsText from './utility/errorAsText'
 
 import Home from './pages/Welcome'
@@ -82,7 +82,7 @@ function App() {
 
 					</div>
 
-					<Notifications queue={notificationQueue} setQueue={setNotificationQueue} />
+					<NotificationBar queue={notificationQueue} setQueue={setNotificationQueue} />
 					<LoginControl isOpen={isLoginFormOpen} setOpen={setLoginFormOpen} />
 
 				</BrowserRouter>

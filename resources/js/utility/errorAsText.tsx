@@ -4,5 +4,6 @@ export default function errorAsText(error) {
 
 	if (error.result.json != null && error.result.json.message != null)
 		return error.result.json.message
+
 	return error.result.status + ' ' + error.result.statusText
 }
