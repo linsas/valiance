@@ -8,10 +8,13 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
+import { ITeam, ITeamTransfer } from './TeamTypes'
 import TeamEdit from './TeamEdit'
 import TeamDelete from './TeamDelete'
 
-function TeamParticipations({ team }) {
+function TeamParticipations({ team }: {
+	team: ITeam,
+}) {
 	if (team.participations.length === 0) return <Paper>
 		<Box my={2} p={2}>
 			<Typography align='center' color='textSecondary'>This team has not participated in any events.</Typography>
@@ -42,7 +45,9 @@ function TeamParticipations({ team }) {
 	</>
 }
 
-function TeamPlayers({ team }) {
+function TeamPlayers({ team }: {
+	team: ITeam,
+}) {
 	if (team.players.length === 0) return <Paper>
 		<Box my={2} p={2}>
 			<Typography align='center' color='textSecondary'>This team does not have any players.</Typography>
@@ -67,7 +72,9 @@ function TeamPlayers({ team }) {
 	</>
 }
 
-function TeamTransfer({ transfer }) {
+function TeamTransfer({ transfer }: {
+	transfer: ITeamTransfer,
+}) {
 	if (transfer == null) return null
 
 	return <ListItemLink to={'/Players/' + transfer.player.id}>
@@ -87,7 +94,9 @@ function TeamTransfer({ transfer }) {
 	</ListItemLink>
 }
 
-function TeamHistory({ team }) {
+function TeamHistory({ team }: {
+	team: ITeam,
+}) {
 	if (team.transfers.length === 0) return null
 
 	return <>
@@ -104,13 +113,17 @@ function TeamHistory({ team }) {
 	</>
 }
 
-function Team(props) {
-	const [team, setTeam] = React.useState(null)
+interface FetchResponse {
+	data: ITeam;
+}
+
+function Team(props: any) {
+	const [team, setTeam] = React.useState<ITeam | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchTeam] = useFetch('/api/teams/' + props.match.params.id)
+	const [isLoading, fetchTeam] = useFetch<FetchResponse>('/api/teams/' + props.match.params.id)
 
 	const getTeam = () => {
-		fetchTeam().then(response => setTeam(response.json.data), setError)
+		fetchTeam().then(response => setTeam(response.json?.data || null), setError)
 	}
 	React.useEffect(() => getTeam(), [])
 

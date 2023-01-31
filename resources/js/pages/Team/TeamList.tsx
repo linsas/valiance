@@ -5,15 +5,20 @@ import { Skeleton } from '@mui/material'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
+import { ITeamBasic } from './TeamTypes'
 import TeamCreate from './TeamCreate'
 
+interface FetchResponse {
+	data: Array<ITeamBasic>;
+}
+
 function TeamList() {
-	const [teamsList, setTeamsList] = React.useState(null)
+	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchTeams] = useFetch('/api/teams')
+	const [isLoading, fetchTeams] = useFetch<FetchResponse>('/api/teams')
 
 	const getTeams = () => {
-		fetchTeams().then(response => setTeamsList(response.json.data), setError)
+		fetchTeams().then(response => setTeamsList(response.json?.data || []), setError)
 	}
 	React.useEffect(() => getTeams(), [])
 

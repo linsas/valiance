@@ -1,16 +1,21 @@
 import React from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
+import { ITeamPayload } from './TeamTypes'
 
-function TeamForm({ open, team: defaultTeam, onSubmit, onClose }) {
-	if (defaultTeam == null) defaultTeam = {}
-	const [team, setTeam] = React.useState(defaultTeam)
+function TeamForm({ open, team: defaultTeam, onSubmit, onClose }: {
+	open: boolean,
+	team: ITeamPayload,
+	onSubmit: (team: ITeamPayload) => void,
+	onClose: () => void,
+}) {
+	const [team, setTeam] = React.useState<ITeamPayload>(defaultTeam)
 
 	React.useEffect(() => {
 		if (!open) return
 		setTeam(defaultTeam)
 	}, [open])
 
-	const changeName = name => setTeam(t => ({ ...t, name: name }))
+	const changeName = (name: string) => setTeam(t => ({ ...t, name: name }))
 
 	return <>
 		<Dialog open={open} fullWidth>

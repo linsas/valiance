@@ -4,8 +4,11 @@ import { Button } from '@mui/material'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
+import { ITeamBasic } from './TeamTypes'
 
-function TeamDelete({ team }) {
+function TeamDelete({ team }: {
+	team: ITeamBasic,
+}) {
 	const context = React.useContext(AppContext)
 	const history = useHistory()
 

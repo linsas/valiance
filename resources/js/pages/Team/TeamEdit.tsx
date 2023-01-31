@@ -3,15 +3,19 @@ import { Button } from '@mui/material'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
+import { ITeamPayload, ITeam } from './TeamTypes'
 import TeamForm from './TeamForm'
 
-function TeamEdit({ team, update }) {
+function TeamEdit({ team, update }: {
+	team: ITeam,
+	update: () => void,
+}) {
 	const context = React.useContext(AppContext)
 
-	const [formOpen, setFormOpen] = React.useState(false)
+	const [formOpen, setFormOpen] = React.useState<boolean>(false)
 	const [isSaving, fetchEdit] = useFetch('/api/teams/' + team.id, 'PUT')
 
-	const onSubmit = (team) => {
+	const onSubmit = (team: ITeamPayload) => {
 		fetchEdit({ name: team.name }).then(() => update(), context.notifyFetchError)
 	}
 

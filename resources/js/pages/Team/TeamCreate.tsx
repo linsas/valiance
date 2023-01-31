@@ -4,15 +4,18 @@ import AddIcon from '@mui/icons-material/Add'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
+import { ITeamPayload } from './TeamTypes'
 import TeamForm from './TeamForm'
 
-function TeamCreate({ update }) {
+function TeamCreate({ update }: {
+	update: () => void,
+}) {
 	const context = React.useContext(AppContext)
 
-	const [formOpen, setFormOpen] = React.useState(false)
+	const [formOpen, setFormOpen] = React.useState<boolean>(false)
 	const [isCreating, fetchCreate] = useFetch('/api/teams', 'POST')
 
-	const onSubmit = (team) => {
+	const onSubmit = (team: ITeamPayload) => {
 		fetchCreate({ name: team.name }).then(() => update(), context.notifyFetchError)
 	}
 
