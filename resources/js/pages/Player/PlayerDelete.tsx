@@ -4,8 +4,11 @@ import { Button } from '@mui/material'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
+import { IPlayer } from './PlayerTypes'
 
-function PlayerDelete({ player }) {
+function PlayerDelete({ player } :{
+	player: IPlayer
+}) {
 	const context = React.useContext(AppContext)
 	const history = useHistory()
 

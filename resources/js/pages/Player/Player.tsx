@@ -5,10 +5,13 @@ import { Alert, Skeleton } from '@mui/material'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
+import { IPlayer, IPlayerTransfer } from './PlayerTypes'
 import PlayerEdit from './PlayerEdit'
 import PlayerDelete from './PlayerDelete'
 
-function PlayerParticipations({ player }) {
+function PlayerParticipations({ player }: {
+	player: IPlayer,
+}) {
 	if (player.participations.length === 0) return <Paper>
 		<Box my={2} p={2}>
 			<Typography align='center' color='textSecondary'>This player has not participated in any events.</Typography>
@@ -38,26 +41,34 @@ function PlayerParticipations({ player }) {
 	</>
 }
 
-function PlayerTransfer({ transfer, earlier }) {
-	if (transfer == null) return null
+function PlayerTransfer({ transfer, earlier }: {
+	transfer: IPlayerTransfer,
+	earlier: IPlayerTransfer | null,
+}) {
 
-	if (transfer.team == null) return <ListItem>
-		<ListItemText>
-			<Typography component='span'>{transfer.date}:</Typography>{' '}
-			<Typography component='span' color='textSecondary'>Left {earlier.team.name}</Typography>
-		</ListItemText>
-	</ListItem>
+	if (transfer.team == null){
+		if (earlier?.team == null) return null
+
+		return <ListItem>
+			<ListItemText>
+				<Typography component='span'>{transfer.date}:</Typography>{' '}
+				<Typography component='span' color='textSecondary'>Left {earlier.team.name}</Typography>
+			</ListItemText>
+		</ListItem>
+	}
 
 	return <ListItemLink to={'/Teams/' + transfer.team.id}>
 		<ListItemText>
 			<Typography component='span'>{transfer.date}:</Typography>{' '}
-			<Typography component='span' color='textSecondary'>{earlier == null || earlier.team == null ? 'Joined' : 'Transferred to'}</Typography>{' '}
+			<Typography component='span' color='textSecondary'>{earlier?.team == null ? 'Joined' : 'Transferred to'}</Typography>{' '}
 			<Typography component='span'>{transfer.team.name}</Typography>
 		</ListItemText>
 	</ListItemLink>
 }
 
-function PlayerTeamHistory({ player }) {
+function PlayerTeamHistory({ player }: {
+	player: IPlayer,
+}) {
 	if (player.history.length === 0) return null
 
 	return <>
@@ -74,13 +85,17 @@ function PlayerTeamHistory({ player }) {
 	</>
 }
 
-function Player(props) {
-	const [player, setPlayer] = React.useState(null)
+interface FetchPlayerResponse {
+	data: IPlayer;
+}
+
+function Player(props: any) {
+	const [player, setPlayer] = React.useState<IPlayer | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchPlayer] = useFetch('/api/players/' + props.match.params.id)
+	const [isLoading, fetchPlayer] = useFetch<FetchPlayerResponse>('/api/players/' + props.match.params.id)
 
 	const getPlayer = () => {
-		fetchPlayer().then(response => setPlayer(response.json.data), setError)
+		fetchPlayer().then(response => setPlayer(response.json?.data || null), setError)
 	}
 	React.useEffect(() => getPlayer(), [])
 

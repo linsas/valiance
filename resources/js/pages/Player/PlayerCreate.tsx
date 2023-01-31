@@ -4,15 +4,18 @@ import AddIcon from '@mui/icons-material/Add'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
+import { IPlayerPayload } from './PlayerTypes'
 import PlayerForm from './PlayerForm'
 
-function PlayerCreate({ update }) {
+function PlayerCreate({ update }: {
+	update: () => void,
+}) {
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState(false)
 	const [isCreating, fetchCreate] = useFetch('/api/players', 'POST')
 
-	const onSubmit = (player) => {
+	const onSubmit = (player: IPlayerPayload) => {
 		fetchCreate({ alias: player.alias, team: player.team?.id ?? null }).then(() => update(), context.notifyFetchError)
 	}
 

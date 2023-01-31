@@ -5,15 +5,16 @@ import { Skeleton } from '@mui/material'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
+import { IPlayerBasic } from './PlayerTypes'
 import PlayerCreate from './PlayerCreate'
 
 function PlayerList() {
-	const [playersList, setPlayersList] = React.useState(null)
+	const [playersList, setPlayersList] = React.useState<Array<IPlayerBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchPlayers] = useFetch('/api/players')
+	const [isLoading, fetchPlayers] = useFetch<{ data: Array<IPlayerBasic> }>('/api/players')
 
 	const getPlayers = () => {
-		fetchPlayers().then(response => setPlayersList(response.json.data), setError)
+		fetchPlayers().then(response => setPlayersList(response.json?.data ?? []), setError)
 	}
 	React.useEffect(() => getPlayers(), [])
 

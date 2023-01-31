@@ -4,11 +4,22 @@ import { Autocomplete } from '@mui/material'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
+import { IPlayerPayload } from './PlayerTypes'
+import { ITeamBasic } from '../Team/TeamTypes'
 
-function PlayerForm({ open, player: defaultPlayer, onSubmit, onClose }) {
+function PlayerForm({
+	open,
+	player: defaultPlayer,
+	onSubmit,
+	onClose
+}:{
+	open: boolean,
+	player: IPlayerPayload,
+	onSubmit: (player: IPlayerPayload) => void,
+	onClose: () => void,
+}) {
 	const context = React.useContext(AppContext)
 
-	if (defaultPlayer == null) defaultPlayer = {}
 	const [player, setPlayer] = React.useState(defaultPlayer)
 
 	React.useEffect(() => {
@@ -16,18 +27,17 @@ function PlayerForm({ open, player: defaultPlayer, onSubmit, onClose }) {
 		setPlayer(defaultPlayer)
 	}, [open])
 
-	const [teamsList, setTeamsList] = React.useState(null)
-	const [isLoadingTeams, fetchTeams] = useFetch('/api/teams')
+	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>>([])
+	const [isLoadingTeams, fetchTeams] = useFetch<{ data: Array<ITeamBasic> }>('/api/teams')
 
 	React.useEffect(() => {
 		if (!open) return
 		if (isLoadingTeams) return
-		if (teamsList != null) return
-		fetchTeams().then(response => setTeamsList(response.json.data), context.notifyFetchError)
+		fetchTeams().then(response => setTeamsList(response.json?.data ?? []), context.notifyFetchError)
 	}, [open])
 
-	const changeAlias = alias => setPlayer(p => ({ ...p, alias: alias }))
-	const changeTeam = team => setPlayer(p => ({ ...p, team: team }))
+	const changeAlias = (alias: string) => setPlayer(p => ({ ...p, alias: alias }))
+	const changeTeam = (team: ITeamBasic | null) => setPlayer(p => ({ ...p, team: team }))
 
 	return <>
 		<Dialog open={open} fullWidth>
@@ -44,7 +54,7 @@ function PlayerForm({ open, player: defaultPlayer, onSubmit, onClose }) {
 					fullWidth
 				/>
 				<Autocomplete
-					options={teamsList ?? []}
+					options={teamsList}
 					value={player.team}
 					getOptionLabel={option => option.name || ''}
 					isOptionEqualToValue={(option, value) => option.id === value?.id}
