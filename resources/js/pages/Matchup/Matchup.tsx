@@ -6,16 +6,17 @@ import matchKeys from '../../data/matchKeys'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
+import { IMatchup } from './MatchupTypes'
 import MatchupGame from './MatchupGame'
 import MatchupEditMaps from './MatchupEditMaps'
 
-function Matchup(props) {
-	const [matchup, setMatchup] = React.useState(null)
+function Matchup(props: any) {
+	const [matchup, setMatchup] = React.useState<IMatchup | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchMatchup] = useFetch('/api/matchups/' + props.match.params.id)
+	const [isLoading, fetchMatchup] = useFetch<{ data: IMatchup }>('/api/matchups/' + props.match.params.id)
 
 	const getMatchup = () => {
-		fetchMatchup().then(response => setMatchup(response.json.data), setError)
+		fetchMatchup().then(response => setMatchup(response.json?.data ?? null), setError)
 	}
 	React.useEffect(() => getMatchup(), [])
 

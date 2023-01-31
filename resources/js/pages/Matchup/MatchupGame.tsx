@@ -3,10 +3,15 @@ import { useTheme, lighten, darken } from '@mui/material'
 import { Box, Typography, Paper, Divider, Grid } from '@mui/material'
 
 import mapList from '../../data/maps'
+import { IGame, IMatchup } from './MatchupTypes'
 import MatchupEditScore from './MatchupEditScore'
 
-function MatchupGameMap({ gameMap }) {
+function MatchupGameMap({ gameMap }: {
+	gameMap: string
+}) {
 	const map = mapList.find(map => map.id === gameMap)
+	if (map == null) return null
+
 	const mapName = gameMap == null ? 'Undecided' : map.name
 	const mapColor = gameMap == null ? '#808080' : map.color
 
@@ -20,7 +25,11 @@ function MatchupGameMap({ gameMap }) {
 	</Box>
 }
 
-function MatchupGame({ matchup, game, update }) {
+function MatchupGame({ matchup, game, update }: {
+	matchup: IMatchup,
+	game: IGame,
+	update: () => void
+}) {
 	return <>
 		<Paper square sx={{ marginTop: 4 }}>
 			<MatchupGameMap gameMap={game.map} />

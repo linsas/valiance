@@ -3,15 +3,20 @@ import { Button } from '@mui/material'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
+import { IGame, IMatchup } from './MatchupTypes'
 import MatchupScoreForm from './MatchupScoreForm'
 
-function MatchupEditScore({ matchup, game, update }) {
+function MatchupEditScore({ matchup, game, update }: {
+	matchup: IMatchup,
+	game: IGame,
+	update: () => void
+}) {
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState(false)
 	const [isSaving, fetchEdit] = useFetch('/api/matchups/' + matchup.id + '/game/' + game.number, 'PUT')
 
-	const onSubmit = (game) => {
+	const onSubmit = (game: IGame) => {
 		fetchEdit({ score1: game.score1, score2: game.score2 }).then(() => update(), context.notifyFetchError)
 	}
 

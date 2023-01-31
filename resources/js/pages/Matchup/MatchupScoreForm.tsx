@@ -1,8 +1,14 @@
 import React from 'react'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
+import { IGame, IMatchup } from './MatchupTypes'
 
-function MatchupScoreForm({ open, matchup, game: defaultGame, onSubmit, onClose }) {
-	if (defaultGame == null) defaultGame = {}
+function MatchupScoreForm({ open, matchup, game: defaultGame, onSubmit, onClose }:{
+	open: boolean
+	matchup: IMatchup
+	game: IGame
+	onSubmit: (game: IGame) => void
+	onClose: () => void
+}) {
 	const [game, setGame] = React.useState(defaultGame)
 
 	React.useEffect(() => {
@@ -10,8 +16,8 @@ function MatchupScoreForm({ open, matchup, game: defaultGame, onSubmit, onClose 
 		setGame(defaultGame)
 	}, [open])
 
-	const changeScore1 = score => setGame(g => ({ ...g, score1: score }))
-	const changeScore2 = score => setGame(g => ({ ...g, score2: score }))
+	const changeScore1 = (score: string) => setGame(g => ({ ...g, score1: score }))
+	const changeScore2 = (score: string) => setGame(g => ({ ...g, score2: score }))
 
 	return <>
 		<Dialog open={open} fullWidth>

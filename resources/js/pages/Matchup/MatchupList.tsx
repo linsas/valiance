@@ -6,14 +6,15 @@ import mapList from '../../data/maps'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
+import { IMatchupBasic } from './MatchupTypes'
 
 function MatchupList() {
-	const [matchupList, setMatchupsList] = React.useState(null)
+	const [matchupList, setMatchupsList] = React.useState<Array<IMatchupBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchMatchups] = useFetch('/api/matchups')
+	const [isLoading, fetchMatchups] = useFetch<{data: Array<IMatchupBasic>}>('/api/matchups')
 
 	const getMatchups = () => {
-		fetchMatchups().then(response => setMatchupsList(response.json.data), setError)
+		fetchMatchups().then(response => setMatchupsList(response.json?.data ?? []), setError)
 	}
 	React.useEffect(() => getMatchups(), [])
 

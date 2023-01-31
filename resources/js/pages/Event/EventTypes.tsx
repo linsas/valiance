@@ -1,3 +1,5 @@
+import { IMatchup } from "../Matchup/MatchupTypes";
+
 export interface IEventBasic {
 	id: number;
 	name: string;
@@ -25,5 +27,5 @@ export type IParticipantPayload = {
 
 export interface IEvent extends IEventBasic {
 	participants: Array<IParticipant>;
-	matchups: Array<{}>;
+	matchups: Array<IMatchup>;
 }
