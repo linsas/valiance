@@ -1,6 +1,7 @@
 import React from 'react'
 
 import AppContext from '../main/AppContext'
+import { ApplicationError } from '../main/AppTypes';
 
 interface FetchResult<T> {
 	headers: Headers;
@@ -10,10 +11,8 @@ interface FetchResult<T> {
 	json: T | null;
 }
 
-interface FetchError<T> {
-	name: string;
-	message: string;
-	response: FetchResult<T>;
+export interface FetchError<T> extends ApplicationError {
+	result: FetchResult<T>;
 }
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -22,9 +21,19 @@ function never<T>(): Promise<FetchResult<T>> {
 	return new Promise(() => { })
 }
 
+export function isFetchError(error: ApplicationError): error is FetchError<unknown> {
+	return error.name === 'ResponseNotOkError'
+}
+
+export function fetchErrorMessageOrNull(error: FetchError<unknown>) {
+	if (error.result.json != null && typeof error.result.json === 'object' && 'message' in error.result.json)
+		return String(error.result.json.message)
+	return null
+}
+
 export default function useFetch<T>(url: string, method: HttpMethod = 'GET'): [
 	boolean,
-	(data?: any) => Promise<FetchResult<T>>
+	(data?: unknown) => Promise<FetchResult<T>>
 ] {
 	const [isLoading, setIsLoading] = React.useState(false)
 
@@ -66,7 +75,7 @@ export default function useFetch<T>(url: string, method: HttpMethod = 'GET'): [
 			if (!isMountedRef.current) return never<T>()
 			setIsLoading(false)
 
-			if (!response.ok) throw { name: 'ResponseNotOkError', message: 'The server did not return a 2xx response. ', result }
+			if (!response.ok) throw { name: 'ResponseNotOkError', message: 'The server did not return a 2xx response. ', result } as FetchError<T>
 
 			return result
 		}).catch((error: FetchError<T>) => {
