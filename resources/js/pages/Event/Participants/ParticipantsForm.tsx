@@ -25,7 +25,7 @@ function ParticipantsForm({ open, list, onSubmit, onClose }: {
 		setItems(list.map(p => ({ id: p.team.id, name: p.name })))
 	}, [open])
 
-	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>>([])
+	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>|null>(null)
 	const [searchValue, setSearchValue] = React.useState('')
 	const [isLoadingTeams, fetchTeams] = useFetch<{ data: Array<ITeamBasic> }>('/api/teams')
 
