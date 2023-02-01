@@ -2,22 +2,22 @@ import React from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 
 import mapList from '../../data/maps'
-import { IGame, IMatchup } from './MatchupTypes'
+import { IMatchup } from './MatchupTypes'
 
 function MatchupMapForm({ open, matchup, onSubmit, onClose }: {
 	open: boolean,
 	matchup: IMatchup,
-	onSubmit: (game: Array<string>) => void
+	onSubmit: (game: Array<string | null>) => void
 	onClose: () => void
 }) {
-	const [items, setItems] = React.useState<Array<string>>([])
+	const [items, setItems] = React.useState<Array<string | null>>([])
 
 	React.useEffect(() => {
 		if (!open) return
 		setItems(matchup.games.map(g => g.map))
 	}, [open])
 
-	const changeMap = (selectedIndex: number, changedMap: string) => setItems(l => l.map((exisitngMap, index) => index === selectedIndex ? changedMap : exisitngMap))
+	const changeMap = (selectedIndex: number, changedMap: string | null) => setItems(l => l.map((exisitngMap, index) => index === selectedIndex ? changedMap : exisitngMap))
 
 	return <>
 		<Dialog open={open} fullWidth>
@@ -29,7 +29,7 @@ function MatchupMapForm({ open, matchup, onSubmit, onClose }: {
 						<InputLabel id={'label-select-map-' + index}>Map {index + 1}</InputLabel>
 						<Select
 							labelId={'label-select-map-' + index}
-							value={map}
+							value={map ?? ''}
 							onChange={event => changeMap(index, event.target.value)}
 						>
 							{mapList.map(m => <MenuItem key={m.id} value={m.id}>{m.name}</MenuItem>)}

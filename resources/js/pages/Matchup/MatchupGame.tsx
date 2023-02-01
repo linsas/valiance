@@ -7,13 +7,12 @@ import { IGame, IMatchup } from './MatchupTypes'
 import MatchupEditScore from './MatchupEditScore'
 
 function MatchupGameMap({ gameMap }: {
-	gameMap: string
+	gameMap: string | null
 }) {
 	const map = mapList.find(map => map.id === gameMap)
-	if (map == null) return null
 
-	const mapName = gameMap == null ? 'Undecided' : map.name
-	const mapColor = gameMap == null ? '#808080' : map.color
+	const mapName = map == null ? 'Undecided' : map.name
+	const mapColor = map == null ? '#808080' : map.color
 
 	const theme = useTheme()
 	const bgColor = theme.palette.mode === 'light' ? lighten(mapColor, 0.8) : darken(mapColor, 0.8)

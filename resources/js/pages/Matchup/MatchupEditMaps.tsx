@@ -15,7 +15,7 @@ function MatchupEditMaps({ matchup, update }: {
 	const [formOpen, setFormOpen] = React.useState(false)
 	const [isSaving, fetchEdit] = useFetch('/api/matchups/' + matchup.id, 'PUT')
 
-	const onSubmit = (list: Array<string>) => {
+	const onSubmit = (list: Array<string|null>) => {
 		fetchEdit({ maps: list }).then(() => update(), context.notifyFetchError)
 	}
 
