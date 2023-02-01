@@ -26,7 +26,7 @@ function PlayerList() {
 
 	if (errorFetch != null) return <AlertError error={errorFetch} />
 
-	if (playersList == null || playersList.length === 0)
+	if (playersList.length === 0)
 		return <Paper>
 			<Box p={4} textAlign='center'>
 				<Typography variant='h5' color='textSecondary' gutterBottom>

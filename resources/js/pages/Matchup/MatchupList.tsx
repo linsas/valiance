@@ -26,7 +26,7 @@ function MatchupList() {
 
 	if (errorFetch != null) return <AlertError error={errorFetch} />
 
-	if (matchupList == null || matchupList.length === 0)
+	if (matchupList.length === 0)
 		return <Paper>
 			<Box p={4} textAlign='center'>
 				<Typography variant='h5' color='textSecondary' gutterBottom>

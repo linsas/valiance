@@ -27,7 +27,7 @@ function EventList() {
 
 	if (errorFetch != null) return <AlertError error={errorFetch} />
 
-	if (eventsList == null || eventsList.length === 0)
+	if (eventsList.length === 0)
 		return <Paper>
 			<Box p={4} textAlign='center'>
 				<Typography variant='h5' color='textSecondary' gutterBottom>

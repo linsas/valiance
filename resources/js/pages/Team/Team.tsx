@@ -79,8 +79,6 @@ function TeamPlayers({ team }: {
 function TeamTransfer({ transfer }: {
 	transfer: ITeamTransfer,
 }) {
-	if (transfer == null) return null
-
 	return <ListItemLink to={'/Players/' + transfer.player.id}>
 		<ListItemText>
 			<Typography style={{ flex: '1 1 auto', display: 'flex', whiteSpace: 'pre-wrap' }}>
