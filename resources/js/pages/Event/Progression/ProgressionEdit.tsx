@@ -21,7 +21,7 @@ function ProgressionEdit({ event, update }:{
 	if (context.jwt == null) return null
 
 	return <>
-		<Tooltip title='Advance to the next round' arrow>
+		<Tooltip title='Advance to the next round' placement='left' arrow>
 			<Fab color='primary' onClick={pressAdvance} style={{ position: 'fixed', bottom: 88, left: 'calc(100vw - 100px)' }}>
 				<PlayIcon />
 			</Fab>

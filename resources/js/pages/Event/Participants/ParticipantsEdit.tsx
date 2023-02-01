@@ -23,7 +23,7 @@ function ParticipantsEdit({ event, update } : {
 	if (context.jwt == null) return null
 
 	return <>
-		<Tooltip title='Edit participants' arrow>
+		<Tooltip title='Edit participants' placement='left' arrow>
 			<Fab color='primary' onClick={() => setFormOpen(true)} style={{ position: 'fixed', bottom: 16, left: 'calc(100vw - 100px)' }}>
 				<EditIcon />
 			</Fab>
