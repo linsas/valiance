@@ -1,7 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
-import { Box, Typography, Paper, List, ListItem, ListItemText } from '@mui/material'
+import { Box, Typography, Paper, List, ListItem, ListItemText, ListItemIcon } from '@mui/material'
 import { Alert, Skeleton } from '@mui/material'
+import PlayerIcon from '@mui/icons-material/Person'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -62,6 +63,9 @@ function TeamPlayers({ team }: {
 				</ListItem>
 				{team.players.map((player) =>
 					<ListItemLink key={player.id} to={'/Players/' + player.id}>
+						<ListItemIcon>
+							<PlayerIcon />
+						</ListItemIcon>
 						<ListItemText>
 							<Typography component='span'>{player.alias}</Typography>
 						</ListItemText>
