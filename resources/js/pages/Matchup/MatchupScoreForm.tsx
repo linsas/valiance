@@ -21,7 +21,7 @@ function MatchupScoreForm({ open, matchup, game: defaultGame, onSubmit, onClose 
 
 	return <>
 		<Dialog open={open} fullWidth>
-			<DialogTitle>Game Score</DialogTitle>
+			<DialogTitle>Game {game.number} Score</DialogTitle>
 			<DialogContent>
 
 				<Box display='grid' gridAutoFlow='column' gridTemplateColumns='1fr auto 1fr' gap={2} alignItems='end'>
