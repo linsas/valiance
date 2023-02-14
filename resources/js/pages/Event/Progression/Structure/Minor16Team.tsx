@@ -1,10 +1,10 @@
 import React from 'react';
-import { IMatchup } from '../../../Matchup/MatchupTypes';
+import { IEventMatchup } from '../../EventTypes';
 import { BracketSingleElimination8Team, BracketDoubleElimination4Team } from '../Components/BracketStage';
 import { StageSeparator } from "../Components/StageSeparator";
 
 export default function Minor16Team({ matchups }: {
-	matchups: Array<IMatchup>
+	matchups: Array<IEventMatchup>
 }) {
 	const a1 = matchups.filter(m => m.key === 'ao')[0]
 	const a2 = matchups.filter(m => m.key === 'ao')[1]

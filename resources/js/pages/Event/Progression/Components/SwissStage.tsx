@@ -2,7 +2,7 @@ import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { ButtonBase, Box, Typography, Hidden } from '@mui/material'
 
-import { IMatchup } from '../../../Matchup/MatchupTypes'
+import { IEventMatchup } from '../../EventTypes'
 import { CompactMatchupsList } from './CompactMatchupsList'
 
 const swissMatchupButtonSx = {
@@ -22,7 +22,7 @@ const swissMatchupButtonSx = {
 }
 
 export function SwissMatchupsList({ matchups, area }: {
-	matchups: Array<IMatchup>,
+	matchups: Array<IEventMatchup>,
 	area: string,
 }) {
 	return <div style={{ gridArea: area }}>
@@ -37,15 +37,15 @@ export function SwissMatchupsList({ matchups, area }: {
 }
 
 export function SwissStage({ zerZer, zerOne, oneZer, zerTwo, oneOne, twoZer, oneTwo, twoOne, twoTwo }: {
-	zerZer: Array<IMatchup>,
-	zerOne: Array<IMatchup>,
-	oneZer: Array<IMatchup>,
-	zerTwo: Array<IMatchup>,
-	oneOne: Array<IMatchup>,
-	twoZer: Array<IMatchup>,
-	oneTwo: Array<IMatchup>,
-	twoOne: Array<IMatchup>,
-	twoTwo: Array<IMatchup>,
+	zerZer: Array<IEventMatchup>,
+	zerOne: Array<IEventMatchup>,
+	oneZer: Array<IEventMatchup>,
+	zerTwo: Array<IEventMatchup>,
+	oneOne: Array<IEventMatchup>,
+	twoZer: Array<IEventMatchup>,
+	oneTwo: Array<IEventMatchup>,
+	twoOne: Array<IEventMatchup>,
+	twoTwo: Array<IEventMatchup>,
 }) {
 	return <>
 		<Hidden mdDown>

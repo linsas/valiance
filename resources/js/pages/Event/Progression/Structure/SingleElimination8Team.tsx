@@ -1,9 +1,9 @@
 import React from 'react'
-import { IMatchup } from '../../../Matchup/MatchupTypes'
+import { IEventMatchup } from '../../EventTypes'
 import { BracketSingleElimination8Team } from '../Components/BracketStage'
 
 export default function SingleElimination8Team({ matchups }: {
-	matchups: Array<IMatchup>
+	matchups: Array<IEventMatchup>
 }) {
 	const qf1 = matchups.find(m => m.key === 'qf1') ?? null
 	const qf2 = matchups.find(m => m.key === 'qf2') ?? null

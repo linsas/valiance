@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { ButtonBase, Box, Typography } from '@mui/material'
-import { IMatchup } from '../../../Matchup/MatchupTypes'
+import { IEventMatchup } from '../../EventTypes'
 
 const bracketMatchupSx = {
 	border: '1px solid dimgrey',
@@ -39,7 +39,7 @@ export function BracketContainer({ children }: {
 }
 
 export function BracketMatchup({ matchup, area }: {
-	matchup: IMatchup | null,
+	matchup: IEventMatchup | null,
 	area: string,
 }) {
 	if (matchup == null)

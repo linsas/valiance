@@ -1,14 +1,14 @@
 import React from 'react'
 import { Hidden } from '@mui/material'
 
-import { IMatchup } from '../../../Matchup/MatchupTypes'
+import { IEventMatchup } from '../../EventTypes'
 import { BracketContainer, BracketMatchup } from './BracketComponents'
 import { CompactMatchupsList } from './CompactMatchupsList'
 
 export function BracketSingleElimination4Team({ semifinals1, semifinals2, finals }: {
-	semifinals1: IMatchup | null,
-	semifinals2: IMatchup | null,
-	finals: IMatchup | null,
+	semifinals1: IEventMatchup | null,
+	semifinals2: IEventMatchup | null,
+	finals: IEventMatchup | null,
 }) {
 	return <>
 		<Hidden mdDown>
@@ -26,13 +26,13 @@ export function BracketSingleElimination4Team({ semifinals1, semifinals2, finals
 }
 
 export function BracketSingleElimination8Team({ quarterfinals1, quarterfinals2, quarterfinals3, quarterfinals4, semifinals1, semifinals2, finals }: {
-	quarterfinals1: IMatchup | null,
-	quarterfinals2: IMatchup | null,
-	quarterfinals3: IMatchup | null,
-	quarterfinals4: IMatchup | null,
-	semifinals1: IMatchup | null,
-	semifinals2: IMatchup | null,
-	finals: IMatchup | null,
+	quarterfinals1: IEventMatchup | null,
+	quarterfinals2: IEventMatchup | null,
+	quarterfinals3: IEventMatchup | null,
+	quarterfinals4: IEventMatchup | null,
+	semifinals1: IEventMatchup | null,
+	semifinals2: IEventMatchup | null,
+	finals: IEventMatchup | null,
 }) {
 	return <>
 		<Hidden mdDown>
@@ -55,11 +55,11 @@ export function BracketSingleElimination8Team({ quarterfinals1, quarterfinals2, 
 }
 
 export function BracketDoubleElimination4Team({ opening1, opening2, upper, lower, deciding }: {
-	opening1: IMatchup | null,
-	opening2: IMatchup | null,
-	upper: IMatchup | null,
-	lower: IMatchup | null,
-	deciding: IMatchup | null,
+	opening1: IEventMatchup | null,
+	opening2: IEventMatchup | null,
+	upper: IEventMatchup | null,
+	lower: IEventMatchup | null,
+	deciding: IEventMatchup | null,
 }) {
 	return <>
 		<Hidden mdDown>

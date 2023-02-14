@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { ButtonBase, Typography } from '@mui/material'
-import { IMatchup } from '../../../Matchup/MatchupTypes'
+import { IEventMatchup } from '../../EventTypes'
 
 const compactMatchupButtonSx = {
 	display: 'flex',
@@ -19,10 +19,10 @@ const compactMatchupButtonSx = {
 }
 
 export function CompactMatchupsList({ matchups, title }: {
-	matchups: Array<IMatchup | null>,
+	matchups: Array<IEventMatchup | null>,
 	title: string,
 }) {
-	const filteredList = matchups.filter((m): m is IMatchup => m != null)
+	const filteredList = matchups.filter((m): m is IEventMatchup => m != null)
 	if (filteredList.length == 0) return null
 
 	return <>

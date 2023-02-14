@@ -1,5 +1,3 @@
-import { IMatchup } from "../Matchup/MatchupTypes";
-
 export interface IEventBasic {
 	id: number;
 	name: string;
@@ -8,7 +6,7 @@ export interface IEventBasic {
 
 export type IEventPayload = Omit<IEventBasic, 'id'>
 
-export type IParticipant = {
+export interface IParticipant {
 	name: string;
 	team: {
 		id: number;
@@ -20,12 +18,21 @@ export type IParticipant = {
 	}>;
 }
 
-export type IParticipantPayload = {
+export interface IParticipantPayload {
 	id: number;
 	name: string;
 }
 
+export interface IEventMatchup {
+	id: number;
+	key: string;
+	team1: string;
+	team2: string;
+	score1: number;
+	score2: number;
+}
+
 export interface IEvent extends IEventBasic {
 	participants: Array<IParticipant>;
-	matchups: Array<IMatchup>;
+	matchups: Array<IEventMatchup>;
 }
