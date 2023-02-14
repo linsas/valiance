@@ -11,7 +11,7 @@ interface FetchResult<T> {
 	json: T | null;
 }
 
-export interface FetchError<T> extends ApplicationError {
+interface FetchError<T> extends ApplicationError {
 	result: FetchResult<T>;
 }
 
