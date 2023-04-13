@@ -31,6 +31,8 @@ You can use `npm run watch` to run continuously with browsersync refreshing the 
 
 The command `php artisan db:seed` can be used to quickly fill the database with random players, teams, and events.
 
+Run static analysis with `./vendor/bin/phpstan analyse app database --level max`.
+
 # Deployment
 Configure the web server to serve files from the `public` directory.
 
