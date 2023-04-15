@@ -1,15 +1,10 @@
 # Environment
 This project might not work with the latest verisons of PHP, npm, etc.
 
-The primary components used in the application are:
-- Laravel 7
-- React 17.0
-	- MUI v5
-
 The working environemnt includes:
-- PHP 7.4
-- Node.js v16.17
-	- npm 8.15
+- PHP 8.2.4
+- Node.js v18.16
+	- npm 9.6.4
 
 # First time setup
 Copy the contents of `.env.example` to `.env` and run `php artisan key:generate`.
