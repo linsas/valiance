@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TournamentController;
+use App\Http\Controllers\ParticipationController;
+use App\Http\Controllers\CompetitionController;
+use App\Http\Controllers\MatchupController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,16 +20,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('players', 'PlayerController');
-Route::apiResource('teams', 'TeamController');
-Route::apiResource('tournaments', 'TournamentController');
+Route::apiResource('players', PlayerController::class);
+Route::apiResource('teams', TeamController::class);
+Route::apiResource('tournaments', TournamentController::class);
 
-Route::put('tournaments/{tournament}/teams', 'ParticipationController@reorder');
-Route::post('tournaments/{tournament}/advance', 'CompetitionController@advance');
+Route::put('tournaments/{tournament}/teams', [ParticipationController::class, 'reorder']);
+Route::post('tournaments/{tournament}/advance', [CompetitionController::class, 'advance']);
 
-Route::get('matchups', 'MatchupController@index');
-Route::get('matchups/{matchup}', 'MatchupController@show');
-Route::put('matchups/{matchup}', 'MatchupController@updateMaps');
-Route::put('matchups/{matchup}/game/{game}', 'MatchupController@updateScore');
+Route::get('matchups', [MatchupController::class, 'index']);
+Route::get('matchups/{matchup}', [MatchupController::class, 'show']);
+Route::put('matchups/{matchup}', [MatchupController::class, 'updateMaps']);
+Route::put('matchups/{matchup}/game/{game}', [MatchupController::class, 'updateScore']);
 
-Route::post('login', 'AuthController@login');
+Route::post('login', [AuthController::class, 'login']);
