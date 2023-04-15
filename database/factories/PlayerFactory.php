@@ -1,11 +1,18 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use Faker\Generator as Faker;
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Player;
 
-$factory->define(Player::class, function (Faker $faker) {
-    return [
-        'alias' => $faker->userName,
-    ];
-});
+class PlayerFactory extends Factory
+{
+    protected $model = Player::class;
+
+    public function definition()
+    {
+        return [
+            'alias' => $this->faker->userName,
+        ];
+    }
+}
