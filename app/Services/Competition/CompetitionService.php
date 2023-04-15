@@ -74,7 +74,7 @@ class CompetitionService
         $match->fk_round = $round->id;
         $match->fk_team1 = $high->id;
         $match->fk_team2 = $low->id;
-        $match->key = $matchRule->matchupKey;
+        $match->significance = $matchRule->matchupSignificance;
         $match->save();
 
         for ($j = 0; $j < $matchRule->numGames; $j++) {

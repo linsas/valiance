@@ -7,33 +7,33 @@ import { StageSeparator } from "../Components/StageSeparator";
 export default function Major24Team({ matchups }: {
 	matchups: Array<IEventMatchup>
 }) {
-	const c00 = matchups.filter(m => m.key === 'c00')
-	const c01 = matchups.filter(m => m.key === 'c01')
-	const c10 = matchups.filter(m => m.key === 'c10')
-	const c02 = matchups.filter(m => m.key === 'c02')
-	const c11 = matchups.filter(m => m.key === 'c11')
-	const c20 = matchups.filter(m => m.key === 'c20')
-	const c21 = matchups.filter(m => m.key === 'c21')
-	const c12 = matchups.filter(m => m.key === 'c12')
-	const c22 = matchups.filter(m => m.key === 'c22')
+	const c00 = matchups.filter(m => m.significance === 'c00')
+	const c01 = matchups.filter(m => m.significance === 'c01')
+	const c10 = matchups.filter(m => m.significance === 'c10')
+	const c02 = matchups.filter(m => m.significance === 'c02')
+	const c11 = matchups.filter(m => m.significance === 'c11')
+	const c20 = matchups.filter(m => m.significance === 'c20')
+	const c21 = matchups.filter(m => m.significance === 'c21')
+	const c12 = matchups.filter(m => m.significance === 'c12')
+	const c22 = matchups.filter(m => m.significance === 'c22')
 
-	const l00 = matchups.filter(m => m.key === 'l00')
-	const l01 = matchups.filter(m => m.key === 'l01')
-	const l10 = matchups.filter(m => m.key === 'l10')
-	const l02 = matchups.filter(m => m.key === 'l02')
-	const l11 = matchups.filter(m => m.key === 'l11')
-	const l20 = matchups.filter(m => m.key === 'l20')
-	const l21 = matchups.filter(m => m.key === 'l21')
-	const l12 = matchups.filter(m => m.key === 'l12')
-	const l22 = matchups.filter(m => m.key === 'l22')
+	const l00 = matchups.filter(m => m.significance === 'l00')
+	const l01 = matchups.filter(m => m.significance === 'l01')
+	const l10 = matchups.filter(m => m.significance === 'l10')
+	const l02 = matchups.filter(m => m.significance === 'l02')
+	const l11 = matchups.filter(m => m.significance === 'l11')
+	const l20 = matchups.filter(m => m.significance === 'l20')
+	const l21 = matchups.filter(m => m.significance === 'l21')
+	const l12 = matchups.filter(m => m.significance === 'l12')
+	const l22 = matchups.filter(m => m.significance === 'l22')
 
-	const qf1 = matchups.find(m => m.key === 'qf1') ?? null
-	const qf2 = matchups.find(m => m.key === 'qf2') ?? null
-	const qf3 = matchups.find(m => m.key === 'qf3') ?? null
-	const qf4 = matchups.find(m => m.key === 'qf4') ?? null
-	const sf1 = matchups.find(m => m.key === 'sf1') ?? null
-	const sf2 = matchups.find(m => m.key === 'sf2') ?? null
-	const finals = matchups.find(m => m.key === 'f') ?? null
+	const qf1 = matchups.find(m => m.significance === 'qf1') ?? null
+	const qf2 = matchups.find(m => m.significance === 'qf2') ?? null
+	const qf3 = matchups.find(m => m.significance === 'qf3') ?? null
+	const qf4 = matchups.find(m => m.significance === 'qf4') ?? null
+	const sf1 = matchups.find(m => m.significance === 'sf1') ?? null
+	const sf2 = matchups.find(m => m.significance === 'sf2') ?? null
+	const finals = matchups.find(m => m.significance === 'f') ?? null
 	return <>
 		<StageSeparator title="Challengers' Stage" />
 		<SwissStage

@@ -5,13 +5,13 @@ import { BracketSingleElimination8Team } from '../Components/BracketStage'
 export default function SingleElimination8Team({ matchups }: {
 	matchups: Array<IEventMatchup>
 }) {
-	const qf1 = matchups.find(m => m.key === 'qf1') ?? null
-	const qf2 = matchups.find(m => m.key === 'qf2') ?? null
-	const qf3 = matchups.find(m => m.key === 'qf3') ?? null
-	const qf4 = matchups.find(m => m.key === 'qf4') ?? null
-	const sf1 = matchups.find(m => m.key === 'sf1') ?? null
-	const sf2 = matchups.find(m => m.key === 'sf2') ?? null
-	const finals = matchups.find(m => m.key === 'f') ?? null
+	const qf1 = matchups.find(m => m.significance === 'qf1') ?? null
+	const qf2 = matchups.find(m => m.significance === 'qf2') ?? null
+	const qf3 = matchups.find(m => m.significance === 'qf3') ?? null
+	const qf4 = matchups.find(m => m.significance === 'qf4') ?? null
+	const sf1 = matchups.find(m => m.significance === 'sf1') ?? null
+	const sf2 = matchups.find(m => m.significance === 'sf2') ?? null
+	const finals = matchups.find(m => m.significance === 'f') ?? null
 
 	return <BracketSingleElimination8Team
 		quarterfinals1={qf1}

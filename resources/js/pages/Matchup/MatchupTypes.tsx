@@ -15,7 +15,7 @@ export type IGame = {
 
 export interface IMatchup {
 	id: number;
-	key: string;
+	significance: string;
 	team1: {
 		id: number;
 		name: string;

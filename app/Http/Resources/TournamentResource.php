@@ -43,7 +43,7 @@ class TournamentResource extends JsonResource
             'matchups' => $this->matchups->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'key' => $item->key,
+                    'significance' => $item->significance,
                     'team1' => $item->team1->name,
                     'team2' => $item->team2->name,
                     'score1' => $item->getScore1(),

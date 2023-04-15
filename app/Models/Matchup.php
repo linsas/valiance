@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \App\Models\Team $team1
  * @property \App\Models\Team $team2
  * @property \App\Models\Round $round
- * @property string $key
+ * @property string $significance
  * @property \Illuminate\Database\Eloquent\Collection $games
  * @method int getScore1()
  * @method int getScore2()
@@ -23,8 +23,8 @@ class Matchup extends Model
     protected $table = 'matchup';
     protected $with = ['team1', 'team2', 'games'];
 
-    protected $fillable = ['fk_team1', 'fk_team2', 'fk_round', 'key'];
-    protected $visible = ['id', 'team1', 'team2', 'games', 'key'];
+    protected $fillable = ['fk_team1', 'fk_team2', 'fk_round', 'significance'];
+    protected $visible = ['id', 'team1', 'team2', 'games', 'significance'];
 
     public function round()
     {

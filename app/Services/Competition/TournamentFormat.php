@@ -26,18 +26,18 @@ class PoolSourceSeed extends PoolSource
 
 class PoolSourceMatchup extends PoolSource
 {
-    private $matchupKey;
+    private $matchupSignificance;
     private $isWinner;
 
-    public function __construct(string $matchupKey, bool $isWinner = true)
+    public function __construct(string $matchupSignificance, bool $isWinner = true)
     {
-        $this->matchupKey = $matchupKey;
+        $this->matchupSignificance = $matchupSignificance;
         $this->isWinner = $isWinner;
     }
 
     public function collect($tournament)
     {
-        $matchups = $tournament->matchups->where('key', $this->matchupKey);
+        $matchups = $tournament->matchups->where('significance', $this->matchupSignificance);
         $collection = collect();
         foreach ($matchups as $matchup) {
             $outcome = $matchup->getOutcome();
@@ -86,22 +86,22 @@ class PoolComposite
     {
         return new PoolComposite([new PoolSourceSeed($seeds)]);
     }
-    public static function fromMatchup(string $matchupKey, bool $isWinner = true)
+    public static function fromMatchup(string $matchupSignificance, bool $isWinner = true)
     {
-        return new PoolComposite([new PoolSourceMatchup($matchupKey, $isWinner)]);
+        return new PoolComposite([new PoolSourceMatchup($matchupSignificance, $isWinner)]);
     }
 }
 
 class ProgressionRule
 {
-    public $matchupKey;
+    public $matchupSignificance;
     public $numGames;
     private $highComposite;
     private $lowComposite;
 
-    public function __construct(string $matchupKey, int $numGames, PoolComposite $highComposite, PoolComposite $lowComposite)
+    public function __construct(string $matchupSignificance, int $numGames, PoolComposite $highComposite, PoolComposite $lowComposite)
     {
-        $this->matchupKey = $matchupKey;
+        $this->matchupSignificance = $matchupSignificance;
         $this->numGames = $numGames;
         $this->highComposite = $highComposite;
         $this->lowComposite = $lowComposite;

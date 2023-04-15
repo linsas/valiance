@@ -25,7 +25,7 @@ export interface IParticipantPayload {
 
 export interface IEventMatchup {
 	id: number;
-	key: string;
+	significance: string;
 	team1: string;
 	team2: string;
 	score1: number;

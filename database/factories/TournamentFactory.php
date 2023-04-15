@@ -101,7 +101,7 @@ class TournamentFactory extends Factory
                         'fk_round' => $round->id,
                         'fk_team1' => $high->id,
                         'fk_team2' => $low->id,
-                        'key' => $pairing->matchupKey,
+                        'significance' => $pairing->matchupSignificance,
                     ]);
 
                     $matchScore1 = 0;

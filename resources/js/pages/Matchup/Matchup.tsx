@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Box, Typography, Paper, List, ListItemText } from '@mui/material'
 import { Alert, Skeleton } from '@mui/material'
 
-import matchKeys from '../../data/matchKeys'
+import matchSignificances from '../../data/matchSignificances'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
@@ -47,7 +47,7 @@ function Matchup() {
 
 						<Typography variant='h4'>{matchup.score1}</Typography>
 						<Box p={1}>
-							<Typography>{matchKeys.reduce((aggr, next) => next.id === matchup.key ? next.name : aggr, matchup.key)}</Typography>
+							<Typography>{matchSignificances.reduce((aggr, next) => next.id === matchup.significance ? next.name : aggr, matchup.significance)}</Typography>
 							<Typography color='textSecondary'>Best of {matchup.games.length}</Typography>
 						</Box>
 						<Typography variant='h4'>{matchup.score2}</Typography>

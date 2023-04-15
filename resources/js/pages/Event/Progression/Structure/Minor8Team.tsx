@@ -6,22 +6,22 @@ import { StageSeparator } from "../Components/StageSeparator";
 export default function Minor8Team({ matchups }: {
 	matchups: Array<IEventMatchup>
 }) {
-	const a1 = matchups.filter(m => m.key === 'ao')[0]
-	const a2 = matchups.filter(m => m.key === 'ao')[1]
-	const aw = matchups.find(m => m.key === 'aw') ?? null
-	const al = matchups.find(m => m.key === 'al') ?? null
+	const a1 = matchups.filter(m => m.significance === 'ao')[0]
+	const a2 = matchups.filter(m => m.significance === 'ao')[1]
+	const aw = matchups.find(m => m.significance === 'aw') ?? null
+	const al = matchups.find(m => m.significance === 'al') ?? null
 
-	const b1 = matchups.filter(m => m.key === 'bo')[0]
-	const b2 = matchups.filter(m => m.key === 'bo')[1]
-	const bw = matchups.find(m => m.key === 'bw') ?? null
-	const bl = matchups.find(m => m.key === 'bl') ?? null
+	const b1 = matchups.filter(m => m.significance === 'bo')[0]
+	const b2 = matchups.filter(m => m.significance === 'bo')[1]
+	const bw = matchups.find(m => m.significance === 'bw') ?? null
+	const bl = matchups.find(m => m.significance === 'bl') ?? null
 
-	const ad = matchups.find(m => m.key === 'ad') ?? null
-	const bd = matchups.find(m => m.key === 'bd') ?? null
+	const ad = matchups.find(m => m.significance === 'ad') ?? null
+	const bd = matchups.find(m => m.significance === 'bd') ?? null
 
-	const sf1 = matchups.find(m => m.key === 'sf1') ?? null
-	const sf2 = matchups.find(m => m.key === 'sf2') ?? null
-	const finals = matchups.find(m => m.key === 'f') ?? null
+	const sf1 = matchups.find(m => m.significance === 'sf1') ?? null
+	const sf2 = matchups.find(m => m.significance === 'sf2') ?? null
+	const finals = matchups.find(m => m.significance === 'f') ?? null
 	return <>
 		<StageSeparator title='Group A' />
 		<BracketDoubleElimination4Team
