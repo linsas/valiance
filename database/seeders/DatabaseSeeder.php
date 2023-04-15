@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\Models\Team;
 use App\Models\Player;
@@ -15,9 +17,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(Team::class, 50)->create();
+        Team::factory()->count(50)->create();
 
-        factory(Player::class, 100)->create()->each(function ($player) {
+        Player::factory()->count(100)->create()->each(function ($player) {
             $numTransfers = rand(1, 5);
             $previousTeam = null;
             for ($i = 0; $i < $numTransfers; $i++) {
@@ -25,7 +27,7 @@ class DatabaseSeeder extends Seeder
                 if (rand(1, 3) === 1 && $i !== 0 && $previousTeam != null) $team = null;
 
                 $numDays = ($numTransfers - $i) * 8 - rand(1, 7);
-                $date = new DateTimeImmutable('-' . $numDays . ' days');
+                $date = new \DateTimeImmutable('-' . $numDays . ' days');
 
                 PlayerTeamHistory::create([
                     'date_since' => $date->format('Y-m-d'),
@@ -36,8 +38,8 @@ class DatabaseSeeder extends Seeder
             }
         });
 
-        factory(Tournament::class, 15)->states('withAllParticipants', 'withSomeRounds')->create();
-        factory(Tournament::class, 7)->states('withAllParticipants')->create();
-        factory(Tournament::class, 3)->states('withAllParticipants')->create();
+        Tournament::factory()->count(15)->withAllParticipants()->withSomeRounds()->create();
+        Tournament::factory()->count(7)->withAllParticipants()->create();
+        Tournament::factory()->count(3)->withAllParticipants()->create();
     }
 }
