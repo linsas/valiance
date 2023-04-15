@@ -88,6 +88,10 @@ function ParticipantsForm({ open, list, onSubmit, onClose }: {
 					renderInput={params => <TextField {...params} variant='filled' label='Add a team' />}
 				/>
 				<List>
+					{/*
+						Package react-smooth-dnd hasn't been fixed, typescript error solutions can be found here:
+						https://github.com/kutlugsahin/react-smooth-dnd/issues/93
+					*/}
 					<DndContainer dragHandleSelector='.drag-handle' onDrop={onDrop} lockAxis='y' style={{ border: '1px solid dimgray' }}>
 						{items.map((participant, index) => (
 							<Draggable key={participant.id}>

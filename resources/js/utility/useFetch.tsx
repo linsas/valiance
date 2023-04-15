@@ -42,7 +42,7 @@ export default function useFetch<T>(url: string, method: HttpMethod = 'GET'): [
 	const controllerRef = React.useRef(new AbortController())
 	const isMountedRef = React.useRef(true)
 
-	const fetchData = React.useCallback((data) => {
+	const fetchData = React.useCallback((data: any) => {
 		controllerRef.current.abort()
 		controllerRef.current = new AbortController()
 		setIsLoading(true)
