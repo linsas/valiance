@@ -32,7 +32,12 @@ export interface IEventMatchup {
 	score2: number;
 }
 
+export interface IEventRound {
+	number: number;
+	matchups: Array<IEventMatchup>;
+}
+
 export interface IEvent extends IEventBasic {
 	participants: Array<IParticipant>;
-	matchups: Array<IEventMatchup>;
+	rounds: Array<IEventRound>;
 }

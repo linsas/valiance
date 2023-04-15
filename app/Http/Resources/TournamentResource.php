@@ -40,14 +40,19 @@ class TournamentResource extends JsonResource
                     }),
                 ];
             }),
-            'matchups' => $this->matchups->map(function ($item) {
+            'rounds' => $this->rounds->map(function ($item) {
                 return [
-                    'id' => $item->id,
-                    'significance' => $item->significance,
-                    'team1' => $item->team1->name,
-                    'team2' => $item->team2->name,
-                    'score1' => $item->getScore1(),
-                    'score2' => $item->getScore2(),
+                    'number' => $item->number,
+                    'matchups' => $item->matchups->map(function ($item) {
+                        return [
+                            'id' => $item->id,
+                            'significance' => $item->significance,
+                            'team1' => $item->team1->name,
+                            'team2' => $item->team2->name,
+                            'score1' => $item->getScore1(),
+                            'score2' => $item->getScore2(),
+                        ];
+                    }),
                 ];
             }),
         ];

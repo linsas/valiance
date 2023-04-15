@@ -9,7 +9,7 @@ function Progression({ event, update }:{
 	event: IEvent
 	update: () => void
 }) {
-	if (event.matchups.length === 0)
+	if (event.rounds.length === 0)
 		return <>
 			<ProgressionEdit event={event} update={update} />
 			<Paper>

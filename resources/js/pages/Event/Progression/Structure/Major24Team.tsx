@@ -1,39 +1,64 @@
 import React from 'react';
-import { IEventMatchup } from '../../EventTypes';
+import { EventStructure } from '../EventStructure'
 import { BracketSingleElimination8Team } from '../Components/BracketStage';
 import { SwissStage } from '../Components/SwissStage';
 import { StageSeparator } from "../Components/StageSeparator";
 
-export default function Major24Team({ matchups }: {
-	matchups: Array<IEventMatchup>
+export default function Major24Team({ structure }: {
+	structure: EventStructure
 }) {
-	const c00 = matchups.filter(m => m.significance === 'c00')
-	const c01 = matchups.filter(m => m.significance === 'c01')
-	const c10 = matchups.filter(m => m.significance === 'c10')
-	const c02 = matchups.filter(m => m.significance === 'c02')
-	const c11 = matchups.filter(m => m.significance === 'c11')
-	const c20 = matchups.filter(m => m.significance === 'c20')
-	const c21 = matchups.filter(m => m.significance === 'c21')
-	const c12 = matchups.filter(m => m.significance === 'c12')
-	const c22 = matchups.filter(m => m.significance === 'c22')
+	const challengersOpeningRound = structure.getRoundMatchupsOrDefault(1)
+	const c00 = challengersOpeningRound.filter(m => m.significance === 'c00')
 
-	const l00 = matchups.filter(m => m.significance === 'l00')
-	const l01 = matchups.filter(m => m.significance === 'l01')
-	const l10 = matchups.filter(m => m.significance === 'l10')
-	const l02 = matchups.filter(m => m.significance === 'l02')
-	const l11 = matchups.filter(m => m.significance === 'l11')
-	const l20 = matchups.filter(m => m.significance === 'l20')
-	const l21 = matchups.filter(m => m.significance === 'l21')
-	const l12 = matchups.filter(m => m.significance === 'l12')
-	const l22 = matchups.filter(m => m.significance === 'l22')
+	const challengersRound2 = structure.getRoundMatchupsOrDefault(2)
+	const c01 = challengersRound2.filter(m => m.significance === 'c01')
+	const c10 = challengersRound2.filter(m => m.significance === 'c10')
 
-	const qf1 = matchups.find(m => m.significance === 'qf1') ?? null
-	const qf2 = matchups.find(m => m.significance === 'qf2') ?? null
-	const qf3 = matchups.find(m => m.significance === 'qf3') ?? null
-	const qf4 = matchups.find(m => m.significance === 'qf4') ?? null
-	const sf1 = matchups.find(m => m.significance === 'sf1') ?? null
-	const sf2 = matchups.find(m => m.significance === 'sf2') ?? null
-	const finals = matchups.find(m => m.significance === 'f') ?? null
+	const challengersRound3 = structure.getRoundMatchupsOrDefault(3)
+	const c02 = challengersRound3.filter(m => m.significance === 'c02')
+	const c11 = challengersRound3.filter(m => m.significance === 'c11')
+	const c20 = challengersRound3.filter(m => m.significance === 'c20')
+
+	const challengersRound4 = structure.getRoundMatchupsOrDefault(4)
+	const c21 = challengersRound4.filter(m => m.significance === 'c21')
+	const c12 = challengersRound4.filter(m => m.significance === 'c12')
+
+	const challengersFinalRound = structure.getRoundMatchupsOrDefault(5)
+	const c22 = challengersFinalRound.filter(m => m.significance === 'c22')
+
+
+	const legendsOpeningRound = structure.getRoundMatchupsOrDefault(6)
+	const l00 = legendsOpeningRound.filter(m => m.significance === 'l00')
+
+	const legendsRound2 = structure.getRoundMatchupsOrDefault(7)
+	const l01 = legendsRound2.filter(m => m.significance === 'l01')
+	const l10 = legendsRound2.filter(m => m.significance === 'l10')
+
+	const legendsRound3 = structure.getRoundMatchupsOrDefault(8)
+	const l02 = legendsRound3.filter(m => m.significance === 'l02')
+	const l11 = legendsRound3.filter(m => m.significance === 'l11')
+	const l20 = legendsRound3.filter(m => m.significance === 'l20')
+
+	const legendsRound4 = structure.getRoundMatchupsOrDefault(9)
+	const l21 = legendsRound4.filter(m => m.significance === 'l21')
+	const l12 = legendsRound4.filter(m => m.significance === 'l12')
+
+	const legendsFinalRound = structure.getRoundMatchupsOrDefault(10)
+	const l22 = legendsFinalRound.filter(m => m.significance === 'l22')
+
+
+	const quarterfinals = structure.getRoundMatchupsOrDefault(11)
+	const qf1 = quarterfinals[0]
+	const qf2 = quarterfinals[1]
+	const qf3 = quarterfinals[2]
+	const qf4 = quarterfinals[3]
+
+	const semifinals = structure.getRoundMatchupsOrDefault(12)
+	const sf1 = semifinals[0]
+	const sf2 = semifinals[1]
+
+	const finals = structure.getRoundMatchupsOrDefault(13)
+	const finalMatchup = finals[0]
 	return <>
 		<StageSeparator title="Challengers' Stage" />
 		<SwissStage
@@ -59,7 +84,7 @@ export default function Major24Team({ matchups }: {
 			quarterfinals4={qf4}
 			semifinals1={sf1}
 			semifinals2={sf2}
-			finals={finals}
+			finale={finalMatchup}
 		/>
 	</>
 }
