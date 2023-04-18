@@ -10,6 +10,7 @@ use App\Services\TournamentService;
 use App\Models\Round;
 use App\Models\Matchup;
 use App\Models\Game;
+use App\Values\MatchupOutcome;
 
 class CompetitionService
 {
@@ -36,7 +37,7 @@ class CompetitionService
         $lastRound = $tournament->rounds->sortBy('number')->last();
         if ($lastRound != null) {
             if ($lastRound->matchups->contains(function ($matchup) {
-                return $matchup->getOutcome() === 0;
+                return $matchup->getOutcome() === MatchupOutcome::Indeterminate;
             })) {
                 throw new InvalidStateException('All matchups must be completed before starting the next round.');
             }

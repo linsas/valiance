@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use App\Exceptions\InvalidStateException;
 use App\Models\Matchup;
 use App\Models\Game;
+use App\Values\MatchupOutcome;
 
 class MatchupService
 {
@@ -85,7 +86,7 @@ class MatchupService
             throw new InvalidStateException('Cannot change score after entering next game info.');
         }
 
-        if (!$game->isCompleted() && $matchup->getOutcome() !== 0) {
+        if (!$game->isCompleted() && $matchup->getOutcome() !== MatchupOutcome::Indeterminate) {
             throw new InvalidStateException('Cannot change score after a decisive matchup outcome.');
         }
 

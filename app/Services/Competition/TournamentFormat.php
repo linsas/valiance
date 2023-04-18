@@ -3,6 +3,7 @@
 namespace App\Services\Competition;
 
 use App\Models\Tournament;
+use App\Values\MatchupOutcome;
 
 abstract class PoolSource
 {
@@ -42,8 +43,8 @@ class PoolSourceMatchup extends PoolSource
         foreach ($matchups as $matchup) {
             $outcome = $matchup->getOutcome();
             $participant = null;
-            if ($outcome === 1) $participant = $this->isWinner ? $matchup->team1 : $matchup->team2;
-            if ($outcome === -1) $participant = $this->isWinner ? $matchup->team2 : $matchup->team1;
+            if ($outcome === MatchupOutcome::Team1_Victory) $participant = $this->isWinner ? $matchup->team1 : $matchup->team2;
+            if ($outcome === MatchupOutcome::Team2_Victory) $participant = $this->isWinner ? $matchup->team2 : $matchup->team1;
             if ($participant != null) $collection->push($participant);
         }
         return $collection;
