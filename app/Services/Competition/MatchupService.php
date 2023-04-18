@@ -35,9 +35,7 @@ class MatchupService
         ]);
         $validData = $validator->validate();
 
-        if (!$entry->games->every(function ($game) {
-            return !$game->isCompleted();
-        })) {
+        if ($entry->games->contains(fn ($game) => $game->isCompleted())) {
             throw new InvalidStateException('Cannot change maps after entering score data.');
         }
 

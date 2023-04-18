@@ -27,27 +27,23 @@ class PlayerResource extends JsonResource
                 'id' => $this->history->last()->team->id,
                 'name' => $this->history->last()->team->name,
             ],
-            'history' => $this->history->reverse()->map(function ($entry) {
-                return [
-                    'date' => $entry->date_since,
-                    'team' => $entry->team == null ? null : [
-                        'id' => $entry->team->id,
-                        'name' => $entry->team->name,
-                    ],
-                ];
-            })->toArray(),
-            'participations' => $this->tournamentTeamPlayers->map(function ($ttp) {
-                return [
-                    'team' => [
-                        'id' => $ttp->tournamentTeam->fk_team,
-                        'name' => $ttp->tournamentTeam->name,
-                    ],
-                    'tournament' => [
-                        'id' => $ttp->tournamentTeam->tournament->id,
-                        'name' => $ttp->tournamentTeam->tournament->name,
-                    ],
-                ];
-            })->toArray(),
+            'history' => $this->history->reverse()->map(fn ($entry) => [
+                'date' => $entry->date_since,
+                'team' => $entry->team == null ? null : [
+                    'id' => $entry->team->id,
+                    'name' => $entry->team->name,
+                ],
+            ])->toArray(),
+            'participations' => $this->tournamentTeamPlayers->map(fn ($ttp) => [
+                'team' => [
+                    'id' => $ttp->tournamentTeam->fk_team,
+                    'name' => $ttp->tournamentTeam->name,
+                ],
+                'tournament' => [
+                    'id' => $ttp->tournamentTeam->tournament->id,
+                    'name' => $ttp->tournamentTeam->tournament->name,
+                ],
+            ])->toArray(),
         ];
     }
 }

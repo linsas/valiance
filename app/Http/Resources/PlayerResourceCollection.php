@@ -14,15 +14,13 @@ class PlayerResourceCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'alias' => $item->alias,
-                'team' => ($item->history->last() == null || $item->history->last()->team == null) ? null : [
-                    'id' => $item->history->last()->team->id,
-                    'name' => $item->history->last()->team->name,
-                ],
-            ];
-        })->toArray();
+        return $this->collection->map(fn ($item) => [
+            'id' => $item->id,
+            'alias' => $item->alias,
+            'team' => ($item->history->last() == null || $item->history->last()->team == null) ? null : [
+                'id' => $item->history->last()->team->id,
+                'name' => $item->history->last()->team->name,
+            ],
+        ])->toArray();
     }
 }

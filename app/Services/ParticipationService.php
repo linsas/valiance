@@ -58,9 +58,9 @@ class ParticipationService
         // step 1: delete removed participants
         $leavingParticipants = $tournament->tournamentTeams->whereNotIn('id', $desired);
         foreach ($leavingParticipants as $participant) {
-            $participant->tournamentTeamPlayers->each(function ($item) {
-                $item->delete();
-            });
+            foreach ($participant->tournamentTeamPlayers as $tournamentTeamPlayer) {
+                $tournamentTeamPlayer->delete();
+            }
             $participant->delete();
         }
 
@@ -72,9 +72,7 @@ class ParticipationService
         }
 
         // step 3: create new participants
-        $remainingTeamIds = $remainingParticipants->map(function ($item) {
-            return $item->fk_team;
-        });
+        $remainingTeamIds = $remainingParticipants->map(fn ($item) => $item->fk_team);
         foreach ($desired as $newcomer) {
             if ($remainingTeamIds->contains($newcomer)) continue;
             $team = $this->findOrFailTeam($newcomer);

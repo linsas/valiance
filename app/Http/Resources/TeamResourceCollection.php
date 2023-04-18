@@ -14,11 +14,9 @@ class TeamResourceCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'name' => $item->name,
-            ];
-        })->toArray();
+        return $this->collection->map(fn ($item) => [
+            'id' => $item->id,
+            'name' => $item->name,
+        ])->toArray();
     }
 }

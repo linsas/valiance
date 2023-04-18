@@ -40,22 +40,18 @@ class TeamController extends Controller
         return ['data' => [
             'id' => $team->id,
             'name' => $team->name,
-            'players' => $players->map(function ($player) {
-                return [
-                    'id' => $player->id,
-                    'alias' => $player->alias,
-                ];
-            }),
+            'players' => $players->map(fn ($player) => [
+                'id' => $player->id,
+                'alias' => $player->alias,
+            ]),
             'transfers' => $history->sortBy('date')->reverse()->values()->toArray(),
-            'participations' => $team->tournamentTeams->map(function ($tteam) {
-                return [
-                    'name' => $tteam->name,
-                    'tournament' => [
-                        'id' => $tteam->tournament->id,
-                        'name' => $tteam->tournament->name,
-                    ],
-                ];
-            })->toArray(),
+            'participations' => $team->tournamentTeams->map(fn ($tteam) => [
+                'name' => $tteam->name,
+                'tournament' => [
+                    'id' => $tteam->tournament->id,
+                    'name' => $tteam->tournament->name,
+                ],
+            ])->toArray(),
         ]];
     }
 

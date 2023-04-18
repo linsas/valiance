@@ -36,9 +36,7 @@ class CompetitionService
 
         $lastRound = $tournament->rounds->sortBy('number')->last();
         if ($lastRound != null) {
-            if ($lastRound->matchups->contains(function ($matchup) {
-                return $matchup->getOutcome() === MatchupOutcome::Indeterminate;
-            })) {
+            if ($lastRound->matchups->contains(fn ($matchup) => $matchup->getOutcome() === MatchupOutcome::Indeterminate)) {
                 throw new InvalidStateException('All matchups must be completed before starting the next round.');
             }
         } else {

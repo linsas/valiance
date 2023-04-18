@@ -14,16 +14,12 @@ class MatchupResourceCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'team1' => $item->team1->name,
-                'team2' => $item->team2->name,
-                'tournament' => $item->round->tournament->name,
-                'maps' => $item->games->map(function ($game) {
-                    return $game->map;
-                }),
-            ];
-        })->toArray();
+        return $this->collection->map(fn ($item) => [
+            'id' => $item->id,
+            'team1' => $item->team1->name,
+            'team2' => $item->team2->name,
+            'tournament' => $item->round->tournament->name,
+            'maps' => $item->games->map(fn ($game) => $game->map),
+        ])->toArray();
     }
 }
