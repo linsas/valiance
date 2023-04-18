@@ -49,8 +49,8 @@ class TournamentResource extends JsonResource
                             'significance' => $item->significance,
                             'team1' => $item->team1->name,
                             'team2' => $item->team2->name,
-                            'score1' => $item->getScore1(),
-                            'score2' => $item->getScore2(),
+                            'score1' => $item->getTeam1Score(),
+                            'score2' => $item->getTeam2Score(),
                         ];
                     }),
                 ];

@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \App\Models\Round $round
  * @property string $significance
  * @property \Illuminate\Database\Eloquent\Collection $games
- * @method int getScore1()
- * @method int getScore2()
+ * @method int getTeam1Score()
+ * @method int getTeam2Score()
  */
 class Matchup extends Model
 {
@@ -48,16 +48,16 @@ class Matchup extends Model
         return $this->hasMany('App\Models\Game', 'fk_matchup');
     }
 
-    public function getScore1()
+    public function getTeam1Score()
     {
         $team1Score = 0;
         foreach ($this->games as $game) {
-            if ($game->getOutcome() === 1) $score++;
+            if ($game->getOutcome() === GameOutcome::Team1_Victory) $team1Score++;
         }
-        return $score;
+        return $team1Score;
     }
 
-    public function getScore2()
+    public function getTeam2Score()
     {
         $team2Score = 0;
         foreach ($this->games as $game) {
@@ -68,8 +68,8 @@ class Matchup extends Model
 
     public function getOutcome()
     {
-        $team1Score = $this->getScore1();
-        $team2Score = $this->getScore2();
+        $team1Score = $this->getTeam1Score();
+        $team2Score = $this->getTeam2Score();
         $total = $this->games->count();
         if ($team1Score > $total / 2) return MatchupOutcome::Team1_Victory;
         if ($team2Score > $total / 2) return MatchupOutcome::Team2_Victory;

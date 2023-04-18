@@ -11,8 +11,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property \App\Models\Round $round
  * @property string $significance
  * @property \Illuminate\Database\Eloquent\Collection $games
- * @method int getScore1()
- * @method int getScore2()
+ * @method int getTeam1Score()
+ * @method int getTeam2Score()
  */
 class MatchupResource extends JsonResource
 {
@@ -39,8 +39,8 @@ class MatchupResource extends JsonResource
                 'name' => $this->round->tournament->name,
             ],
             'significance' => $this->significance,
-            'score1' => $this->getScore1(),
-            'score2' => $this->getScore2(),
+            'score1' => $this->getTeam1Score(),
+            'score2' => $this->getTeam2Score(),
             'games' => $this->games->sortBy('number')->toArray(),
         ];
     }
