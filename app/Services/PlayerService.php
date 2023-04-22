@@ -31,9 +31,7 @@ class PlayerService
         $player->alias = $validData['alias'];
         $player->save();
 
-        if ($validData['team'] != null) {
-            $this->historyService->changePlayerTeam($player, $validData['team']);
-        }
+        $this->historyService->changePlayerTeam($player, $validData['team'] ?? null);
     }
 
     public function findOrFail($id)
@@ -58,7 +56,7 @@ class PlayerService
         $player->alias = $validData['alias'];
         $player->save();
 
-        $this->historyService->changePlayerTeam($player, $validData['team']);
+        $this->historyService->changePlayerTeam($player, $validData['team'] ?? null);
     }
 
     public function destroy($id)
