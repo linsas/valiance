@@ -84,14 +84,15 @@ class PlayerTeamHistoryService
     {
         $latestPlayerHistory = $this->getLatestPlayerHistory($player);
 
+        if ($latestPlayerHistory == null && $teamId == null) return;
+
         $today = date('Y-m-d');
-        if ($latestPlayerHistory != null) {
-            if ($latestPlayerHistory->date_since === $today) {
-                $latestPlayerHistory->delete();
-                $latestPlayerHistory = $this->getLatestPlayerHistory($player);
-            }
-            if ($latestPlayerHistory->fk_team === $teamId) return;
+        if ($latestPlayerHistory != null && $latestPlayerHistory->date_since === $today) {
+            $latestPlayerHistory->delete();
+            $latestPlayerHistory = $this->getLatestPlayerHistory($player);
         }
+
+        if ($latestPlayerHistory != null && $latestPlayerHistory->fk_team === $teamId) return;
 
         $newHistory = new PlayerTeamHistory;
         $newHistory->fk_player = $player->id;
