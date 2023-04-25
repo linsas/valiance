@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Values\GameOutcome;
 use App\Values\MatchupOutcome;
+use App\Values\MatchupSignificance;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \App\Models\Team $team1
  * @property \App\Models\Team $team2
  * @property \App\Models\Round $round
- * @property string $significance
+ * @property MatchupSignificance $significance
  * @property \Illuminate\Database\Eloquent\Collection $games
  * @method int getTeam1Score()
  * @method int getTeam2Score()
@@ -46,6 +48,14 @@ class Matchup extends Model
     public function games()
     {
         return $this->hasMany('App\Models\Game', 'fk_matchup');
+    }
+
+    protected function significance(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $scalar) => MatchupSignificance::from($scalar),
+            set: fn (MatchupSignificance $object) => $object->value,
+        );
     }
 
     public function getTeam1Score()
