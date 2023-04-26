@@ -7,30 +7,30 @@ export default function Minor16Team({ structure }: {
 	structure: EventStructure
 }) {
 	const openingRound = structure.getRoundMatchupsOrDefault(1)
-	const openingA1 = openingRound.filter(m => m.significance === 'ao')[0]
-	const openingA2 = openingRound.filter(m => m.significance === 'ao')[1]
-	const openingB1 = openingRound.filter(m => m.significance === 'bo')[0]
-	const openingB2 = openingRound.filter(m => m.significance === 'bo')[1]
-	const opneingC1 = openingRound.filter(m => m.significance === 'co')[0]
-	const openingC2 = openingRound.filter(m => m.significance === 'co')[1]
-	const openingD1 = openingRound.filter(m => m.significance === 'do')[0]
-	const openingD2 = openingRound.filter(m => m.significance === 'do')[1]
+	const openingA1 = openingRound.filter(m => m.significanceKey === 'ao')[0]
+	const openingA2 = openingRound.filter(m => m.significanceKey === 'ao')[1]
+	const openingB1 = openingRound.filter(m => m.significanceKey === 'bo')[0]
+	const openingB2 = openingRound.filter(m => m.significanceKey === 'bo')[1]
+	const opneingC1 = openingRound.filter(m => m.significanceKey === 'co')[0]
+	const openingC2 = openingRound.filter(m => m.significanceKey === 'co')[1]
+	const openingD1 = openingRound.filter(m => m.significanceKey === 'do')[0]
+	const openingD2 = openingRound.filter(m => m.significanceKey === 'do')[1]
 
 	const secondRound = structure.getRoundMatchupsOrDefault(2)
-	const winnersA = secondRound.find(m => m.significance === 'aw') ?? null
-	const losersA = secondRound.find(m => m.significance === 'al') ?? null
-	const winnersB = secondRound.find(m => m.significance === 'bw') ?? null
-	const losersB = secondRound.find(m => m.significance === 'bl') ?? null
-	const winnersC = secondRound.find(m => m.significance === 'cw') ?? null
-	const losersC = secondRound.find(m => m.significance === 'cl') ?? null
-	const winnersD = secondRound.find(m => m.significance === 'dw') ?? null
-	const losersD = secondRound.find(m => m.significance === 'dl') ?? null
+	const winnersA = secondRound.find(m => m.significanceKey === 'aw') ?? null
+	const losersA = secondRound.find(m => m.significanceKey === 'al') ?? null
+	const winnersB = secondRound.find(m => m.significanceKey === 'bw') ?? null
+	const losersB = secondRound.find(m => m.significanceKey === 'bl') ?? null
+	const winnersC = secondRound.find(m => m.significanceKey === 'cw') ?? null
+	const losersC = secondRound.find(m => m.significanceKey === 'cl') ?? null
+	const winnersD = secondRound.find(m => m.significanceKey === 'dw') ?? null
+	const losersD = secondRound.find(m => m.significanceKey === 'dl') ?? null
 
 	const decidingRound = structure.getRoundMatchupsOrDefault(3)
-	const decidingA = decidingRound.find(m => m.significance === 'ad') ?? null
-	const decidingB = decidingRound.find(m => m.significance === 'bd') ?? null
-	const decidingC = decidingRound.find(m => m.significance === 'cd') ?? null
-	const decidingD = decidingRound.find(m => m.significance === 'dd') ?? null
+	const decidingA = decidingRound.find(m => m.significanceKey === 'ad') ?? null
+	const decidingB = decidingRound.find(m => m.significanceKey === 'bd') ?? null
+	const decidingC = decidingRound.find(m => m.significanceKey === 'cd') ?? null
+	const decidingD = decidingRound.find(m => m.significanceKey === 'dd') ?? null
 
 	const quarterfinals = structure.getRoundMatchupsOrDefault(4)
 	const qf1 = quarterfinals[0]
