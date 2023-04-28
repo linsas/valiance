@@ -6,12 +6,12 @@ use App\Models\Tournament;
 use App\Values\MatchupOutcome;
 use App\Values\MatchupSignificance;
 
-abstract class PoolSource
+abstract class CompetitorPoolSource
 {
     public abstract function collect(Tournament $tournament);
 }
 
-class PoolSourceSeed extends PoolSource
+class CompetitorSourceSeed extends CompetitorPoolSource
 {
     private $seeds;
 
@@ -26,7 +26,7 @@ class PoolSourceSeed extends PoolSource
     }
 }
 
-class PoolSourceMatchup extends PoolSource
+class CompetitorSourceMatchup extends CompetitorPoolSource
 {
     private $matchupSignificance;
     private $isWinner;
@@ -52,7 +52,7 @@ class PoolSourceMatchup extends PoolSource
     }
 }
 
-class PoolComposite
+class CompetitorPool
 {
     private $sources;
     private $teams;
@@ -86,11 +86,17 @@ class PoolComposite
 
     public static function fromSeed(array $seeds)
     {
-        return new PoolComposite([new PoolSourceSeed($seeds)]);
+        return new CompetitorPool([new CompetitorSourceSeed($seeds)]);
     }
-    public static function fromMatchup(MatchupSignificance $matchupSignificance, bool $isWinner = true)
+
+    public static function fromMatchupWinner(MatchupSignificance $matchupSignificance)
     {
-        return new PoolComposite([new PoolSourceMatchup($matchupSignificance, $isWinner)]);
+        return new CompetitorPool([new CompetitorSourceMatchup($matchupSignificance, true)]);
+    }
+
+    public static function fromMatchupLoser(MatchupSignificance $matchupSignificance)
+    {
+        return new CompetitorPool([new CompetitorSourceMatchup($matchupSignificance, false)]);
     }
 }
 
@@ -101,7 +107,7 @@ class ProgressionRule
     private $highComposite;
     private $lowComposite;
 
-    public function __construct(MatchupSignificance $matchupSignificance, int $numGames, PoolComposite $highComposite, PoolComposite $lowComposite)
+    public function __construct(MatchupSignificance $matchupSignificance, int $numGames, CompetitorPool $highComposite, CompetitorPool $lowComposite)
     {
         $this->matchupSignificance = $matchupSignificance;
         $this->numGames = $numGames;
@@ -136,11 +142,7 @@ abstract class TournamentFormat
      */
     abstract public function getRules();
 
-    /**
-     * @param int $format
-     * @return TournamentFormat
-     */
-    public static function getFormat($format)
+    public static function getFormat(int $format): TournamentFormat
     {
         switch ($format) {
             case 1:
@@ -165,14 +167,14 @@ class SingleElimination4TeamFormat extends TournamentFormat
 
     public function getRules()
     {
-        $startingComposite = PoolComposite::fromSeed([1, 2, 3, 4]);
+        $startingComposite = CompetitorPool::fromSeed([1, 2, 3, 4]);
         return [
             [
                 new ProgressionRule(MatchupSignificance::Semifinal_1, 1, $startingComposite, $startingComposite),
                 new ProgressionRule(MatchupSignificance::Semifinal_2, 1, $startingComposite, $startingComposite),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Grand_Final, 3, PoolComposite::fromMatchup(MatchupSignificance::Semifinal_1), PoolComposite::fromMatchup(MatchupSignificance::Semifinal_2)),
+                new ProgressionRule(MatchupSignificance::Grand_Final, 3, CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_1), CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_2)),
             ],
         ];
     }
@@ -184,7 +186,7 @@ class SingleElimination8TeamFormat extends TournamentFormat
 
     public function getRules()
     {
-        $startingComposite = PoolComposite::fromSeed([1, 2, 3, 4, 5, 6, 7, 8]);
+        $startingComposite = CompetitorPool::fromSeed([1, 2, 3, 4, 5, 6, 7, 8]);
         return [
             [
                 new ProgressionRule(MatchupSignificance::Quarterfinal_1, 1, $startingComposite, $startingComposite),
@@ -193,11 +195,11 @@ class SingleElimination8TeamFormat extends TournamentFormat
                 new ProgressionRule(MatchupSignificance::Quarterfinal_4, 1, $startingComposite, $startingComposite),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Semifinal_1, 1, PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_1), PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_2)),
-                new ProgressionRule(MatchupSignificance::Semifinal_2, 1, PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_3), PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_4)),
+                new ProgressionRule(MatchupSignificance::Semifinal_1, 1, CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_1), CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_2)),
+                new ProgressionRule(MatchupSignificance::Semifinal_2, 1, CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_3), CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_4)),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Grand_Final, 3, PoolComposite::fromMatchup(MatchupSignificance::Semifinal_1), PoolComposite::fromMatchup(MatchupSignificance::Semifinal_2)),
+                new ProgressionRule(MatchupSignificance::Grand_Final, 3, CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_1), CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_2)),
             ],
         ];
     }
@@ -209,19 +211,19 @@ class Minor8TeamFormat extends TournamentFormat
 
     public function getRules()
     {
-        $groupA = PoolComposite::fromSeed([1, 3, 5, 7]);
-        $groupB = PoolComposite::fromSeed([2, 4, 6, 8]);
+        $groupA = CompetitorPool::fromSeed([1, 3, 5, 7]);
+        $groupB = CompetitorPool::fromSeed([2, 4, 6, 8]);
 
-        $round1AWinners = PoolComposite::fromMatchup(MatchupSignificance::Group_A_Opening_Match);
-        $round1ALosers = PoolComposite::fromMatchup(MatchupSignificance::Group_A_Opening_Match, false);
-        $round1BWinners = PoolComposite::fromMatchup(MatchupSignificance::Group_B_Opening_Match);
-        $round1BLosers = PoolComposite::fromMatchup(MatchupSignificance::Group_B_Opening_Match, false);
+        $round1AWinners = CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_A_Opening_Match);
+        $round1ALosers = CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_A_Opening_Match);
+        $round1BWinners = CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_B_Opening_Match);
+        $round1BLosers = CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_B_Opening_Match);
 
-        $semifinalists = new PoolComposite([
-            new PoolSourceMatchup(MatchupSignificance::Group_A_Upper_Bracket_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_B_Upper_Bracket_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_A_Deciding_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_B_Deciding_Match),
+        $semifinalists = new CompetitorPool([
+            new CompetitorSourceMatchup(MatchupSignificance::Group_A_Upper_Bracket_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_B_Upper_Bracket_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_A_Deciding_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_B_Deciding_Match),
         ]);
 
         return [
@@ -238,15 +240,15 @@ class Minor8TeamFormat extends TournamentFormat
                 new ProgressionRule(MatchupSignificance::Group_B_Lower_Bracket_Match, 3, $round1BLosers, $round1BLosers),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Group_A_Deciding_Match, 3, PoolComposite::fromMatchup(MatchupSignificance::Group_A_Upper_Bracket_Match, false), PoolComposite::fromMatchup(MatchupSignificance::Group_A_Lower_Bracket_Match)),
-                new ProgressionRule(MatchupSignificance::Group_B_Deciding_Match, 3, PoolComposite::fromMatchup(MatchupSignificance::Group_B_Upper_Bracket_Match, false), PoolComposite::fromMatchup(MatchupSignificance::Group_B_Lower_Bracket_Match)),
+                new ProgressionRule(MatchupSignificance::Group_A_Deciding_Match, 3, CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_A_Upper_Bracket_Match), CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_A_Lower_Bracket_Match)),
+                new ProgressionRule(MatchupSignificance::Group_B_Deciding_Match, 3, CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_B_Upper_Bracket_Match), CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_B_Lower_Bracket_Match)),
             ],
             [
                 new ProgressionRule(MatchupSignificance::Semifinal_1, 3, $semifinalists, $semifinalists),
                 new ProgressionRule(MatchupSignificance::Semifinal_2, 3, $semifinalists, $semifinalists),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Grand_Final, 5, PoolComposite::fromMatchup(MatchupSignificance::Semifinal_1), PoolComposite::fromMatchup(MatchupSignificance::Semifinal_2)),
+                new ProgressionRule(MatchupSignificance::Grand_Final, 5, CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_1), CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_2)),
             ],
         ];
     }
@@ -258,29 +260,29 @@ class Minor16TeamFormat extends TournamentFormat
 
     public function getRules()
     {
-        $groupA = PoolComposite::fromSeed([1, 5, 9,  13]);
-        $groupB = PoolComposite::fromSeed([2, 6, 10, 14]);
-        $groupC = PoolComposite::fromSeed([3, 7, 11, 15]);
-        $groupD = PoolComposite::fromSeed([4, 8, 12, 16]);
+        $groupA = CompetitorPool::fromSeed([1, 5, 9,  13]);
+        $groupB = CompetitorPool::fromSeed([2, 6, 10, 14]);
+        $groupC = CompetitorPool::fromSeed([3, 7, 11, 15]);
+        $groupD = CompetitorPool::fromSeed([4, 8, 12, 16]);
 
-        $round1AWinners = PoolComposite::fromMatchup(MatchupSignificance::Group_A_Opening_Match);
-        $round1ALosers = PoolComposite::fromMatchup(MatchupSignificance::Group_A_Opening_Match, false);
-        $round1BWinners = PoolComposite::fromMatchup(MatchupSignificance::Group_B_Opening_Match);
-        $round1BLosers = PoolComposite::fromMatchup(MatchupSignificance::Group_B_Opening_Match, false);
-        $round1CWinners = PoolComposite::fromMatchup(MatchupSignificance::Group_C_Opening_Match);
-        $round1CLosers = PoolComposite::fromMatchup(MatchupSignificance::Group_C_Opening_Match, false);
-        $round1DWinners = PoolComposite::fromMatchup(MatchupSignificance::Group_D_Opening_Match);
-        $round1DLosers = PoolComposite::fromMatchup(MatchupSignificance::Group_D_Opening_Match, false);
+        $round1AWinners = CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_A_Opening_Match);
+        $round1ALosers = CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_A_Opening_Match);
+        $round1BWinners = CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_B_Opening_Match);
+        $round1BLosers = CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_B_Opening_Match);
+        $round1CWinners = CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_C_Opening_Match);
+        $round1CLosers = CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_C_Opening_Match);
+        $round1DWinners = CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_D_Opening_Match);
+        $round1DLosers = CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_D_Opening_Match);
 
-        $quarterfinalists = new PoolComposite([
-            new PoolSourceMatchup(MatchupSignificance::Group_A_Upper_Bracket_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_B_Upper_Bracket_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_C_Upper_Bracket_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_D_Upper_Bracket_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_A_Deciding_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_B_Deciding_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_C_Deciding_Match),
-            new PoolSourceMatchup(MatchupSignificance::Group_D_Deciding_Match),
+        $quarterfinalists = new CompetitorPool([
+            new CompetitorSourceMatchup(MatchupSignificance::Group_A_Upper_Bracket_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_B_Upper_Bracket_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_C_Upper_Bracket_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_D_Upper_Bracket_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_A_Deciding_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_B_Deciding_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_C_Deciding_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Group_D_Deciding_Match),
         ]);
 
         return [
@@ -305,10 +307,10 @@ class Minor16TeamFormat extends TournamentFormat
                 new ProgressionRule(MatchupSignificance::Group_D_Lower_Bracket_Match, 3, $round1DLosers, $round1DLosers),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Group_A_Deciding_Match, 3, PoolComposite::fromMatchup(MatchupSignificance::Group_A_Upper_Bracket_Match, false), PoolComposite::fromMatchup(MatchupSignificance::Group_A_Lower_Bracket_Match)),
-                new ProgressionRule(MatchupSignificance::Group_B_Deciding_Match, 3, PoolComposite::fromMatchup(MatchupSignificance::Group_B_Upper_Bracket_Match, false), PoolComposite::fromMatchup(MatchupSignificance::Group_B_Lower_Bracket_Match)),
-                new ProgressionRule(MatchupSignificance::Group_C_Deciding_Match, 3, PoolComposite::fromMatchup(MatchupSignificance::Group_C_Upper_Bracket_Match, false), PoolComposite::fromMatchup(MatchupSignificance::Group_C_Lower_Bracket_Match)),
-                new ProgressionRule(MatchupSignificance::Group_D_Deciding_Match, 3, PoolComposite::fromMatchup(MatchupSignificance::Group_D_Upper_Bracket_Match, false), PoolComposite::fromMatchup(MatchupSignificance::Group_D_Lower_Bracket_Match)),
+                new ProgressionRule(MatchupSignificance::Group_A_Deciding_Match, 3, CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_A_Upper_Bracket_Match), CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_A_Lower_Bracket_Match)),
+                new ProgressionRule(MatchupSignificance::Group_B_Deciding_Match, 3, CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_B_Upper_Bracket_Match), CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_B_Lower_Bracket_Match)),
+                new ProgressionRule(MatchupSignificance::Group_C_Deciding_Match, 3, CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_C_Upper_Bracket_Match), CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_C_Lower_Bracket_Match)),
+                new ProgressionRule(MatchupSignificance::Group_D_Deciding_Match, 3, CompetitorPool::fromMatchupLoser(MatchupSignificance::Group_D_Upper_Bracket_Match), CompetitorPool::fromMatchupWinner(MatchupSignificance::Group_D_Lower_Bracket_Match)),
             ],
             [
                 new ProgressionRule(MatchupSignificance::Quarterfinal_1, 3, $quarterfinalists, $quarterfinalists),
@@ -317,11 +319,11 @@ class Minor16TeamFormat extends TournamentFormat
                 new ProgressionRule(MatchupSignificance::Quarterfinal_4, 3, $quarterfinalists, $quarterfinalists),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Semifinal_1, 3, PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_1), PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_2)),
-                new ProgressionRule(MatchupSignificance::Semifinal_2, 3, PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_3), PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_4)),
+                new ProgressionRule(MatchupSignificance::Semifinal_1, 3, CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_1), CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_2)),
+                new ProgressionRule(MatchupSignificance::Semifinal_2, 3, CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_3), CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_4)),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Grand_Final, 5, PoolComposite::fromMatchup(MatchupSignificance::Semifinal_1), PoolComposite::fromMatchup(MatchupSignificance::Semifinal_2)),
+                new ProgressionRule(MatchupSignificance::Grand_Final, 5, CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_1), CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_2)),
             ],
         ];
     }
@@ -333,42 +335,51 @@ class Major24TeamFormat extends TournamentFormat
 
     public function getRules()
     {
-        $bestEight = new PoolSourceSeed([1, 2, 3, 4, 5, 6, 7, 8]);
-        $middleEight = new PoolSourceSeed([9, 10, 11, 12, 13, 14, 15, 16]);
-        $worstEight = new PoolSourceSeed([17, 18, 19, 20, 21, 22, 23, 24]);
+        $bestEight = new CompetitorSourceSeed([1, 2, 3, 4, 5, 6, 7, 8]);
+        $middleEight = new CompetitorSourceSeed([9, 10, 11, 12, 13, 14, 15, 16]);
+        $worstEight = new CompetitorSourceSeed([17, 18, 19, 20, 21, 22, 23, 24]);
 
         // challengers' stage
-        $challengersStage = new PoolComposite([$middleEight, $worstEight]);
+        $challengersStage = new CompetitorPool([$middleEight, $worstEight]);
 
-        $challengers10 = PoolComposite::fromMatchup(MatchupSignificance::Challengers_Stage_Opening_Match);
-        $challengers01 = PoolComposite::fromMatchup(MatchupSignificance::Challengers_Stage_Opening_Match, false);
+        $challengers10 = CompetitorPool::fromMatchupWinner(MatchupSignificance::Challengers_Stage_Opening_Match);
+        $challengers01 = CompetitorPool::fromMatchupLoser(MatchupSignificance::Challengers_Stage_Opening_Match);
 
-        $challengers20 = PoolComposite::fromMatchup(MatchupSignificance::Challengers_Stage_Upper_Group_Match);
-        $challengers11 = new PoolComposite([new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Lower_Group_Match), new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Upper_Group_Match, false),]);
-        $challengers02 = PoolComposite::fromMatchup(MatchupSignificance::Challengers_Stage_Lower_Group_Match, false);
+        $challengers20 = CompetitorPool::fromMatchupWinner(MatchupSignificance::Challengers_Stage_Upper_Group_Match);
+        $challengers11 = new CompetitorPool([new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Lower_Group_Match), new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Upper_Group_Match, false),]);
+        $challengers02 = CompetitorPool::fromMatchupLoser(MatchupSignificance::Challengers_Stage_Lower_Group_Match);
 
-        $challengers21 = new PoolComposite([new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Middle_Group_Match), new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Advancing_Match, false),]);
-        $challengers12 = new PoolComposite([new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Elimination_Match), new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Middle_Group_Match, false),]);
+        $challengers21 = new CompetitorPool([new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Middle_Group_Match), new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Advancing_Match, false),]);
+        $challengers12 = new CompetitorPool([new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Elimination_Match), new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Middle_Group_Match, false),]);
 
-        $challengers22 = new PoolComposite([new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Second_Elimination_Match), new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Second_Advancing_Match, false),]);
+        $challengers22 = new CompetitorPool([new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Second_Elimination_Match), new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Second_Advancing_Match, false),]);
 
         // legends' stage
-        $legendsStage = new PoolComposite([$bestEight, new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Advancing_Match), new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Second_Advancing_Match), new PoolSourceMatchup(MatchupSignificance::Challengers_Stage_Deciding_Match),]);
+        $legendsStage = new CompetitorPool([
+            $bestEight,
+            new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Advancing_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Second_Advancing_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Challengers_Stage_Deciding_Match),
+        ]);
 
-        $legends10 = PoolComposite::fromMatchup(MatchupSignificance::Legends_Stage_Opening_Match);
-        $legends01 = PoolComposite::fromMatchup(MatchupSignificance::Legends_Stage_Opening_Match, false);
+        $legends10 = CompetitorPool::fromMatchupWinner(MatchupSignificance::Legends_Stage_Opening_Match);
+        $legends01 = CompetitorPool::fromMatchupLoser(MatchupSignificance::Legends_Stage_Opening_Match);
 
-        $legends20 = PoolComposite::fromMatchup(MatchupSignificance::Legends_Stage_Upper_Group_Match);
-        $legends11 = new PoolComposite([new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Lower_Group_Match), new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Upper_Group_Match, false),]);
-        $legends02 = PoolComposite::fromMatchup(MatchupSignificance::Legends_Stage_Lower_Group_Match, false);
+        $legends20 = CompetitorPool::fromMatchupWinner(MatchupSignificance::Legends_Stage_Upper_Group_Match);
+        $legends11 = new CompetitorPool([new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Lower_Group_Match), new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Upper_Group_Match, false),]);
+        $legends02 = CompetitorPool::fromMatchupLoser(MatchupSignificance::Legends_Stage_Lower_Group_Match);
 
-        $legends21 = new PoolComposite([new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Middle_Group_Match), new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Advancing_Match, false),]);
-        $legends12 = new PoolComposite([new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Elimination_Match), new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Middle_Group_Match, false),]);
+        $legends21 = new CompetitorPool([new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Middle_Group_Match), new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Advancing_Match, false),]);
+        $legends12 = new CompetitorPool([new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Elimination_Match), new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Middle_Group_Match, false),]);
 
-        $legends22 = new PoolComposite([new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Second_Elimination_Match), new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Second_Advancing_Match, false),]);
+        $legends22 = new CompetitorPool([new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Second_Elimination_Match), new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Second_Advancing_Match, false),]);
 
         // final stage
-        $playoffsStage = new PoolComposite([new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Advancing_Match), new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Second_Advancing_Match), new PoolSourceMatchup(MatchupSignificance::Legends_Stage_Deciding_Match),]);
+        $playoffsStage = new CompetitorPool([
+            new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Advancing_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Second_Advancing_Match),
+            new CompetitorSourceMatchup(MatchupSignificance::Legends_Stage_Deciding_Match),
+        ]);
 
         return [
             // CHALLENGERS' STAGE
@@ -467,11 +478,11 @@ class Major24TeamFormat extends TournamentFormat
                 new ProgressionRule(MatchupSignificance::Quarterfinal_4, 3, $playoffsStage, $playoffsStage),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Semifinal_1, 3, PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_1), PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_2)),
-                new ProgressionRule(MatchupSignificance::Semifinal_2, 3, PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_3), PoolComposite::fromMatchup(MatchupSignificance::Quarterfinal_4)),
+                new ProgressionRule(MatchupSignificance::Semifinal_1, 3, CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_1), CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_2)),
+                new ProgressionRule(MatchupSignificance::Semifinal_2, 3, CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_3), CompetitorPool::fromMatchupWinner(MatchupSignificance::Quarterfinal_4)),
             ],
             [
-                new ProgressionRule(MatchupSignificance::Grand_Final, 5, PoolComposite::fromMatchup(MatchupSignificance::Semifinal_1), PoolComposite::fromMatchup(MatchupSignificance::Semifinal_2)),
+                new ProgressionRule(MatchupSignificance::Grand_Final, 5, CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_1), CompetitorPool::fromMatchupWinner(MatchupSignificance::Semifinal_2)),
             ],
         ];
     }
