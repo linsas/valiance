@@ -48,7 +48,13 @@ function PlayerTransfer({ transfer, earlier }: {
 }) {
 
 	if (transfer.team == null){
-		if (earlier?.team == null) return null
+		if (earlier?.team == null) return <ListItem>
+			<ListItemText>
+				<Typography component='span'>{transfer.date}:</Typography>{' '}
+				<Typography component='span' color='textSecondary'>Not in a team</Typography>
+				{/* this shouldn't happen; earlier team should always be set */}
+			</ListItemText>
+		</ListItem>
 
 		return <ListItem>
 			<ListItemText>
