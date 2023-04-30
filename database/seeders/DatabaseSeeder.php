@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
         Player::factory()
             ->count(100)
             ->create();
+
+        $this->call(PlayerTeamHistorySeeder::class);
     }
 }
