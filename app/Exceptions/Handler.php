@@ -41,8 +41,8 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (InvalidStateException $exception) {
+            return response()->json(['message' => $exception->getMessage()], 409);
         });
     }
 }
