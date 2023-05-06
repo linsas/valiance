@@ -20,7 +20,7 @@ class PlayerController extends Controller
 
     public function index()
     {
-        $list = $this->service->index();
+        $list = Player::all();
         return new PlayerResourceCollection($list);
     }
 

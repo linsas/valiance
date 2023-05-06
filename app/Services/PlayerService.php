@@ -14,11 +14,6 @@ class PlayerService
         $this->historyService = $historyService;
     }
 
-    public function index()
-    {
-        return Player::all();
-    }
-
     public function store(array $inputData): void
     {
         $validator = Validator::make($inputData, [

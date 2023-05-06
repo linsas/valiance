@@ -14,11 +14,6 @@ class TeamService
         $this->historyService = $historyService;
     }
 
-    public function index()
-    {
-        return Team::all();
-    }
-
     public function store(array $inputData): void
     {
         $validator = Validator::make($inputData, [

@@ -20,7 +20,7 @@ class TeamController extends Controller
 
     public function index()
     {
-        $list = $this->service->index();
+        $list = Team::all();
         return new TeamResourceCollection($list);
     }
 

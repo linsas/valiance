@@ -12,11 +12,6 @@ use App\Values\MatchupOutcome;
 
 class MatchupService
 {
-    public function index()
-    {
-        return Matchup::all();
-    }
-
     public function updateMaps($inputData, $id)
     {
         $entry = Matchup::findOrFail($id);

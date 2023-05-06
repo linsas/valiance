@@ -20,7 +20,7 @@ class TournamentController extends Controller
 
     public function index()
     {
-        $list = $this->service->index();
+        $list = Tournament::all();
         return new TournamentResourceCollection($list);
     }
 

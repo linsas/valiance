@@ -20,7 +20,7 @@ class MatchupController extends Controller
 
     public function index()
     {
-        $list = $this->service->index();
+        $list = Matchup::all();
         return new MatchupResourceCollection($list);
     }
 

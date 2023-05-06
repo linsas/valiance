@@ -10,11 +10,6 @@ use App\Models\Tournament;
 
 class TournamentService
 {
-    public function index()
-    {
-        return Tournament::all();
-    }
-
     public function store(array $inputData): void
     {
         $validator = Validator::make($inputData, [
