@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,8 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $id
  * @property int $number
  * @property int $fk_tournament
- * @property \App\Models\Tournament $tournament
- * @property \Illuminate\Database\Eloquent\Collection $matchups
+ * @property Tournament $tournament
+ * @property Collection<int, Matchup> $matchups
  */
 class Round extends Model
 {

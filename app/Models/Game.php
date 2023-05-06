@@ -10,21 +10,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $number
  * @property int $fk_matchup
- * @property \App\Models\Matchup $matchup
- * @property string|null $map
- * @property int|null $score1
- * @property int|null $score2
+ * @property Matchup $matchup
+ * @property ?string $map
+ * @property ?int $score1
+ * @property ?int $score2
  */
 class Game extends Model
 {
     public $timestamps = false;
     protected $table = 'game';
 
-    protected $fillable = ['fk_matchup', 'number', 'map', 'score1', 'score2'];
     protected $visible = ['map', 'score1', 'score2', 'number'];
 
-    public static $validMaps = ['bind', 'haven', 'split', 'ascent', 'icebox', 'breeze', 'fracture', 'pearl',];
-    public static $roundsPerHalf = 12;
+    public static array $validMaps = ['bind', 'haven', 'split', 'ascent', 'icebox', 'breeze', 'fracture', 'pearl',];
+    public static int $roundsPerHalf = 12;
 
     public function matchup(): BelongsTo
     {
@@ -33,7 +32,7 @@ class Game extends Model
 
     public function isCompleted(): bool
     {
-        return $this->score1 !== null && $this->score2 !== null;
+        return $this->score1 !== null || $this->score2 !== null;
     }
 
     public function getOutcome(): GameOutcome

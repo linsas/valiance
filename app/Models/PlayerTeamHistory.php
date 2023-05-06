@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $date_since
  * @property int $fk_player
- * @property int|null $fk_team
- * @property \App\Models\Player $player
- * @property \App\Models\Team|null $team
+ * @property ?int $fk_team
+ * @property Player $player
+ * @property ?Team $team
  */
 class PlayerTeamHistory extends Model
 {

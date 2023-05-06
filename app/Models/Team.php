@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,8 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int $id
  * @property string $name
- * @property \Illuminate\Database\Eloquent\Collection $history
- * @property \Illuminate\Database\Eloquent\Collection $tournamentTeams
+ * @property Collection<int, PlayerTeamHistory> $history
+ * @property Collection<int, TournamentTeam> $tournamentTeams
  */
 class Team extends Model
 {

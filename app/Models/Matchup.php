@@ -6,6 +6,7 @@ use App\Values\GameOutcome;
 use App\Values\MatchupOutcome;
 use App\Values\MatchupSignificance;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,19 +16,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $fk_team1
  * @property int $fk_team2
  * @property int $fk_round
- * @property \App\Models\Team $team1
- * @property \App\Models\Team $team2
- * @property \App\Models\Round $round
+ * @property TournamentTeam $team1
+ * @property TournamentTeam $team2
+ * @property Round $round
  * @property MatchupSignificance $significance
- * @property \Illuminate\Database\Eloquent\Collection $games
+ * @property Collection<int, Game> $games
  */
 class Matchup extends Model
 {
     public $timestamps = false;
     protected $table = 'matchup';
-    protected $with = ['team1', 'team2', 'games'];
 
-    protected $fillable = ['fk_team1', 'fk_team2', 'fk_round', 'significance'];
     protected $visible = ['id', 'team1', 'team2', 'games', 'significance'];
 
     public function round(): BelongsTo
