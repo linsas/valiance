@@ -2,49 +2,44 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Matchup;
+use App\Models\Round;
+use App\Models\Tournament;
+use App\Models\TournamentTeam;
+use App\Models\TournamentTeamPlayer;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/**
- * @property int $id
- * @property string $name
- * @property int $format
- * @property \Illuminate\Database\Eloquent\Collection $tournamentTeams
- * @property \Illuminate\Database\Eloquent\Collection $matchups
- */
+/** @mixin Tournament */
 class TournamentResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function toArray($request)
+    /** @return array<string, mixed> */
+    public function toArray(Request $request)
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
             'format' => $this->format,
-            'participants' => $this->tournamentTeams->map(fn ($tteam) => [
-                'name' => $tteam->name,
+            'participants' => $this->tournamentTeams->map(fn (TournamentTeam $participantTeam) => [
+                'name' => $participantTeam->name,
                 'team' => [
-                    'id' => $tteam->fk_team,
-                    'name' => $tteam->team->name,
+                    'id' => $participantTeam->fk_team,
+                    'name' => $participantTeam->team->name,
                 ],
-                'players' => $tteam->tournamentTeamPlayers->map(fn ($item) => [
-                    'id' => $item->fk_player,
-                    'alias' => $item->player->alias,
+                'players' => $participantTeam->tournamentTeamPlayers->map(fn (TournamentTeamPlayer $participantPlayer) => [
+                    'id' => $participantPlayer->fk_player,
+                    'alias' => $participantPlayer->player->alias,
                 ]),
             ]),
-            'rounds' => $this->rounds->map(fn ($item) => [
-                'number' => $item->number,
-                'matchups' => $item->matchups->map(fn ($item) => [
-                    'id' => $item->id,
-                    'significanceKey' => $item->significance->value,
-                    'team1' => $item->team1->name,
-                    'team2' => $item->team2->name,
-                    'score1' => $item->getTeam1Score(),
-                    'score2' => $item->getTeam2Score(),
+            'rounds' => $this->rounds->map(fn (Round $round) => [
+                'number' => $round->number,
+                'matchups' => $round->matchups->map(fn (Matchup $matchup) => [
+                    'id' => $matchup->id,
+                    'significanceKey' => $matchup->significance->value,
+                    'team1' => $matchup->team1->name,
+                    'team2' => $matchup->team2->name,
+                    'score1' => $matchup->getTeam1Score(),
+                    'score2' => $matchup->getTeam2Score(),
                 ]),
             ]),
         ];

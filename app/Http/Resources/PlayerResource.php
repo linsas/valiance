@@ -2,23 +2,17 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Player;
+use App\Models\PlayerTeamHistory;
+use App\Models\TournamentTeamPlayer;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/**
- * @property int $id
- * @property string $alias
- * @property \Illuminate\Database\Eloquent\Collection $history
- * @property \Illuminate\Database\Eloquent\Collection $tournamentTeamPlayers
- */
+/** @mixin Player */
 class PlayerResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function toArray($request)
+    /** @return array<string, mixed> */
+    public function toArray(Request $request)
     {
         return [
             'id' => $this->id,
@@ -27,21 +21,21 @@ class PlayerResource extends JsonResource
                 'id' => $this->history->last()->team->id,
                 'name' => $this->history->last()->team->name,
             ],
-            'history' => $this->history->reverse()->map(fn ($entry) => [
+            'history' => $this->history->reverse()->map(fn (PlayerTeamHistory $entry) => [
                 'date' => $entry->date_since,
                 'team' => $entry->team == null ? null : [
                     'id' => $entry->team->id,
                     'name' => $entry->team->name,
                 ],
             ])->toArray(),
-            'participations' => $this->tournamentTeamPlayers->map(fn ($ttp) => [
+            'participations' => $this->tournamentTeamPlayers->map(fn (TournamentTeamPlayer $participantPlayer) => [
                 'team' => [
-                    'id' => $ttp->tournamentTeam->fk_team,
-                    'name' => $ttp->tournamentTeam->name,
+                    'id' => $participantPlayer->tournamentTeam->fk_team,
+                    'name' => $participantPlayer->tournamentTeam->name,
                 ],
                 'tournament' => [
-                    'id' => $ttp->tournamentTeam->tournament->id,
-                    'name' => $ttp->tournamentTeam->tournament->name,
+                    'id' => $participantPlayer->tournamentTeam->tournament->id,
+                    'name' => $participantPlayer->tournamentTeam->tournament->name,
                 ],
             ])->toArray(),
         ];

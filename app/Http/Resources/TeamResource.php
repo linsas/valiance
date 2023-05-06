@@ -2,33 +2,22 @@
 
 namespace App\Http\Resources;
 
+use App\Models\PlayerTeamHistory;
+use App\Models\Team;
+use App\Models\TournamentTeam;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/**
- * @property int $id
- * @property string $name
- * @property \Illuminate\Database\Eloquent\Collection $history
- * @property \Illuminate\Database\Eloquent\Collection $tournamentTeams
- */
+/** @mixin Team */
 class TeamResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function toArray($request)
+    /** @return array<string, mixed> */
+    public function toArray(Request $request)
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'players' => [],
-            // 'players' => $this->players->map(fn ($player) => [
-            //     'id' => $player->id,
-            //     'alias' => $player->alias,
-            // ]),
-            'history' => $this->history->reverse()->map(fn ($entry) => [
+            'history' => $this->history->reverse()->map(fn (PlayerTeamHistory $entry) => [
                 'date' => $entry->date_since,
                 'player' => [
                     'id' => $entry->player->id,
@@ -36,11 +25,11 @@ class TeamResource extends JsonResource
                 ],
                 'team' => $entry->team == null ? null : $entry->team->id,
             ])->toArray(),
-            'participations' => $this->tournamentTeams->map(fn ($tteam) => [
-                'name' => $tteam->name,
+            'participations' => $this->tournamentTeams->map(fn (TournamentTeam $participantTeam) => [
+                'name' => $participantTeam->name,
                 'tournament' => [
-                    'id' => $tteam->tournament->id,
-                    'name' => $tteam->tournament->name,
+                    'id' => $participantTeam->tournament->id,
+                    'name' => $participantTeam->tournament->name,
                 ],
             ])->toArray(),
         ];

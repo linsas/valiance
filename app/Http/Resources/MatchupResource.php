@@ -2,27 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Matchup;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/**
- * @property int $id
- * @property \App\Models\TournamentTeam $team1
- * @property \App\Models\TournamentTeam $team2
- * @property \App\Models\Round $round
- * @property \App\Values\MatchupSignificance $significance
- * @property \Illuminate\Database\Eloquent\Collection $games
- * @method int getTeam1Score()
- * @method int getTeam2Score()
- */
+/** @mixin Matchup */
 class MatchupResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function toArray($request)
+    /** @return array<string, mixed> */
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
