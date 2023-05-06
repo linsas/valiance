@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Values\GameOutcome;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -25,20 +26,17 @@ class Game extends Model
     public static $validMaps = ['bind', 'haven', 'split', 'ascent', 'icebox', 'breeze', 'fracture', 'pearl',];
     public static $roundsPerHalf = 12;
 
-    public function matchup()
+    public function matchup(): BelongsTo
     {
         return $this->belongsTo('App\Models\Matchup', 'fk_matchup');
     }
 
-    /**
-     * @return bool `true` if score information is entered, `false` otherwise
-     */
-    public function isCompleted()
+    public function isCompleted(): bool
     {
         return $this->score1 !== null && $this->score2 !== null;
     }
 
-    public function getOutcome()
+    public function getOutcome(): GameOutcome
     {
         if (!$this->isCompleted()) return GameOutcome::Indeterminate;
         if ($this->score1 > $this->score2) return GameOutcome::Team1_Victory;

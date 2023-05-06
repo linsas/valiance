@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * @property int $id
@@ -22,12 +24,12 @@ class Tournament extends Model
 
     protected $visible = ['id', 'name', 'format'];
 
-    public function tournamentTeams()
+    public function tournamentTeams(): HasMany
     {
         return $this->hasMany('App\Models\TournamentTeam', 'fk_tournament');
     }
 
-    public function matchups()
+    public function matchups(): HasManyThrough
     {
         return $this->hasManyThrough(
             'App\Models\Matchup', // the related model we want
@@ -39,7 +41,7 @@ class Tournament extends Model
         );
     }
 
-    public function rounds()
+    public function rounds(): HasMany
     {
         return $this->hasMany('App\Models\Round', 'fk_tournament');
     }

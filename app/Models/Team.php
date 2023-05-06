@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -20,12 +21,12 @@ class Team extends Model
 
     protected $visible = ['id', 'name'];
 
-    public function history()
+    public function history(): HasMany
     {
         return $this->hasMany('App\Models\PlayerTeamHistory', 'fk_team');
     }
 
-    public function tournamentTeams()
+    public function tournamentTeams(): HasMany
     {
         return $this->hasMany('App\Models\TournamentTeam', 'fk_team');
     }

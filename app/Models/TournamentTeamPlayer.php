@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -18,12 +19,12 @@ class TournamentTeamPlayer extends Model
 
     protected $visible = ['id', 'fk_player', 'fk_tournament_team'];
 
-    public function player()
+    public function player(): BelongsTo
     {
         return $this->belongsTo('App\Models\Player', 'fk_player');
     }
 
-    public function tournamentTeam()
+    public function tournamentTeam(): BelongsTo
     {
         return $this->belongsTo('App\Models\TournamentTeam', 'fk_tournament_team');
     }

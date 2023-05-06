@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -18,12 +20,12 @@ class Round extends Model
 
     protected $visible = ['number'];
 
-    public function tournament()
+    public function tournament(): BelongsTo
     {
         return $this->belongsTo('App\Models\Tournament', 'fk_tournament');
     }
 
-    public function matchups()
+    public function matchups(): HasMany
     {
         return $this->hasMany('App\Models\Matchup', 'fk_round');
     }

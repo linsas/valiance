@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -19,12 +20,12 @@ class PlayerTeamHistory extends Model
 
     protected $visible = ['date_since', 'fk_player', 'fk_team'];
 
-    public function player()
+    public function player(): BelongsTo
     {
         return $this->belongsTo('App\Models\Player', 'fk_player');
     }
 
-    public function team()
+    public function team(): BelongsTo
     {
         return $this->belongsTo('App\Models\Team', 'fk_team');
     }

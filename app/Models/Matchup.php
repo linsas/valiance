@@ -7,6 +7,8 @@ use App\Values\MatchupOutcome;
 use App\Values\MatchupSignificance;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -18,8 +20,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \App\Models\Round $round
  * @property MatchupSignificance $significance
  * @property \Illuminate\Database\Eloquent\Collection $games
- * @method int getTeam1Score()
- * @method int getTeam2Score()
  */
 class Matchup extends Model
 {
@@ -30,22 +30,22 @@ class Matchup extends Model
     protected $fillable = ['fk_team1', 'fk_team2', 'fk_round', 'significance'];
     protected $visible = ['id', 'team1', 'team2', 'games', 'significance'];
 
-    public function round()
+    public function round(): BelongsTo
     {
         return $this->belongsTo('App\Models\Round', 'fk_round');
     }
 
-    public function team1()
+    public function team1(): BelongsTo
     {
         return $this->belongsTo('App\Models\TournamentTeam', 'fk_team1');
     }
 
-    public function team2()
+    public function team2(): BelongsTo
     {
         return $this->belongsTo('App\Models\TournamentTeam', 'fk_team2');
     }
 
-    public function games()
+    public function games(): HasMany
     {
         return $this->hasMany('App\Models\Game', 'fk_matchup');
     }
@@ -58,7 +58,7 @@ class Matchup extends Model
         );
     }
 
-    public function getTeam1Score()
+    public function getTeam1Score(): int
     {
         $team1Score = 0;
         foreach ($this->games as $game) {
@@ -67,7 +67,7 @@ class Matchup extends Model
         return $team1Score;
     }
 
-    public function getTeam2Score()
+    public function getTeam2Score(): int
     {
         $team2Score = 0;
         foreach ($this->games as $game) {
@@ -76,7 +76,7 @@ class Matchup extends Model
         return $team2Score;
     }
 
-    public function getOutcome()
+    public function getOutcome(): MatchupOutcome
     {
         $team1Score = $this->getTeam1Score();
         $team2Score = $this->getTeam2Score();
