@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Services\Competition\CompetitionService;
+use Illuminate\Http\Response;
 
 class CompetitionController extends Controller
 {
-    protected $service;
+    protected CompetitionService $service;
 
     public function __construct(CompetitionService $service)
     {
@@ -14,7 +15,7 @@ class CompetitionController extends Controller
         $this->middleware('auth');
     }
 
-    public function advance($tournament)
+    public function advance(int $tournament): Response
     {
         $this->service->advance($tournament);
         return response()->noContent();
