@@ -4,7 +4,6 @@ namespace App\Services\Competition;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use App\Exceptions\InvalidStateException;
 use App\Models\Matchup;
 use App\Models\Game;
@@ -12,7 +11,7 @@ use App\Values\MatchupOutcome;
 
 class MatchupService
 {
-    public function updateMaps($inputData, $id)
+    public function updateMaps(array $inputData, int $id): void
     {
         $entry = Matchup::findOrFail($id);
 
@@ -21,11 +20,12 @@ class MatchupService
         ]);
         $validData = $validator->validate();
 
-        if ($entry->games->contains(fn ($game) => $game->isCompleted())) {
+        if ($entry->games->contains(fn (Game $game) => $game->isCompleted())) {
             throw new InvalidStateException('Cannot change maps after entering score data.');
         }
 
         $mapCollection = collect($validData['maps']);
+
         $numGames = $entry->games->count();
         if ($mapCollection->count() !== $numGames) {
             throw new InvalidStateException('Exactly ' . $numGames . ' maps are required.');
@@ -43,12 +43,8 @@ class MatchupService
         DB::commit();
     }
 
-    public function updateScore($inputData, $matchupId, $gameNumber)
+    public function updateScore(array $inputData, int $matchupId, int $gameNumber): void
     {
-        if (!ctype_digit($gameNumber)) {
-            throw ValidationException::withMessages(['The id is invalid.']);
-        }
-
         $matchup = Matchup::findOrFail($matchupId);
         if ($matchup->round->number !== $matchup->round->tournament->rounds->max('number')) {
             throw new InvalidStateException('Cannot change score after the round is completed.');

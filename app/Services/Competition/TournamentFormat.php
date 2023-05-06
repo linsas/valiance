@@ -3,24 +3,26 @@
 namespace App\Services\Competition;
 
 use App\Models\Tournament;
+use App\Models\TournamentTeam;
 use App\Values\MatchupOutcome;
 use App\Values\MatchupSignificance;
+use Illuminate\Support\Collection;
 
 abstract class CompetitorPoolSource
 {
-    public abstract function collect(Tournament $tournament);
+    public abstract function collectParticipants(Tournament $tournament): Collection;
 }
 
 class CompetitorSourceSeed extends CompetitorPoolSource
 {
-    private $seeds;
+    private array $seeds;
 
-    public function __construct($seeds = [])
+    public function __construct(array $seeds = [])
     {
         $this->seeds = $seeds;
     }
 
-    public function collect($tournament)
+    public function collectParticipants(Tournament $tournament): Collection
     {
         return $tournament->tournamentTeams->whereIn('seed', $this->seeds);
     }
@@ -28,8 +30,8 @@ class CompetitorSourceSeed extends CompetitorPoolSource
 
 class CompetitorSourceMatchup extends CompetitorPoolSource
 {
-    private $matchupSignificance;
-    private $isWinner;
+    private MatchupSignificance $matchupSignificance;
+    private bool $isWinner;
 
     public function __construct(MatchupSignificance $matchupSignificance, bool $isWinner = true)
     {
@@ -37,7 +39,7 @@ class CompetitorSourceMatchup extends CompetitorPoolSource
         $this->isWinner = $isWinner;
     }
 
-    public function collect($tournament)
+    public function collectParticipants(Tournament $tournament): Collection
     {
         $matchups = $tournament->matchups->where('significance', $this->matchupSignificance);
         $collection = collect();
@@ -54,47 +56,47 @@ class CompetitorSourceMatchup extends CompetitorPoolSource
 
 class CompetitorPool
 {
-    private $sources;
-    private $teams;
+    private array $sources;
+    private Collection $teams;
 
-    public function __construct($sources = [])
+    public function __construct(array $sources = [])
     {
         $this->sources = $sources;
     }
 
-    public function fill(Tournament $tournament)
+    public function fill(Tournament $tournament): void
     {
         if ($this->teams != null) return;
         $this->teams = collect();
         foreach ($this->sources as $source) {
-            $collected = $source->collect($tournament);
+            $collected = $source->collectParticipants($tournament);
             foreach ($collected as $participant) {
                 $this->teams->push($participant);
             }
         }
     }
 
-    public function takeHigh()
+    public function takeHigh(): TournamentTeam
     {
         return $this->teams->shift();
     }
 
-    public function takeLow()
+    public function takeLow(): TournamentTeam
     {
         return $this->teams->pop();
     }
 
-    public static function fromSeed(array $seeds)
+    public static function fromSeed(array $seeds): CompetitorPool
     {
         return new CompetitorPool([new CompetitorSourceSeed($seeds)]);
     }
 
-    public static function fromMatchupWinner(MatchupSignificance $matchupSignificance)
+    public static function fromMatchupWinner(MatchupSignificance $matchupSignificance): CompetitorPool
     {
         return new CompetitorPool([new CompetitorSourceMatchup($matchupSignificance, true)]);
     }
 
-    public static function fromMatchupLoser(MatchupSignificance $matchupSignificance)
+    public static function fromMatchupLoser(MatchupSignificance $matchupSignificance): CompetitorPool
     {
         return new CompetitorPool([new CompetitorSourceMatchup($matchupSignificance, false)]);
     }
@@ -102,10 +104,10 @@ class CompetitorPool
 
 class ProgressionRule
 {
-    public $matchupSignificance;
-    public $numGames;
-    private $highComposite;
-    private $lowComposite;
+    public MatchupSignificance $matchupSignificance;
+    public int $numGames;
+    private CompetitorPool $highComposite;
+    private CompetitorPool $lowComposite;
 
     public function __construct(MatchupSignificance $matchupSignificance, int $numGames, CompetitorPool $highComposite, CompetitorPool $lowComposite)
     {
@@ -115,18 +117,18 @@ class ProgressionRule
         $this->lowComposite = $lowComposite;
     }
 
-    public function fill($tournament)
+    public function fill(Tournament $tournament): void
     {
         $this->highComposite->fill($tournament);
         $this->lowComposite->fill($tournament);
     }
 
-    public function takeHigh()
+    public function takeHigh(): TournamentTeam
     {
         return $this->highComposite->takeHigh();
     }
 
-    public function takeLow()
+    public function takeLow(): TournamentTeam
     {
         return $this->lowComposite->takeLow();
     }
@@ -134,13 +136,13 @@ class ProgressionRule
 
 abstract class TournamentFormat
 {
-    public static $validFormats = [1, 2, 3, 4, 5];
-    public $teamsNeeded;
+    public static array $validFormats = [1, 2, 3, 4, 5];
+    public int $teamsNeeded;
 
     /**
      * @return ProgressionRule[][]
      */
-    abstract public function getRules();
+    abstract public function getRules(): array;
 
     public static function getFormat(int $format): TournamentFormat
     {
@@ -163,9 +165,9 @@ abstract class TournamentFormat
 
 class SingleElimination4TeamFormat extends TournamentFormat
 {
-    public $teamsNeeded = 4;
+    public int $teamsNeeded = 4;
 
-    public function getRules()
+    public function getRules(): array
     {
         $startingComposite = CompetitorPool::fromSeed([1, 2, 3, 4]);
         return [
@@ -182,9 +184,9 @@ class SingleElimination4TeamFormat extends TournamentFormat
 
 class SingleElimination8TeamFormat extends TournamentFormat
 {
-    public $teamsNeeded = 8;
+    public int $teamsNeeded = 8;
 
-    public function getRules()
+    public function getRules(): array
     {
         $startingComposite = CompetitorPool::fromSeed([1, 2, 3, 4, 5, 6, 7, 8]);
         return [
@@ -207,9 +209,9 @@ class SingleElimination8TeamFormat extends TournamentFormat
 
 class Minor8TeamFormat extends TournamentFormat
 {
-    public $teamsNeeded = 8;
+    public int $teamsNeeded = 8;
 
-    public function getRules()
+    public function getRules(): array
     {
         $groupA = CompetitorPool::fromSeed([1, 3, 5, 7]);
         $groupB = CompetitorPool::fromSeed([2, 4, 6, 8]);
@@ -256,9 +258,9 @@ class Minor8TeamFormat extends TournamentFormat
 
 class Minor16TeamFormat extends TournamentFormat
 {
-    public $teamsNeeded = 16;
+    public int $teamsNeeded = 16;
 
-    public function getRules()
+    public function getRules(): array
     {
         $groupA = CompetitorPool::fromSeed([1, 5, 9,  13]);
         $groupB = CompetitorPool::fromSeed([2, 6, 10, 14]);
@@ -331,9 +333,9 @@ class Minor16TeamFormat extends TournamentFormat
 
 class Major24TeamFormat extends TournamentFormat
 {
-    public $teamsNeeded = 24;
+    public int $teamsNeeded = 24;
 
-    public function getRules()
+    public function getRules(): array
     {
         $bestEight = new CompetitorSourceSeed([1, 2, 3, 4, 5, 6, 7, 8]);
         $middleEight = new CompetitorSourceSeed([9, 10, 11, 12, 13, 14, 15, 16]);

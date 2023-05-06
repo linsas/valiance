@@ -4,7 +4,6 @@ namespace App\Services\Competition;
 
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 use App\Exceptions\InvalidStateException;
 use App\Models\Round;
 use App\Models\Matchup;
@@ -14,12 +13,8 @@ use App\Values\MatchupOutcome;
 
 class CompetitionService
 {
-    public function advance($tournamentId)
+    public function advance(int $tournamentId): void
     {
-        if (!ctype_digit($tournamentId)) {
-            throw ValidationException::withMessages(['The id is invalid.']);
-        }
-
         $tournament = Tournament::findOrFail($tournamentId);
         $format = TournamentFormat::getFormat($tournament->format);
         $rules = $format->getRules();
@@ -58,7 +53,7 @@ class CompetitionService
         DB::commit();
     }
 
-    public function matchPair(ProgressionRule $matchRule, Round $round)
+    public function matchPair(ProgressionRule $matchRule, Round $round): void
     {
         $high = $matchRule->takeHigh();
         $low = $matchRule->takeLow();
