@@ -13,13 +13,14 @@ use App\Models\TournamentTeamPlayer;
 
 class ParticipationService
 {
-    private $historyService;
+    private PlayerTeamHistoryService $historyService;
 
-    public function __construct(PlayerTeamHistoryService $historyService) {
+    public function __construct(PlayerTeamHistoryService $historyService)
+    {
         $this->historyService = $historyService;
     }
 
-    public function updateParticipations($inputData, $tournamentId)
+    public function updateParticipations(array $inputData, int $tournamentId): void
     {
         $tournament = Tournament::findOrFail($tournamentId);
         if ($tournament->rounds->count() > 0) {

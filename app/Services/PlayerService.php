@@ -7,9 +7,10 @@ use App\Models\Player;
 
 class PlayerService
 {
-    private $historyService;
+    private PlayerTeamHistoryService $historyService;
 
-    public function __construct(PlayerTeamHistoryService $historyService) {
+    public function __construct(PlayerTeamHistoryService $historyService)
+    {
         $this->historyService = $historyService;
     }
 
@@ -18,7 +19,7 @@ class PlayerService
         return Player::all();
     }
 
-    public function store($inputData)
+    public function store(array $inputData): void
     {
         $validator = Validator::make($inputData, [
             'alias' => 'required|string|max:255',
@@ -33,7 +34,7 @@ class PlayerService
         $this->historyService->changePlayerTeam($player, $validData['team'] ?? null);
     }
 
-    public function update($inputData, $id)
+    public function update(array $inputData, int $id): void
     {
         $player = Player::findOrFail($id);
 
@@ -49,7 +50,7 @@ class PlayerService
         $this->historyService->changePlayerTeam($player, $validData['team'] ?? null);
     }
 
-    public function destroy($id)
+    public function destroy(int $id): void
     {
         $player = Player::findOrFail($id);
 

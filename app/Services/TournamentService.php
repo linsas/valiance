@@ -15,7 +15,7 @@ class TournamentService
         return Tournament::all();
     }
 
-    public function store($inputData)
+    public function store(array $inputData): void
     {
         $validator = Validator::make($inputData, [
             'name' => 'required|string|max:255',
@@ -29,7 +29,7 @@ class TournamentService
         $entry->save();
     }
 
-    public function update($inputData, $id)
+    public function update(array $inputData, int $id): void
     {
         $entry = Tournament::findOrFail($id);
 
@@ -48,7 +48,7 @@ class TournamentService
         $entry->save();
     }
 
-    public function destroy($id)
+    public function destroy(int $id): void
     {
         $entry = Tournament::findOrFail($id);
         if ($entry->rounds->count() > 0) {

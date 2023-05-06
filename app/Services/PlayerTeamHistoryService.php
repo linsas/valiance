@@ -13,17 +13,17 @@ class PlayerTeamHistoryService
         return PlayerTeamHistory::where('fk_player', $player->id)->orderBy('date_since')->get();
     }
 
-    public function getEarlierPlayerEntry(PlayerTeamHistory $entry)
+    public function getEarlierPlayerEntry(PlayerTeamHistory $entry): ?PlayerTeamHistory
     {
-        return PlayerTeamHistory::where('fk_player', $entry->fk_player)->where('date_since', '<', $entry->date_since)->orderBy('date_since')->get()->last();
+        return PlayerTeamHistory::where('fk_player', $entry->fk_player)->where('date_since', '<', $entry->date_since)->orderByDesc('date_since')->first();
     }
 
-    public function getLaterPlayerEntry(PlayerTeamHistory $entry)
+    public function getLaterPlayerEntry(PlayerTeamHistory $entry): ?PlayerTeamHistory
     {
-        return PlayerTeamHistory::where('fk_player', $entry->fk_player)->where('date_since', '>', $entry->date_since)->orderBy('date_since')->get()->first();
+        return PlayerTeamHistory::where('fk_player', $entry->fk_player)->where('date_since', '>', $entry->date_since)->orderBy('date_since')->first();
     }
 
-    public function getLatestPlayerHistory(Player $player)
+    public function getLatestPlayerHistory(Player $player): ?PlayerTeamHistory
     {
         return $this->getAllHistoryByPlayer($player)->last();
     }
@@ -33,7 +33,7 @@ class PlayerTeamHistoryService
         return PlayerTeamHistory::where('fk_team', $team->id)->get();
     }
 
-    private function getTransferItem(Player $player, Team $otherTeam = null, string $date, bool $isTransferringAway)
+    private function getTransferItem(Player $player, Team $otherTeam = null, string $date, bool $isTransferringAway): array
     {
         return [
             'player' => [
@@ -75,12 +75,13 @@ class PlayerTeamHistoryService
         $surface = PlayerTeamHistory::where('fk_team', $team->id)->get()->unique('fk_player'); // every time a player joined a team (once per player)
         foreach ($surface as $item) {
             $playerLatest = $this->getLatestPlayerHistory($item->player);
+            if ($playerLatest == null) continue;
             if ($playerLatest->fk_team === $team->id) $players->add($item->player);
         }
         return $players;
     }
 
-    public function changePlayerTeam(Player $player, ?int $teamId = null)
+    public function changePlayerTeam(Player $player, ?int $teamId = null): void
     {
         $latestPlayerHistory = $this->getLatestPlayerHistory($player);
 

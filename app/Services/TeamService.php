@@ -7,7 +7,7 @@ use App\Models\Team;
 
 class TeamService
 {
-    private $historyService;
+    private PlayerTeamHistoryService $historyService;
 
     public function __construct(PlayerTeamHistoryService $historyService)
     {
@@ -19,7 +19,7 @@ class TeamService
         return Team::all();
     }
 
-    public function store($inputData)
+    public function store(array $inputData): void
     {
         $validator = Validator::make($inputData, [
             'name' => 'required|string|max:255',
@@ -31,7 +31,7 @@ class TeamService
         $team->save();
     }
 
-    public function update($inputData, $id)
+    public function update(array $inputData, int $id): void
     {
         $team = Team::findOrFail($id);
 
@@ -44,7 +44,7 @@ class TeamService
         $team->save();
     }
 
-    public function destroy($id)
+    public function destroy(int $id): void
     {
         $team = Team::findOrFail($id);
 
