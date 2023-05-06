@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use App\Models\Player;
 
 class PlayerService
@@ -34,18 +33,9 @@ class PlayerService
         $this->historyService->changePlayerTeam($player, $validData['team'] ?? null);
     }
 
-    public function findOrFail($id)
-    {
-        if (!ctype_digit($id)) {
-            throw ValidationException::withMessages(['The id is invalid.']);
-        }
-        $player = Player::findOrFail($id);
-        return $player;
-    }
-
     public function update($inputData, $id)
     {
-        $player = $this->findOrFail($id);
+        $player = Player::findOrFail($id);
 
         $validator = Validator::make($inputData, [
             'alias' => 'required|string|max:255',
@@ -61,7 +51,7 @@ class PlayerService
 
     public function destroy($id)
     {
-        $player = $this->findOrFail($id);
+        $player = Player::findOrFail($id);
 
         $playerHistory = $this->historyService->getAllHistoryByPlayer($player);
         foreach ($playerHistory as $playerHistoryEntry) {

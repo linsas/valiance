@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\PlayerService;
 use App\Http\Resources\PlayerResource;
 use App\Http\Resources\PlayerResourceCollection;
+use App\Models\Player;
 
 class PlayerController extends Controller
 {
@@ -32,7 +33,7 @@ class PlayerController extends Controller
 
     public function show($id)
     {
-        $player = $this->service->findOrFail($id);
+        $player = Player::findOrFail($id);
         return new PlayerResource($player);
     }
 

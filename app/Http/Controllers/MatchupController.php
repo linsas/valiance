@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\Competition\MatchupService;
 use App\Http\Resources\MatchupResource;
 use App\Http\Resources\MatchupResourceCollection;
+use App\Models\Matchup;
 
 class MatchupController extends Controller
 {
@@ -25,7 +26,7 @@ class MatchupController extends Controller
 
     public function show($id)
     {
-        $entry = $this->service->findOrFail($id);
+        $entry = Matchup::findOrFail($id);
         return new MatchupResource($entry);
     }
 

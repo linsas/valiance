@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\TeamService;
 use App\Http\Resources\TeamResource;
 use App\Http\Resources\TeamResourceCollection;
+use App\Models\Team;
 
 class TeamController extends Controller
 {
@@ -32,7 +33,7 @@ class TeamController extends Controller
 
     public function show($id)
     {
-        $team = $this->service->findOrFail($id);
+        $team = Team::findOrFail($id);
 
         $players = $this->service->getPlayers($team);
         $history = $this->service->getRelevantHistory($team);

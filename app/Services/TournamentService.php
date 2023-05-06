@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use App\Exceptions\InvalidStateException;
 use App\Services\Competition\TournamentFormat;
 use App\Models\Tournament;
@@ -30,18 +29,9 @@ class TournamentService
         $entry->save();
     }
 
-    public function findOrFail($id)
-    {
-        if (!ctype_digit($id) && !is_int($id)) {
-            throw ValidationException::withMessages(['The id is invalid.']);
-        }
-        $entry = Tournament::findOrFail($id);
-        return $entry;
-    }
-
     public function update($inputData, $id)
     {
-        $entry = $this->findOrFail($id);
+        $entry = Tournament::findOrFail($id);
 
         $validator = Validator::make($inputData, [
             'name' => 'required|string|max:255',
@@ -60,7 +50,7 @@ class TournamentService
 
     public function destroy($id)
     {
-        $entry = $this->findOrFail($id);
+        $entry = Tournament::findOrFail($id);
         if ($entry->rounds->count() > 0) {
             throw new InvalidStateException('Cannot delete tournament after starting.');
         }

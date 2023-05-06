@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use App\Models\Team;
 
 class TeamService
@@ -32,18 +31,9 @@ class TeamService
         $team->save();
     }
 
-    public function findOrFail($id)
-    {
-        if (!ctype_digit($id) && !is_int($id)) {
-            throw ValidationException::withMessages(['The id is invalid.']);
-        }
-        $team = Team::findOrFail($id);
-        return $team;
-    }
-
     public function update($inputData, $id)
     {
-        $team = $this->findOrFail($id);
+        $team = Team::findOrFail($id);
 
         $validator = Validator::make($inputData, [
             'name' => 'required|string|max:255',
@@ -56,7 +46,7 @@ class TeamService
 
     public function destroy($id)
     {
-        $team = $this->findOrFail($id);
+        $team = Team::findOrFail($id);
 
         $teamHistory = $this->historyService->getTeamDirectHistory($team);
         foreach ($teamHistory as $teamHistoryEntry) {

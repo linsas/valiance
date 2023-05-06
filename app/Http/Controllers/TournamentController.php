@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\TournamentService;
 use App\Http\Resources\TournamentResource;
 use App\Http\Resources\TournamentResourceCollection;
+use App\Models\Tournament;
 
 class TournamentController extends Controller
 {
@@ -32,7 +33,7 @@ class TournamentController extends Controller
 
     public function show($id)
     {
-        $entry = $this->service->findOrFail($id);
+        $entry = Tournament::findOrFail($id);
         return new TournamentResource($entry);
     }
 

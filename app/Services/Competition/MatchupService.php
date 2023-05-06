@@ -17,18 +17,9 @@ class MatchupService
         return Matchup::all();
     }
 
-    public function findOrFail($id)
-    {
-        if (!ctype_digit($id)) {
-            throw ValidationException::withMessages(['The id is invalid.']);
-        }
-        $entry = Matchup::findOrFail($id);
-        return $entry;
-    }
-
     public function updateMaps($inputData, $id)
     {
-        $entry = $this->findOrFail($id);
+        $entry = Matchup::findOrFail($id);
 
         $validator = Validator::make($inputData, [
             'maps' => ['required', 'array', \Illuminate\Validation\Rule::in(Game::$validMaps)],
@@ -63,7 +54,7 @@ class MatchupService
             throw ValidationException::withMessages(['The id is invalid.']);
         }
 
-        $matchup = $this->findOrFail($matchupId);
+        $matchup = Matchup::findOrFail($matchupId);
         if ($matchup->round->number !== $matchup->round->tournament->rounds->max('number')) {
             throw new InvalidStateException('Cannot change score after the round is completed.');
         }

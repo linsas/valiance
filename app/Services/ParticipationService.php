@@ -6,36 +6,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\InvalidStateException;
-use App\Services\TeamService;
-use App\Services\TournamentService;
+use App\Models\Team;
+use App\Models\Tournament;
 use App\Models\TournamentTeam;
 use App\Models\TournamentTeamPlayer;
 
 class ParticipationService
 {
-    private $tournamentService;
-    private $teamService;
     private $historyService;
 
-    public function __construct(TournamentService $tournamentService, TeamService $teamService, PlayerTeamHistoryService $historyService) {
-        $this->tournamentService = $tournamentService;
-        $this->teamService = $teamService;
+    public function __construct(PlayerTeamHistoryService $historyService) {
         $this->historyService = $historyService;
-    }
-
-    public function findOrFailTournament($id)
-    {
-        return $this->tournamentService->findOrFail($id);
-    }
-
-    public function findOrFailTeam($id)
-    {
-        return $this->teamService->findOrFail($id);
     }
 
     public function updateParticipations($inputData, $tournamentId)
     {
-        $tournament = $this->findOrFailTournament($tournamentId);
+        $tournament = Tournament::findOrFail($tournamentId);
         if ($tournament->rounds->count() > 0) {
             throw new InvalidStateException('Cannot change participating teams after the tournament has started.');
         }
@@ -75,7 +61,7 @@ class ParticipationService
         $remainingTeamIds = $remainingParticipants->map(fn ($item) => $item->fk_team);
         foreach ($desired as $newcomer) {
             if ($remainingTeamIds->contains($newcomer)) continue;
-            $team = $this->findOrFailTeam($newcomer);
+            $team = Team::findOrFail($newcomer);
 
             $participant = new TournamentTeam;
             $participant->name = $team->name;
