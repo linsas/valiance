@@ -5,10 +5,11 @@ namespace App\Services;
 use App\Models\Player;
 use App\Models\Team;
 use App\Models\PlayerTeamHistory;
+use Illuminate\Support\Collection;
 
 class PlayerTeamHistoryService
 {
-    public function getAllHistoryByPlayer(Player $player)
+    public function getAllHistoryByPlayer(Player $player): Collection
     {
         return PlayerTeamHistory::where('fk_player', $player->id)->orderBy('date_since')->get();
     }
@@ -28,7 +29,7 @@ class PlayerTeamHistoryService
         return $this->getAllHistoryByPlayer($player)->last();
     }
 
-    public function getTeamDirectHistory(Team $team)
+    public function getTeamDirectHistory(Team $team): Collection
     {
         return PlayerTeamHistory::where('fk_team', $team->id)->get();
     }
@@ -49,7 +50,7 @@ class PlayerTeamHistoryService
         ];
     }
 
-    public function getTeamRelevantHistory(Team $team)
+    public function getTeamRelevantHistory(Team $team): Collection
     {
         $all = collect();
         $teamHistory = $this->getTeamDirectHistory($team);
@@ -69,7 +70,7 @@ class PlayerTeamHistoryService
         return $all;
     }
 
-    public function getPlayersInTeam(Team $team)
+    public function getPlayersInTeam(Team $team): Collection
     {
         $players = collect();
         $surface = PlayerTeamHistory::where('fk_team', $team->id)->get()->unique('fk_player'); // every time a player joined a team (once per player)

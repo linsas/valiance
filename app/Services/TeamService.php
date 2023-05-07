@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 use App\Models\Team;
 
 class TeamService
@@ -62,12 +63,12 @@ class TeamService
         $team->delete();
     }
 
-    public function getPlayers(Team $team)
+    public function getPlayers(Team $team): Collection
     {
         return $this->historyService->getPlayersInTeam($team);
     }
 
-    public function getRelevantHistory(Team $team)
+    public function getRelevantHistory(Team $team): Collection
     {
         return $this->historyService->getTeamRelevantHistory($team);
     }

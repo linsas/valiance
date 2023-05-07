@@ -8,17 +8,17 @@ use Illuminate\Auth\AuthenticationException;
 
 class AuthService
 {
-    public static function base64UrlDecode($data)
+    public static function base64UrlDecode(string $data): string|false
     {
         return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
     }
 
-    public static function base64UrlEncode($data)
+    public static function base64UrlEncode(string $data): string
     {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 
-    public function createToken()
+    public function createToken(): string
     {
         $durationSeconds = 60 * 90;
         if (env('APP_DEBUG', false)) {
@@ -28,15 +28,15 @@ class AuthService
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
         $payload = json_encode(['iat' => time(), 'nbf' => time(), 'exp' => time() + $durationSeconds]);
 
-        $encodedHeaderAndPayload = static::base64UrlEncode($header) . '.' . static::base64UrlEncode($payload);
+        $encodedHeaderAndPayload = self::base64UrlEncode($header) . '.' . self::base64UrlEncode($payload);
 
         $signature = hash_hmac('sha256', $encodedHeaderAndPayload, env('APP_KEY'), true);
-        $encodedSignature = static::base64UrlEncode($signature);
+        $encodedSignature = self::base64UrlEncode($signature);
 
         return $encodedHeaderAndPayload . '.' . $encodedSignature;
     }
 
-    public function login($inputData)
+    public function login(array $inputData): array
     {
         $validator = Validator::make($inputData, [
             'username' => 'required|string|max:255',
@@ -53,7 +53,7 @@ class AuthService
         return ['token' => $jwt];
     }
 
-    public function validateToken($token)
+    public function validateToken(string $token): void
     {
         if (empty($token) || substr_count($token, '.') < 2) {
             throw new AuthorizationException('A valid token must be provided.');

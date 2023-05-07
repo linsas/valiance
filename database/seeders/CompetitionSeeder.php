@@ -43,7 +43,7 @@ class CompetitionSeeder extends Seeder
             ))
             ->count(15)
             ->create()
-            ->each(function ($tournament) {
+            ->each(function (Tournament $tournament) {
                 $this->seedParticipants($tournament);
                 $this->seedSomeRounds($tournament);
             })
@@ -59,13 +59,13 @@ class CompetitionSeeder extends Seeder
             ))
             ->count(10)
             ->create()
-            ->each(function ($tournament) {
+            ->each(function (Tournament $tournament) {
                 $this->seedParticipants($tournament);
             })
         ;
     }
 
-    private function seedParticipants(Tournament $tournament)
+    private function seedParticipants(Tournament $tournament): void
     {
         $format = TournamentFormat::getFormat($tournament->format);
 
@@ -105,7 +105,7 @@ class CompetitionSeeder extends Seeder
         }
     }
 
-    private function seedSomeRounds(Tournament $tournament)
+    private function seedSomeRounds(Tournament $tournament): void
     {
         $format = TournamentFormat::getFormat($tournament->format);
 
