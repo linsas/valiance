@@ -35,7 +35,7 @@ class TournamentController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $entry = Tournament::findOrFail($id);
+        $entry = Tournament::with(['tournamentTeams.team', 'tournamentTeams.tournamentTeamPlayers.player', 'rounds.matchups.team1', 'rounds.matchups.team2', 'rounds.matchups.games'])->findOrFail($id);
         return response()->json(['data' => new TournamentResource($entry)]);
     }
 

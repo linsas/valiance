@@ -22,7 +22,7 @@ class MatchupController extends Controller
 
     public function index(): JsonResponse
     {
-        $list = Matchup::all();
+        $list = Matchup::with(['team1', 'team2', 'round.tournament', 'games'])->get();
         return response()->json(['data' => new MatchupResourceCollection($list)]);
     }
 

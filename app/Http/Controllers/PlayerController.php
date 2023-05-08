@@ -22,7 +22,7 @@ class PlayerController extends Controller
 
     public function index(): JsonResponse
     {
-        $list = Player::all();
+        $list = Player::with('history.team')->get();
         return response()->json(['data' => new PlayerResourceCollection($list)]);
     }
 
@@ -35,7 +35,7 @@ class PlayerController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $player = Player::findOrFail($id);
+        $player = Player::with(['history.team', 'tournamentTeamPlayers.tournamentTeam.tournament'])->findOrFail($id);
         return response()->json(['data' => new PlayerResource($player)]);
     }
 

@@ -26,12 +26,12 @@ class PlayerTeamHistoryService
 
     public function getLatestPlayerHistory(Player $player): ?PlayerTeamHistory
     {
-        return $this->getAllHistoryByPlayer($player)->last();
+        return PlayerTeamHistory::where('fk_player', $player->id)->orderByDesc('date_since')->first();
     }
 
-    public function getTeamDirectHistory(Team $team): Collection
+    public function getTeamJoinHistory(Team $team): Collection
     {
-        return PlayerTeamHistory::where('fk_team', $team->id)->get();
+        return PlayerTeamHistory::with('player')->where('fk_team', $team->id)->get();
     }
 
     private function getTransferItem(Player $player, Team $otherTeam = null, string $date, bool $isTransferringAway): array
@@ -53,7 +53,7 @@ class PlayerTeamHistoryService
     public function getTeamRelevantHistory(Team $team): Collection
     {
         $all = collect();
-        $teamHistory = $this->getTeamDirectHistory($team);
+        $teamHistory = $this->getTeamJoinHistory($team);
         foreach ($teamHistory as $item) {
             $prev = $this->getEarlierPlayerEntry($item);
             if ($prev == null) {
@@ -73,9 +73,10 @@ class PlayerTeamHistoryService
     public function getPlayersInTeam(Team $team): Collection
     {
         $players = collect();
-        $surface = PlayerTeamHistory::where('fk_team', $team->id)->get()->unique('fk_player'); // every time a player joined a team (once per player)
+        $surface = $this->getTeamJoinHistory($team)->unique('fk_player'); // every time a player joined a team (once per player)
         foreach ($surface as $item) {
             $playerLatest = $this->getLatestPlayerHistory($item->player);
+
             if ($playerLatest == null) continue;
             if ($playerLatest->fk_team === $team->id) $players->add($item->player);
         }

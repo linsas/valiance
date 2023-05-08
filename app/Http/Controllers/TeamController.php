@@ -34,7 +34,7 @@ class TeamController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $team = Team::findOrFail($id);
+        $team = Team::with('tournamentTeams.tournament')->findOrFail($id);
 
         $players = $this->service->getPlayers($team);
         $history = $this->service->getRelevantHistory($team);
