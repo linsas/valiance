@@ -18,6 +18,13 @@ class AuthService
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 
+    private static function signAndEncode(string $encodedHeaderAndPayload): string
+    {
+        $signature = hash_hmac('sha256', $encodedHeaderAndPayload, env('APP_KEY'), true);
+        $encodedSignature = self::base64UrlEncode($signature);
+        return $encodedSignature;
+    }
+
     public function createToken(): string
     {
         $durationSeconds = 60 * 90;
@@ -30,8 +37,7 @@ class AuthService
 
         $encodedHeaderAndPayload = self::base64UrlEncode($header) . '.' . self::base64UrlEncode($payload);
 
-        $signature = hash_hmac('sha256', $encodedHeaderAndPayload, env('APP_KEY'), true);
-        $encodedSignature = self::base64UrlEncode($signature);
+        $encodedSignature = self::signAndEncode($encodedHeaderAndPayload);
 
         return $encodedHeaderAndPayload . '.' . $encodedSignature;
     }
@@ -55,47 +61,46 @@ class AuthService
 
     public function validateToken(string $token): void
     {
-        if (empty($token) || substr_count($token, '.') < 2) {
+        if (substr_count($token, '.') !== 2) {
             throw new AuthorizationException('A valid token must be provided.');
         }
 
-        list($encodedHeader, $encodedPayload, $signatureUser) = explode('.', $token);
+        list($encodedHeaderUser, $encodedPayloadUser, $encodedSignatureUser) = explode('.', $token);
 
-        $headerJsonString = $this::base64UrlDecode($encodedHeader);
-        if (!$headerJsonString) {
+        $headerJsonString = self::base64UrlDecode($encodedHeaderUser);
+        if ($headerJsonString === false) {
             throw new AuthorizationException('A valid token must be provided.');
         }
         $header = json_decode($headerJsonString, true, 2);
-        if (empty($header) || empty($header['alg']) || empty($header['typ']) || $header['typ'] != 'JWT') {
+        if (!is_array($header) || !array_key_exists('alg', $header) || !array_key_exists('typ', $header) || $header['typ'] != 'JWT') {
             throw new AuthorizationException('A valid token must be provided.');
         }
-        $encodedHeaderAndPayload = $encodedHeader . '.' . $encodedPayload;
+        $encodedHeaderAndPayloadUser = $encodedHeaderUser . '.' . $encodedPayloadUser;
         if ($header['alg'] === 'HS256') {
-            $signature = hash_hmac('sha256', $encodedHeaderAndPayload, env('APP_KEY'), true);
-            $encodedSignature = $this::base64UrlEncode($signature);
-            if (!hash_equals($encodedSignature, $signatureUser)) {
+            $encodedSignature = self::signAndEncode($encodedHeaderAndPayloadUser);
+            if (!hash_equals($encodedSignature, $encodedSignatureUser)) {
                 throw new AuthorizationException('A valid token must be provided.');
             }
-        } else { // other algorithms not supported
+        } else {
             throw new AuthorizationException('A valid token must be provided.');
         }
 
-        // signature is verified; check payload
+        // signature is verified - check payload
 
-        $payloadJsonString = $this::base64UrlDecode($encodedPayload);
-        if (!$payloadJsonString) {
+        $payloadJsonString = self::base64UrlDecode($encodedPayloadUser);
+        if ($payloadJsonString === false) {
             throw new AuthorizationException('A valid token must be provided.');
         }
         $payload = json_decode($payloadJsonString, true, 2);
-        if (empty($payload)) {
+        if (!is_array($payload)) {
             throw new AuthorizationException('A valid token must be provided.');
         }
 
-        if (empty($payload['exp']) || (time() > $payload['exp'])) { // 'exp' is mandatory
+        if (!array_key_exists('exp', $payload) || (time() > $payload['exp'])) { // 'exp' is mandatory
             throw new AuthorizationException('Token is expired.');
         }
 
-        if (!empty($payload['nbf']) && (time() < $payload['nbf'])) { // 'nbf' is optional
+        if (array_key_exists('nbf', $payload) && (time() < $payload['nbf'])) { // 'nbf' is optional
             throw new AuthorizationException('Token is invalid.');
         }
     }
