@@ -18,9 +18,12 @@ export interface IParticipant {
 	}>;
 }
 
-export interface IParticipantPayload {
-	id: number;
+export interface IFormParticipant {
 	name: string;
+	team: {
+		id: number;
+		name: string;
+	};
 }
 
 export interface IEventMatchup {

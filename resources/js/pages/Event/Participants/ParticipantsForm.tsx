@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container as DndContainer, Draggable } from '@edorivai/react-smooth-dnd'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, TextField } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, TextField, Typography } from '@mui/material'
 import { Autocomplete } from '@mui/material'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -8,21 +8,27 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import AppContext from '../../../main/AppContext'
 import useFetch from '../../../utility/useFetch'
 import { ITeamBasic } from '../../Team/TeamTypes'
-import { IParticipant, IParticipantPayload } from '../EventTypes'
+import { IParticipant, IFormParticipant } from '../EventTypes'
 
 function ParticipantsForm({ open, list, onSubmit, onClose }: {
 	open: boolean
 	list: Array<IParticipant>
-	onSubmit: (list: Array<IParticipantPayload>) => void
+	onSubmit: (list: Array<IFormParticipant>) => void
 	onClose: () => void
 }) {
 	const context = React.useContext(AppContext)
 
-	const [items, setItems] = React.useState<Array<IParticipantPayload>>([])
+	const [items, setItems] = React.useState<Array<IFormParticipant>>([])
 
 	React.useEffect(() => {
 		if (!open) return
-		setItems(list.map(p => ({ id: p.team.id, name: p.name })))
+		setItems(list.map(p => ({
+			team: {
+				id: p.team.id,
+				name: p.team.name,
+			},
+			name: p.name,
+		})))
 	}, [open])
 
 	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>|null>(null)
@@ -64,12 +70,14 @@ function ParticipantsForm({ open, list, onSubmit, onClose }: {
 		setItems(newItems)
 	}
 
-	const insert = (option: IParticipantPayload | null) => {
+	const insert = (option: IFormParticipant | null) => {
 		if (option == null) return
 		let newItems = items.concat([option])
 		setSearchValue('')
 		setItems(newItems)
 	}
+
+	const teamAsFormParticipant = (team: ITeamBasic | null) => team == null ? null : ({ name: team.name, team: { id: team.id, name: team.name}}) as IFormParticipant
 
 	return <>
 		<Dialog open={open} fullWidth disableEnforceFocus>
@@ -80,36 +88,56 @@ function ParticipantsForm({ open, list, onSubmit, onClose }: {
 					value={null}
 					inputValue={searchValue}
 					getOptionLabel={option => option.name || ''}
-					getOptionDisabled={option => items.find(i => i.id === option.id) != null}
+					getOptionDisabled={option => items.find(i => i.team.id === option.id) != null}
 					onInputChange={(_event, text) => setSearchValue(text)}
-					onChange={(_event, option) => insert(option)}
+					onChange={(_event, option) => insert(teamAsFormParticipant(option))}
 					blurOnSelect
 					fullWidth
 					renderInput={params => <TextField {...params} variant='filled' label='Add a team' />}
 				/>
-				<List>
-					{/*
-						Package react-smooth-dnd hasn't been fixed, typescript error solutions can be found here:
-						https://github.com/kutlugsahin/react-smooth-dnd/issues/93
-					*/}
-					<DndContainer dragHandleSelector='.drag-handle' onDrop={onDrop} lockAxis='y' style={{ border: '1px solid dimgray' }}>
-						{items.map((participant, index) => (
-							<Draggable key={participant.id}>
-								<ListItem>
-									<ListItemIcon className='drag-handle'>
-										<DragHandleIcon />
-									</ListItemIcon>
-									<ListItemText primary={participant.name} />
-									<ListItemSecondaryAction>
-										<IconButton onClick={() => remove(index)}>
-											<DeleteIcon />
-										</IconButton>
-									</ListItemSecondaryAction>
-								</ListItem>
-							</Draggable>
-						))}
-					</DndContainer>
-				</List>
+				{items.length == 0 ? (<>
+					<Box sx={{ marginTop: 2, textAlign: 'center' }}>
+						<Typography component='span' color='textSecondary'>
+							No participants yet. Add some.
+						</Typography>
+					</Box>
+				</>) : (
+					<List>
+						{/*
+							Package react-smooth-dnd hasn't been fixed, typescript error solutions can be found here:
+							https://github.com/kutlugsahin/react-smooth-dnd/issues/93
+						*/}
+						<DndContainer dragHandleSelector='.drag-handle' onDrop={onDrop} lockAxis='y' style={{ border: '1px solid dimgray' }}>
+							{items.map((participant, index) => (
+								<Draggable key={participant.team.id}>
+									<ListItem>
+										<ListItemIcon className='drag-handle'>
+											<DragHandleIcon />
+										</ListItemIcon>
+										<ListItemText>
+											{participant.name}
+											{participant.team.name !== participant.name ? <>
+												{' '}
+												<Typography component='span' color='textSecondary'>
+													will be renamed to
+												</Typography>
+												{' '}
+												<Typography component='span'>
+													{participant.team.name}
+												</Typography>
+											</> : null}
+										</ListItemText>
+										<ListItemSecondaryAction>
+											<IconButton onClick={() => remove(index)}>
+												<DeleteIcon />
+											</IconButton>
+										</ListItemSecondaryAction>
+									</ListItem>
+								</Draggable>
+							))}
+						</DndContainer>
+					</List>
+				)}
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={onClose}>Cancel</Button>

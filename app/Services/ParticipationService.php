@@ -28,63 +28,43 @@ class ParticipationService
         }
 
         $validator = Validator::make($inputData, [
-            'participants' => 'array|max:50',
+            'participants' => 'required|array|max:30',
+            'participants.*' => 'exists:team,id',
         ]);
         $validData = $validator->validate();
-        $desired = collect($validData['participants']);
+
+        $desiredArray = $validData['participants'];
+        $desired = collect($desiredArray);
 
         // precondition: ensure all teams are unique
         if ($desired->unique()->count() !== $desired->count()) {
             throw ValidationException::withMessages(['All participating teams must be unique.']);
         }
 
-        $preexistingCount = $tournament->tournamentTeams->count();
-        $remainingParticipants = $tournament->tournamentTeams->whereIn('id', $desired);
-
         DB::beginTransaction();
-        // step 1: delete removed participants
-        $leavingParticipants = $tournament->tournamentTeams->whereNotIn('id', $desired);
-        foreach ($leavingParticipants as $participant) {
-            foreach ($participant->tournamentTeamPlayers as $tournamentTeamPlayer) {
-                $tournamentTeamPlayer->delete();
-            }
-            $participant->delete();
+        $existingParticipantTeams = $tournament->tournamentTeams;
+        foreach ($existingParticipantTeams as $participantTeam) {
+            $participantTeam->tournamentTeamPlayers()->delete();
+            $participantTeam->delete();
         }
 
-        // step 2: change all participants' seeds to non-collision ids (database constraints)
-        $maxSeed = max($preexistingCount, $desired->count());
-        foreach ($remainingParticipants as $participant) {
-            $participant->seed = ++$maxSeed;
-            $participant->save();
-        }
-
-        // step 3: create new participants
-        $remainingTeamIds = $remainingParticipants->map(fn ($item) => $item->fk_team);
-        foreach ($desired as $newcomer) {
-            if ($remainingTeamIds->contains($newcomer)) continue;
+        foreach ($desired as $index => $newcomer) {
             $team = Team::findOrFail($newcomer);
 
-            $participant = new TournamentTeam;
-            $participant->name = $team->name;
-            $participant->seed = $desired->search($newcomer) + 1;
-            $participant->fk_team = $team->id;
-            $participant->fk_tournament = $tournament->id;
-            $participant->save();
+            $participantTeam = new TournamentTeam;
+            $participantTeam->name = $team->name;
+            $participantTeam->seed = $index + 1;
+            $participantTeam->fk_team = $team->id;
+            $participantTeam->fk_tournament = $tournament->id;
+            $participantTeam->save();
 
             $players = $this->historyService->getPlayersInTeam($team);
             foreach ($players as $player) {
                 $ttp = new TournamentTeamPlayer;
                 $ttp->fk_player = $player->id;
-                $ttp->fk_tournament_team = $participant->id;
+                $ttp->fk_tournament_team = $participantTeam->id;
                 $ttp->save();
             }
-        }
-
-        // step 4: set participants' seeds to correct values
-        foreach ($remainingParticipants as $participant) {
-            dump($participant);
-            $participant->seed = $desired->search($participant->fk_team) + 1;
-            $participant->save();
         }
         DB::commit();
     }

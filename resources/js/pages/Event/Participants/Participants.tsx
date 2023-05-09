@@ -10,7 +10,7 @@ import ParticipantsEdit from './ParticipantsEdit'
 function ParticipantCard({ participant }:{
 	participant: IParticipant
 }) {
-	return <Grid item xs={12} sm={6}>
+	return <Grid item xs={12} md={6}>
 		<Paper>
 			<List disablePadding>
 				<ListItemLink to={'/Teams/' + participant.team.id}>
