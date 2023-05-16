@@ -21,13 +21,15 @@ class Round extends Model
 
     protected $visible = ['number'];
 
+    /** @return BelongsTo<Tournament, Round> */
     public function tournament(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Tournament', 'fk_tournament');
+        return $this->belongsTo(Tournament::class, 'fk_tournament');
     }
 
+    /** @return HasMany<Matchup> */
     public function matchups(): HasMany
     {
-        return $this->hasMany('App\Models\Matchup', 'fk_round');
+        return $this->hasMany(Matchup::class, 'fk_round');
     }
 }

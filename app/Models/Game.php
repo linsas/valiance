@@ -25,9 +25,10 @@ class Game extends Model
     public static array $validMaps = ['bind', 'haven', 'split', 'ascent', 'icebox', 'breeze', 'fracture', 'pearl',];
     public static int $roundsPerHalf = 12;
 
+    /** @return BelongsTo<Matchup, Game> */
     public function matchup(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Matchup', 'fk_matchup');
+        return $this->belongsTo(Matchup::class, 'fk_matchup');
     }
 
     public function isCompleted(): bool

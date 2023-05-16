@@ -20,13 +20,15 @@ class PlayerTeamHistory extends Model
 
     protected $visible = ['date_since', 'fk_player', 'fk_team'];
 
+    /** @return BelongsTo<Player, PlayerTeamHistory> */
     public function player(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Player', 'fk_player');
+        return $this->belongsTo(Player::class, 'fk_player');
     }
 
+    /** @return BelongsTo<Team, PlayerTeamHistory> */
     public function team(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Team', 'fk_team');
+        return $this->belongsTo(Team::class, 'fk_team');
     }
 }

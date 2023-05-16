@@ -25,16 +25,18 @@ class Tournament extends Model
 
     protected $visible = ['id', 'name', 'format'];
 
+    /** @return HasMany<TournamentTeam> */
     public function tournamentTeams(): HasMany
     {
-        return $this->hasMany('App\Models\TournamentTeam', 'fk_tournament');
+        return $this->hasMany(TournamentTeam::class, 'fk_tournament');
     }
 
+    /** @return HasManyThrough<Matchup> */
     public function matchups(): HasManyThrough
     {
         return $this->hasManyThrough(
-            'App\Models\Matchup', // the related model we want
-            'App\Models\Round', // the in-between model
+            Matchup::class, // the related model we want
+            Round::class, // the in-between model
             'fk_tournament', // the foreign key on the in-between model
             'fk_round', // the foreign key on this model
             'id', // the local key on this model
@@ -42,8 +44,9 @@ class Tournament extends Model
         );
     }
 
+    /** @return HasMany<Round> */
     public function rounds(): HasMany
     {
-        return $this->hasMany('App\Models\Round', 'fk_tournament');
+        return $this->hasMany(Round::class, 'fk_tournament');
     }
 }

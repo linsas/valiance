@@ -24,18 +24,21 @@ class TournamentTeam extends Model
 
     protected $visible = ['id', 'name', 'seed'];
 
+    /** @return BelongsTo<Tournament, TournamentTeam> */
     public function tournament(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Tournament', 'fk_tournament');
+        return $this->belongsTo(Tournament::class, 'fk_tournament');
     }
 
+    /** @return BelongsTo<Team, TournamentTeam> */
     public function team(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Team', 'fk_team');
+        return $this->belongsTo(Team::class, 'fk_team');
     }
 
+    /** @return HasMany<TournamentTeamPlayer> */
     public function tournamentTeamPlayers(): HasMany
     {
-        return $this->hasMany('App\Models\TournamentTeamPlayer', 'fk_tournament_team');
+        return $this->hasMany(TournamentTeamPlayer::class, 'fk_tournament_team');
     }
 }

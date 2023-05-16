@@ -29,24 +29,28 @@ class Matchup extends Model
 
     protected $visible = ['id', 'team1', 'team2', 'games', 'significance'];
 
+    /** @return BelongsTo<Round, Matchup> */
     public function round(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Round', 'fk_round');
+        return $this->belongsTo(Round::class, 'fk_round');
     }
 
+    /** @return BelongsTo<TournamentTeam, Matchup> */
     public function team1(): BelongsTo
     {
-        return $this->belongsTo('App\Models\TournamentTeam', 'fk_team1');
+        return $this->belongsTo(TournamentTeam::class, 'fk_team1');
     }
 
+    /** @return BelongsTo<TournamentTeam, Matchup> */
     public function team2(): BelongsTo
     {
-        return $this->belongsTo('App\Models\TournamentTeam', 'fk_team2');
+        return $this->belongsTo(TournamentTeam::class, 'fk_team2');
     }
 
+    /** @return HasMany<Game> */
     public function games(): HasMany
     {
-        return $this->hasMany('App\Models\Game', 'fk_matchup');
+        return $this->hasMany(Game::class, 'fk_matchup');
     }
 
     protected function significance(): Attribute

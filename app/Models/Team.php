@@ -22,13 +22,15 @@ class Team extends Model
 
     protected $visible = ['id', 'name'];
 
+    /** @return HasMany<PlayerTeamHistory> */
     public function history(): HasMany
     {
-        return $this->hasMany('App\Models\PlayerTeamHistory', 'fk_team');
+        return $this->hasMany(PlayerTeamHistory::class, 'fk_team');
     }
 
+    /** @return HasMany<TournamentTeam> */
     public function tournamentTeams(): HasMany
     {
-        return $this->hasMany('App\Models\TournamentTeam', 'fk_team');
+        return $this->hasMany(TournamentTeam::class, 'fk_team');
     }
 }

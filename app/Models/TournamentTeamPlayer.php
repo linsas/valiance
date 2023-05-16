@@ -19,13 +19,15 @@ class TournamentTeamPlayer extends Model
 
     protected $visible = ['id', 'fk_player', 'fk_tournament_team'];
 
+    /** @return BelongsTo<Player, TournamentTeamPlayer> */
     public function player(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Player', 'fk_player');
+        return $this->belongsTo(Player::class, 'fk_player');
     }
 
+    /** @return BelongsTo<TournamentTeam, TournamentTeamPlayer> */
     public function tournamentTeam(): BelongsTo
     {
-        return $this->belongsTo('App\Models\TournamentTeam', 'fk_tournament_team');
+        return $this->belongsTo(TournamentTeam::class, 'fk_tournament_team');
     }
 }
