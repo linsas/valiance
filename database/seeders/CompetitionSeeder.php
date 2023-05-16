@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Container\Container;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Faker\Generator;
 use App\Models\Team;
 use App\Models\PlayerTeamHistory;
@@ -72,7 +72,7 @@ class CompetitionSeeder extends Seeder
         $allTeams = Team::inRandomOrder()->get();
         if ($allTeams->count() < $format->teamsNeeded) return; // there are not enough teams to choose from
 
-        $date = Carbon::now()->addDays($this->faker->numberBetween(-30, -1)); // a random date to choose the participants from
+        $date = CarbonImmutable::now()->addDays($this->faker->numberBetween(-30, -1)); // a random date to choose the participants from
 
         for ($i = 0; $i < $format->teamsNeeded; $i++) {
             $team = $allTeams[$i];

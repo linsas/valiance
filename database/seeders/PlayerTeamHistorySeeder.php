@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Container\Container;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Faker\Generator;
 use App\Models\Team;
 use App\Models\Player;
@@ -33,11 +33,11 @@ class PlayerTeamHistorySeeder extends Seeder
             $previousNull = true;
 
             $dates = [
-                Carbon::now()->addDays($this->faker->numberBetween(-14, -1))
+                CarbonImmutable::now()->addDays($this->faker->numberBetween(-14, -1))
             ];
             // prepare dates
             for ($i = 1; $i < $numberOfTransfers; $i++) {
-                $date = new Carbon($dates[$i - 1]);
+                $date = new CarbonImmutable($dates[$i - 1]);
                 $dates[$i] = $date->addDays($this->faker->numberBetween(-14, -1));
             }
             $dates = array_reverse($dates);
