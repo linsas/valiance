@@ -16,42 +16,33 @@ class PlayerTeamHistorySeeder extends Seeder
 
     public function __construct()
     {
-        $this->faker = Container::getInstance()->make(Generator::class);;
+        $this->faker = Container::getInstance()->make(Generator::class);
     }
 
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         $teams = Team::all();
 
         foreach (Player::all() as $player) {
-            $numberOfTransfers = $this->faker->numberBetween(0, 5);
-            $previousNull = true;
-
-            $dates = [
-                CarbonImmutable::now()->addDays($this->faker->numberBetween(-14, -1))
-            ];
-            // prepare dates
-            for ($i = 1; $i < $numberOfTransfers; $i++) {
-                $date = new CarbonImmutable($dates[$i - 1]);
-                $dates[$i] = $date->addDays($this->faker->numberBetween(-14, -1));
-            }
-            $dates = array_reverse($dates);
+            $numberOfTransfers = $this->faker->numberBetween(0, 7);
+            $previousTeamId = null;
 
             for ($i = 0; $i < $numberOfTransfers; $i++) {
-                $shouldJoinTeam = $this->faker->boolean(75);
-                $teamId = ($previousNull || $shouldJoinTeam) ? $teams->random()->id : null;
+                $shouldTeamBeNotNull = $this->faker->boolean(75);
+                $isPreviousTeamNull = $previousTeamId == null;
+                $teamId = ($isPreviousTeamNull || $shouldTeamBeNotNull) ? $teams->random()->id : null;
+
+                if ($teamId === $previousTeamId) $teamId = null; // rare, but not impossible
+
+                $daysAgo = 14 * ($numberOfTransfers - $i - 1) + $this->faker->numberBetween(0, 13);
+                $date = CarbonImmutable::now()->addDays(-$daysAgo)->format('Y-m-d');
 
                 PlayerTeamHistory::create([
                     'fk_player' => $player->id,
                     'fk_team' => $teamId,
-                    'date_since' => $dates[$i]->format('Y-m-d'),
+                    'date_since' => $date,
                 ]);
-                $previousNull = ($teamId == null);
+                $previousTeamId = $teamId;
             }
         }
     }
