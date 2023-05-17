@@ -2,21 +2,24 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\Game;
+use App\Models\Matchup;
+use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
 
-/** @property \Illuminate\Support\Collection<int, MatchupResource> $collection */
-class MatchupResourceCollection extends ResourceCollection
+final class MatchupResourceCollection
 {
-    /** @return array<string, mixed> */
-    public function toArray(Request $request)
+    /** @param \Illuminate\Support\Collection<int, Matchup> $collection */
+    public static function response(Collection $collection): JsonResponse
     {
-        return $this->collection->map(fn (MatchupResource $matchup) => [
-            'id' => $matchup->id,
-            'team1' => $matchup->team1->name,
-            'team2' => $matchup->team2->name,
-            'tournament' => $matchup->round->tournament->name,
-            'maps' => $matchup->games->map(fn ($game) => $game->map),
-        ])->toArray();
+        return response()->json([
+            'data' => $collection->map(fn (Matchup $matchup) => [
+                'id' => $matchup->id,
+                'team1' => $matchup->team1->name,
+                'team2' => $matchup->team2->name,
+                'tournament' => $matchup->round->tournament->name,
+                'maps' => $matchup->games->map(fn (Game $game) => $game->map),
+            ])->toArray()
+        ]);
     }
 }

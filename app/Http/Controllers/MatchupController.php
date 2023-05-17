@@ -12,7 +12,7 @@ use App\Models\Matchup;
 
 class MatchupController extends Controller
 {
-    protected MatchupService $service;
+    private MatchupService $service;
 
     public function __construct(MatchupService $service)
     {
@@ -22,14 +22,14 @@ class MatchupController extends Controller
 
     public function index(): JsonResponse
     {
-        $list = Matchup::with(['team1', 'team2', 'round.tournament', 'games'])->get();
-        return response()->json(['data' => new MatchupResourceCollection($list)]);
+        $matchups = Matchup::with(['team1', 'team2', 'round.tournament', 'games'])->get();
+        return MatchupResourceCollection::response($matchups);
     }
 
     public function show(int $id): JsonResponse
     {
-        $entry = Matchup::findOrFail($id);
-        return response()->json(['data' => new MatchupResource($entry)]);
+        $matchup = Matchup::findOrFail($id);
+        return MatchupResource::response($matchup);
     }
 
     public function updateMaps(Request $request, int $id): Response

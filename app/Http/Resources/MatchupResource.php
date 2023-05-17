@@ -3,33 +3,32 @@
 namespace App\Http\Resources;
 
 use App\Models\Matchup;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\JsonResponse;
 
-/** @mixin Matchup */
-class MatchupResource extends JsonResource
+final class MatchupResource
 {
-    /** @return array<string, mixed> */
-    public function toArray(Request $request): array
+    public static function response(Matchup $matchup): JsonResponse
     {
-        return [
-            'id' => $this->id,
-            'team1' => [
-                'id' => $this->team1->fk_team,
-                'name' => $this->team1->name,
-            ],
-            'team2' => [
-                'id' => $this->team2->fk_team,
-                'name' => $this->team2->name,
-            ],
-            'tournament' => [
-                'id' => $this->round->tournament->id,
-                'name' => $this->round->tournament->name,
-            ],
-            'significance' => $this->significance->getRepresentation(),
-            'score1' => $this->getTeam1Score(),
-            'score2' => $this->getTeam2Score(),
-            'games' => $this->games->sortBy('number')->toArray(),
-        ];
+        return response()->json([
+            'data' => [
+                'id' => $matchup->id,
+                'team1' => [
+                    'id' => $matchup->team1->fk_team,
+                    'name' => $matchup->team1->name,
+                ],
+                'team2' => [
+                    'id' => $matchup->team2->fk_team,
+                    'name' => $matchup->team2->name,
+                ],
+                'tournament' => [
+                    'id' => $matchup->round->tournament->id,
+                    'name' => $matchup->round->tournament->name,
+                ],
+                'significance' => $matchup->significance->getRepresentation(),
+                'score1' => $matchup->getTeam1Score(),
+                'score2' => $matchup->getTeam2Score(),
+                'games' => $matchup->games->sortBy('number')->toArray(),
+            ]
+        ]);
     }
 }
