@@ -38,7 +38,7 @@ class TeamController extends Controller
         $team = Team::with('tournamentTeams.tournament')->findOrFail($id);
 
         $players = $this->service->getPlayers($team);
-        $history = $this->service->getRelevantHistory($team);
+        $history = $this->service->getTransfersHistory($team);
 
         return TeamResource::response($team, $players, $history);
     }

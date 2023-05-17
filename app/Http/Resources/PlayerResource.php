@@ -25,7 +25,7 @@ final class PlayerResource
                         'id' => $entry->team->id,
                         'name' => $entry->team->name,
                     ],
-                ])->toArray(),
+                ])->values()->toArray(),
                 'participations' => $player->tournamentTeamPlayers->map(fn (TournamentTeamPlayer $participantPlayer) => [
                     'team' => [
                         'id' => $participantPlayer->tournamentTeam->fk_team,

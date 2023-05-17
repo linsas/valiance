@@ -68,8 +68,8 @@ class TeamService
         return $this->historyService->getPlayersInTeam($team);
     }
 
-    public function getRelevantHistory(Team $team): Collection
+    public function getTransfersHistory(Team $team): Collection
     {
-        return $this->historyService->getTeamRelevantHistory($team);
+        return $this->historyService->getTeamTransfersHistory($team);
     }
 }

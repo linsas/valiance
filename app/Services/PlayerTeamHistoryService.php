@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Player;
 use App\Models\Team;
 use App\Models\PlayerTeamHistory;
+use App\Values\PlayerTransfer;
 use Illuminate\Support\Collection;
 
 class PlayerTeamHistoryService
@@ -34,37 +35,21 @@ class PlayerTeamHistoryService
         return PlayerTeamHistory::with('player')->where('fk_team', $team->id)->get();
     }
 
-    private function getTransferItem(Player $player, Team $otherTeam = null, string $date, bool $isTransferringAway): array
-    {
-        return [
-            'player' => [
-                'id' => $player->id,
-                'alias' => $player->alias,
-            ],
-            'otherTeam' => $otherTeam == null ? null : [
-                'id' => $otherTeam->id,
-                'name' => $otherTeam->name,
-            ],
-            'date' => $date,
-            'isTransferringAway' => $isTransferringAway,
-        ];
-    }
-
-    public function getTeamRelevantHistory(Team $team): Collection
+    public function getTeamTransfersHistory(Team $team): Collection
     {
         $all = collect();
         $teamHistory = $this->getTeamJoinHistory($team);
         foreach ($teamHistory as $item) {
             $prev = $this->getEarlierPlayerEntry($item);
             if ($prev == null) {
-                $all->add($this->getTransferItem($item->player, null, $item->date_since, false)); // special case for first entry for player
+                $all->add(new PlayerTransfer($item->player, null, $item->date_since, false)); // special case for first entry for player
             } else if ($prev->fk_team !== $team->id) {
-                $all->add($this->getTransferItem($item->player, $prev->team, $item->date_since, false));
+                $all->add(new PlayerTransfer($item->player, $prev->team, $item->date_since, false));
             }
 
             $next = $this->getLaterPlayerEntry($item);
             if ($next != null && $next->fk_team !== $team->id) {
-                $all->add($this->getTransferItem($item->player, $next->team, $next->date_since, true));
+                $all->add(new PlayerTransfer($item->player, $next->team, $next->date_since, true));
             }
         }
         return $all;

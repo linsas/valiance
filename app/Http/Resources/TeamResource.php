@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use App\Models\Player;
-use App\Models\PlayerTeamHistory;
 use App\Models\Team;
 use App\Models\TournamentTeam;
+use App\Values\PlayerTransfer;
 use Illuminate\Support\Collection;
 use Illuminate\Http\JsonResponse;
 
@@ -13,7 +13,7 @@ final class TeamResource
 {
     /**
      * @param \Illuminate\Support\Collection<int, Player> $players
-     * @param \Illuminate\Support\Collection<int, PlayerTeamHistory> $history
+     * @param \Illuminate\Support\Collection<int, PlayerTransfer> $history
      */
     public static function response(Team $team, Collection $players, Collection $history): JsonResponse
     {
@@ -25,7 +25,7 @@ final class TeamResource
                     'id' => $player->id,
                     'alias' => $player->alias,
                 ])->toArray(),
-                'transfers' => $history->sortBy('date')->reverse()->values()->toArray(),
+                'transfers' => $history->map(fn (PlayerTransfer $t) => $t->serialize())->sortBy('date')->reverse()->values()->toArray(),
                 'participations' => $team->tournamentTeams->map(fn (TournamentTeam $participantTeam) => [
                     'name' => $participantTeam->name,
                     'tournament' => [

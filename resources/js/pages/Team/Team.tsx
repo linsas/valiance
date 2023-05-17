@@ -83,14 +83,14 @@ function TeamTransfer({ transfer }: {
 		<ListItemText>
 			<Typography style={{ flex: '1 1 auto', display: 'flex', whiteSpace: 'pre-wrap' }}>
 				{transfer.date}:
-				{transfer.isTransferringAway ? <RemoveIcon /> : <AddIcon />}
+				{transfer.isLeaving ? <RemoveIcon /> : <AddIcon />}
 				{transfer.player.alias}
 				{' '}
 				<Typography component='span' color='textSecondary'>
-					{transfer.isTransferringAway ? 'left' : 'joined'}
+					{transfer.isLeaving ? 'left' : 'joined'}
 					{transfer.otherTeam != null ? <>
 						{' '}
-						({transfer.isTransferringAway ? 'transferred to' : 'transferred from'} {transfer.otherTeam.name})
+						({transfer.isLeaving ? 'transferred to' : 'transferred from'} {transfer.otherTeam.name})
 					</> : null}
 				</Typography>
 			</Typography>

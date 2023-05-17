@@ -15,7 +15,7 @@ export interface ITeamTransfer {
 		name: string;
 	};
 	date: string;
-	isTransferringAway: boolean;
+	isLeaving: boolean;
 }
 
 export interface ITeam extends ITeamBasic {
