@@ -49,17 +49,17 @@ class TeamService
         if ($team->tournamentTeams->count() > 0) throw new InvalidStateException('Cannot delete a team with participations.');
 
         DB::beginTransaction();
-        $teamHistory = $this->historyService->getTeamJoinHistory($team);
+        $teamHistory = $team->getJoinHistory();
         foreach ($teamHistory as $teamHistoryEntry) {
             $teamHistoryEntry->fk_team = null;
             $teamHistoryEntry->save();
 
-            $laterEntry = $this->historyService->getLaterPlayerEntry($teamHistoryEntry);
+            $laterEntry = $teamHistoryEntry->getLaterByPlayer();
             if ($laterEntry != null && $laterEntry->fk_team == null) {
                 $laterEntry->delete();
             }
 
-            $earlierEntry = $this->historyService->getEarlierPlayerEntry($teamHistoryEntry);
+            $earlierEntry = $teamHistoryEntry->getEarlierByPlayer();
             if ($earlierEntry == null || $earlierEntry->fk_team == null) {
                 $teamHistoryEntry->delete();
             }

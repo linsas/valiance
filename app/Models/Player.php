@@ -33,4 +33,9 @@ class Player extends Model
     {
         return $this->hasMany(TournamentTeamPlayer::class, 'fk_player');
     }
+
+    public function getLatestHistory(): ?PlayerTeamHistory
+    {
+        return PlayerTeamHistory::where('fk_player', $this->id)->orderByDesc('date_since')->first();
+    }
 }
