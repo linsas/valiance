@@ -2,22 +2,24 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\Player;
+use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
 
-/** @property \Illuminate\Support\Collection<int, PlayerResource> $collection */
-class PlayerResourceCollection extends ResourceCollection
+final class PlayerResourceCollection
 {
-    /** @return array<string, mixed> */
-    public function toArray(Request $request)
+    /** @param \Illuminate\Support\Collection<int, Player> $collection */
+    public static function response(Collection $collection): JsonResponse
     {
-        return $this->collection->map(fn (PlayerResource $player) => [
-            'id' => $player->id,
-            'alias' => $player->alias,
-            'team' => ($player->history->last() == null || $player->history->last()->team == null) ? null : [
-                'id' => $player->history->last()->team->id,
-                'name' => $player->history->last()->team->name,
-            ],
-        ])->toArray();
+        return response()->json([
+            'data' => $collection->map(fn (Player $player) => [
+                'id' => $player->id,
+                'alias' => $player->alias,
+                'team' => ($player->history->last() == null || $player->history->last()->team == null) ? null : [
+                    'id' => $player->history->last()->team->id,
+                    'name' => $player->history->last()->team->name,
+                ],
+            ])->toArray()
+        ]);
     }
 }

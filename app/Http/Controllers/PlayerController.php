@@ -12,7 +12,7 @@ use App\Models\Player;
 
 class PlayerController extends Controller
 {
-    protected PlayerService $service;
+    private PlayerService $service;
 
     public function __construct(PlayerService $service)
     {
@@ -22,8 +22,8 @@ class PlayerController extends Controller
 
     public function index(): JsonResponse
     {
-        $list = Player::with('history.team')->get();
-        return response()->json(['data' => new PlayerResourceCollection($list)]);
+        $players = Player::with('history.team')->get();
+        return PlayerResourceCollection::response($players);
     }
 
     public function store(Request $request): Response
@@ -36,7 +36,7 @@ class PlayerController extends Controller
     public function show(int $id): JsonResponse
     {
         $player = Player::with(['history.team', 'tournamentTeamPlayers.tournamentTeam.tournament'])->findOrFail($id);
-        return response()->json(['data' => new PlayerResource($player)]);
+        return PlayerResource::response($player);
     }
 
     public function update(Request $request, int $id): Response
