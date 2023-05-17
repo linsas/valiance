@@ -2,18 +2,20 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\Team;
+use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
 
-/** @property \Illuminate\Support\Collection<int, TeamResource> $collection */
-class TeamResourceCollection extends ResourceCollection
+final class TeamResourceCollection
 {
-    /** @return array<string, mixed> */
-    public function toArray(Request $request)
+    /** @param \Illuminate\Support\Collection<int, Team> $collection */
+    public static function response(Collection $collection): JsonResponse
     {
-        return $this->collection->map(fn (TeamResource $team) => [
-            'id' => $team->id,
-            'name' => $team->name,
-        ])->toArray();
+        return response()->json([
+            'data' => $collection->map(fn (Team $team) => [
+                'id' => $team->id,
+                'name' => $team->name,
+            ])->toArray()
+        ]);
     }
 }

@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Services\TeamService;
+use App\Http\Resources\TeamResource;
 use App\Http\Resources\TeamResourceCollection;
 use App\Models\Team;
 
 class TeamController extends Controller
 {
-    protected TeamService $service;
+    private TeamService $service;
 
     public function __construct(TeamService $service)
     {
@@ -21,8 +22,8 @@ class TeamController extends Controller
 
     public function index(): JsonResponse
     {
-        $list = Team::all();
-        return response()->json(['data' => new TeamResourceCollection($list)]);
+        $teams = Team::all();
+        return TeamResourceCollection::response($teams);
     }
 
     public function store(Request $request): Response
@@ -39,24 +40,7 @@ class TeamController extends Controller
         $players = $this->service->getPlayers($team);
         $history = $this->service->getRelevantHistory($team);
 
-        return response()->json([
-            'data' => [
-                'id' => $team->id,
-                'name' => $team->name,
-                'players' => $players->map(fn ($player) => [
-                    'id' => $player->id,
-                    'alias' => $player->alias,
-                ]),
-                'transfers' => $history->sortBy('date')->reverse()->values()->toArray(),
-                'participations' => $team->tournamentTeams->map(fn ($participant) => [
-                    'name' => $participant->name,
-                    'tournament' => [
-                        'id' => $participant->tournament->id,
-                        'name' => $participant->tournament->name,
-                    ],
-                ])->toArray(),
-            ]
-        ]);
+        return TeamResource::response($team, $players, $history);
     }
 
     public function update(Request $request, int $id): Response

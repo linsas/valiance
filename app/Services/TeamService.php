@@ -44,7 +44,7 @@ class TeamService
     {
         $team = Team::findOrFail($id);
 
-        $teamHistory = $this->historyService->getTeamDirectHistory($team);
+        $teamHistory = $this->historyService->getTeamJoinHistory($team);
         foreach ($teamHistory as $teamHistoryEntry) {
             $teamHistoryEntry->fk_team = null;
             $teamHistoryEntry->save();
