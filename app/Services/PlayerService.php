@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Exceptions\InvalidStateException;
 use App\Models\Player;
 
 class PlayerService
@@ -49,11 +51,11 @@ class PlayerService
     {
         $player = Player::findOrFail($id);
 
-        $playerHistory = $this->historyService->getAllHistoryByPlayer($player);
-        foreach ($playerHistory as $playerHistoryEntry) {
-            $playerHistoryEntry->delete();
-        }
+        if ($player->tournamentTeamPlayers->count() > 0) throw new InvalidStateException('Cannot delete a player with participations.');
 
+        DB::beginTransaction();
+        $player->history()->delete();
         $player->delete();
+        DB::commit();
     }
 }

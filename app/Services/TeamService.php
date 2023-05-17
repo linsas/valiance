@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Collection;
+use App\Exceptions\InvalidStateException;
 use App\Models\Team;
 
 class TeamService
@@ -44,6 +46,9 @@ class TeamService
     {
         $team = Team::findOrFail($id);
 
+        if ($team->tournamentTeams->count() > 0) throw new InvalidStateException('Cannot delete a team with participations.');
+
+        DB::beginTransaction();
         $teamHistory = $this->historyService->getTeamJoinHistory($team);
         foreach ($teamHistory as $teamHistoryEntry) {
             $teamHistoryEntry->fk_team = null;
@@ -61,6 +66,7 @@ class TeamService
         }
 
         $team->delete();
+        DB::commit();
     }
 
     public function getPlayers(Team $team): Collection

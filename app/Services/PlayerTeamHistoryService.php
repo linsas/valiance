@@ -10,11 +10,6 @@ use Illuminate\Support\Collection;
 
 class PlayerTeamHistoryService
 {
-    public function getAllHistoryByPlayer(Player $player): Collection
-    {
-        return PlayerTeamHistory::where('fk_player', $player->id)->orderBy('date_since')->get();
-    }
-
     public function getEarlierPlayerEntry(PlayerTeamHistory $entry): ?PlayerTeamHistory
     {
         return PlayerTeamHistory::where('fk_player', $entry->fk_player)->where('date_since', '<', $entry->date_since)->orderByDesc('date_since')->first();

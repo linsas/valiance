@@ -47,7 +47,7 @@ class TournamentService
     {
         $entry = Tournament::findOrFail($id);
         if ($entry->rounds->count() > 0) {
-            throw new InvalidStateException('Cannot delete tournament after starting.');
+            throw new InvalidStateException('Cannot delete a tournament after starting.');
         }
 
         DB::beginTransaction();
@@ -57,7 +57,5 @@ class TournamentService
         $entry->tournamentTeams()->delete();
         $entry->delete();
         DB::commit();
-
-        $entry->delete();
     }
 }
