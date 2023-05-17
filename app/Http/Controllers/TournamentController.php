@@ -12,7 +12,7 @@ use App\Models\Tournament;
 
 class TournamentController extends Controller
 {
-    protected TournamentService $service;
+    private TournamentService $service;
 
     public function __construct(TournamentService $service)
     {
@@ -22,8 +22,8 @@ class TournamentController extends Controller
 
     public function index(): JsonResponse
     {
-        $list = Tournament::all();
-        return response()->json(['data' => new TournamentResourceCollection($list)]);
+        $tournaments = Tournament::all();
+        return TournamentResourceCollection::response($tournaments);
     }
 
     public function store(Request $request): Response
@@ -35,8 +35,15 @@ class TournamentController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $entry = Tournament::with(['tournamentTeams.team', 'tournamentTeams.tournamentTeamPlayers.player', 'rounds.matchups.team1', 'rounds.matchups.team2', 'rounds.matchups.games'])->findOrFail($id);
-        return response()->json(['data' => new TournamentResource($entry)]);
+        $tournament = Tournament::with([
+            'tournamentTeams.team',
+            'tournamentTeams.tournamentTeamPlayers.player',
+            'rounds.matchups.team1',
+            'rounds.matchups.team2',
+            'rounds.matchups.games'
+        ])->findOrFail($id);
+
+        return TournamentResource::response($tournament);
     }
 
     public function update(Request $request, int $id): Response

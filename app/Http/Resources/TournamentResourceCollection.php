@@ -2,19 +2,21 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\Tournament;
+use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
 
-/** @property \Illuminate\Support\Collection<int, TournamentResource> $collection */
-class TournamentResourceCollection extends ResourceCollection
+final class TournamentResourceCollection
 {
-    /** @return array<string, mixed> */
-    public function toArray(Request $request)
+    /** @param \Illuminate\Support\Collection<int, Tournament> $collection */
+    public static function response(Collection $collection): JsonResponse
     {
-        return $this->collection->map(fn (TournamentResource $tournament) => [
-            'id' => $tournament->id,
-            'name' => $tournament->name,
-            'format' => $tournament->format,
-        ])->toArray();
+        return response()->json([
+            'data' => $collection->map(fn (Tournament $tournament) => [
+                'id' => $tournament->id,
+                'name' => $tournament->name,
+                'format' => $tournament->format,
+            ])->toArray()
+        ]);
     }
 }
