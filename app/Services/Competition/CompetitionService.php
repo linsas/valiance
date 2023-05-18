@@ -9,6 +9,8 @@ use App\Models\Round;
 use App\Models\Matchup;
 use App\Models\Game;
 use App\Models\Tournament;
+use App\Services\Competition\Format\TournamentFormat;
+use App\Services\Competition\ProgressionRule;
 use App\Values\MatchupOutcome;
 
 class CompetitionService

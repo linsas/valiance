@@ -15,7 +15,7 @@ use App\Models\TournamentTeamPlayer;
 use App\Models\Round;
 use App\Models\Matchup;
 use App\Models\Game;
-use App\Services\Competition\TournamentFormat;
+use App\Services\Competition\Format\TournamentFormat;
 
 class CompetitionSeeder extends Seeder
 {

@@ -5,7 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\InvalidStateException;
-use App\Services\Competition\TournamentFormat;
+use App\Services\Competition\Format\TournamentFormat;
 use App\Models\Tournament;
 
 class TournamentService

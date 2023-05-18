@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Services\Competition\TournamentFormat;
+use App\Services\Competition\Format\TournamentFormat;
 use App\Models\Tournament;
 
 class TournamentFactory extends Factory
