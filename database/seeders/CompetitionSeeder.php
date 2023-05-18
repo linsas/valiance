@@ -15,7 +15,6 @@ use App\Models\TournamentTeamPlayer;
 use App\Models\Round;
 use App\Models\Matchup;
 use App\Models\Game;
-use App\Services\Competition\Format\TournamentFormat;
 
 class CompetitionSeeder extends Seeder
 {
@@ -67,7 +66,7 @@ class CompetitionSeeder extends Seeder
 
     private function seedParticipants(Tournament $tournament): void
     {
-        $format = TournamentFormat::getFormat($tournament->format);
+        $format = $tournament->getFormat();
 
         $allTeams = Team::inRandomOrder()->get();
         if ($allTeams->count() < $format->getTeamsNeeded()) return; // there are not enough teams to choose from
@@ -107,7 +106,7 @@ class CompetitionSeeder extends Seeder
 
     private function seedSomeRounds(Tournament $tournament): void
     {
-        $format = TournamentFormat::getFormat($tournament->format);
+        $format = $tournament->getFormat();
 
         $participants = $tournament->tournamentTeams;
         if ($participants->count() !== $format->getTeamsNeeded()) return; // all participants must be present

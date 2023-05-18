@@ -5,7 +5,6 @@ namespace App\Services;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\InvalidStateException;
-use App\Services\Competition\Format\TournamentFormat;
 use App\Models\Tournament;
 
 class TournamentService
@@ -14,7 +13,7 @@ class TournamentService
     {
         $validator = Validator::make($inputData, [
             'name' => 'required|string|max:255',
-            'format' => ['required', \Illuminate\Validation\Rule::in(TournamentFormat::$validFormats)],
+            'format' => ['required', \Illuminate\Validation\Rule::in(Tournament::$validFormats)],
         ]);
         $validData = $validator->validate();
 
@@ -30,7 +29,7 @@ class TournamentService
 
         $validator = Validator::make($inputData, [
             'name' => 'required|string|max:255',
-            'format' => ['required', \Illuminate\Validation\Rule::in(TournamentFormat::$validFormats)],
+            'format' => ['required', \Illuminate\Validation\Rule::in(Tournament::$validFormats)],
         ]);
         $validData = $validator->validate();
 

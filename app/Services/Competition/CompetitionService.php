@@ -9,7 +9,6 @@ use App\Models\Round;
 use App\Models\Matchup;
 use App\Models\Game;
 use App\Models\Tournament;
-use App\Services\Competition\Format\TournamentFormat;
 use App\Services\Competition\ProgressionRule;
 use App\Values\MatchupOutcome;
 
@@ -18,7 +17,7 @@ class CompetitionService
     public function advance(int $tournamentId): void
     {
         $tournament = Tournament::findOrFail($tournamentId);
-        $format = TournamentFormat::getFormat($tournament->format);
+        $format = $tournament->getFormat();
         $rules = $format->getRules();
 
         if ($tournament->rounds->count() >= count($rules)) {

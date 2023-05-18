@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Services\Competition\Format\TournamentFormat;
 use App\Models\Tournament;
 
 class TournamentFactory extends Factory
@@ -16,7 +15,7 @@ class TournamentFactory extends Factory
     {
         return [
             'name' => $this->faker->city . ' ' . $this->faker->randomElement($this->suffixes),
-            'format' => $this->faker->randomElement(TournamentFormat::$validFormats),
+            'format' => $this->faker->randomElement(Tournament::$validFormats),
         ];
     }
 }
