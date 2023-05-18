@@ -70,11 +70,11 @@ class CompetitionSeeder extends Seeder
         $format = TournamentFormat::getFormat($tournament->format);
 
         $allTeams = Team::inRandomOrder()->get();
-        if ($allTeams->count() < $format->teamsNeeded) return; // there are not enough teams to choose from
+        if ($allTeams->count() < $format->getTeamsNeeded()) return; // there are not enough teams to choose from
 
         $date = CarbonImmutable::now()->addDays($this->faker->numberBetween(-30, -1)); // a random date to choose the participants from
 
-        for ($i = 0; $i < $format->teamsNeeded; $i++) {
+        for ($i = 0; $i < $format->getTeamsNeeded(); $i++) {
             $team = $allTeams[$i];
             $participant = TournamentTeam::create([
                 'fk_tournament' => $tournament->id,
@@ -110,7 +110,7 @@ class CompetitionSeeder extends Seeder
         $format = TournamentFormat::getFormat($tournament->format);
 
         $participants = $tournament->tournamentTeams;
-        if ($participants->count() !== $format->teamsNeeded) return; // all participants must be present
+        if ($participants->count() !== $format->getTeamsNeeded()) return; // all participants must be present
 
         $rules = $format->getRules();
         $numPlayedRounds = $this->faker->numberBetween(1, count($rules)); // don't play all the rounds - have an incomplete round in the middle

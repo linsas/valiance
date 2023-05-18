@@ -31,8 +31,8 @@ class CompetitionService
                 throw new InvalidStateException('All matchups must be completed before starting the next round.');
             }
         } else {
-            if ($tournament->tournamentTeams->count() !== $format->teamsNeeded) {
-                throw new InvalidStateException('There must be exactly (' . $format->teamsNeeded . ') participating teams in the tournament.');
+            if ($tournament->tournamentTeams->count() !== $format->getTeamsNeeded()) {
+                throw new InvalidStateException('There must be exactly (' . $format->getTeamsNeeded() . ') participating teams in the tournament.');
             }
         }
 
