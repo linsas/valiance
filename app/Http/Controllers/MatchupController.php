@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
-use App\Services\Competition\MatchupService;
+use App\Services\MatchupService;
 use App\Http\Resources\MatchupResource;
 use App\Http\Resources\MatchupResourceCollection;
 use App\Models\Matchup;
