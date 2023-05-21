@@ -28,7 +28,7 @@ class AuthService
     public function createToken(): string
     {
         $durationSeconds = 60 * 90;
-        if (env('APP_DEBUG', false)) {
+        if (config('app.debug', false)) {
             $durationSeconds = 60 * 60 * 8;
         }
 
