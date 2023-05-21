@@ -25,7 +25,7 @@ function Event() {
 
 	const [event, setEvent] = React.useState<IEvent | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchEvent] = useFetch<{ data: IEvent }>('/api/tournaments/' + routeParams.id)
+	const [isLoading, fetchEvent] = useFetch<{ data: IEvent }>('/tournaments/' + routeParams.id)
 
 	const getEvent = () => {
 		fetchEvent().then(response => setEvent(response.json?.data ?? null), err => setError(err))

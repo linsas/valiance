@@ -12,7 +12,7 @@ import EventCreate from './EventCreate'
 function EventList() {
 	const [eventsList, setEventsList] = React.useState<Array<IEventBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchEvents] = useFetch<{ data: Array<IEventBasic> }>('/api/tournaments')
+	const [isLoading, fetchEvents] = useFetch<{ data: Array<IEventBasic> }>('/tournaments')
 
 	const getEvents = () => {
 		fetchEvents().then(response => setEventsList(response.json?.data ?? []), setError)

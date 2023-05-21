@@ -15,7 +15,7 @@ interface FetchResponse {
 function TeamList() {
 	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchTeams] = useFetch<FetchResponse>('/api/teams')
+	const [isLoading, fetchTeams] = useFetch<FetchResponse>('/teams')
 
 	const getTeams = () => {
 		fetchTeams().then(response => setTeamsList(response.json?.data || []), setError)

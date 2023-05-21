@@ -126,7 +126,7 @@ function Team() {
 
 	const [team, setTeam] = React.useState<ITeam | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchTeam] = useFetch<FetchResponse>('/api/teams/' + routeParams.id)
+	const [isLoading, fetchTeam] = useFetch<FetchResponse>('/teams/' + routeParams.id)
 
 	const getTeam = () => {
 		fetchTeam().then(response => setTeam(response.json?.data || null), setError)

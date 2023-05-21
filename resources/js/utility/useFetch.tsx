@@ -17,6 +17,8 @@ interface FetchError<T> extends ApplicationError {
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
+const apiEndpointPrefix = '/api'
+
 function never<T>(): Promise<FetchResult<T>> {
 	return new Promise(() => { })
 }
@@ -31,13 +33,15 @@ export function fetchErrorMessageOrNull(error: FetchError<unknown>) {
 	return null
 }
 
-export default function useFetch<T>(url: string, method: HttpMethod = 'GET'): [
+export default function useFetch<T>(apiEndpoint: string, method: HttpMethod = 'GET'): [
 	boolean,
 	(data?: unknown) => Promise<FetchResult<T>>
 ] {
 	const [isLoading, setIsLoading] = React.useState(false)
 
 	const context = React.useContext(AppContext)
+
+	const url = apiEndpointPrefix + apiEndpoint
 
 	const controllerRef = React.useRef(new AbortController())
 	const isMountedRef = React.useRef(true)

@@ -12,7 +12,7 @@ function PlayerDelete({ player } :{
 	const context = React.useContext(AppContext)
 	const history = useHistory()
 
-	const [isDeleting, fetchDelete] = useFetch('/api/players/' + player.id, 'DELETE')
+	const [isDeleting, fetchDelete] = useFetch('/players/' + player.id, 'DELETE')
 
 	const handleDelete = () => {
 		fetchDelete().then(() => history.push('/Players'), context.notifyFetchError)

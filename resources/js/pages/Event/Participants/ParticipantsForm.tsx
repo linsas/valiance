@@ -33,7 +33,7 @@ function ParticipantsForm({ open, list, onSubmit, onClose }: {
 
 	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>|null>(null)
 	const [searchValue, setSearchValue] = React.useState('')
-	const [isLoadingTeams, fetchTeams] = useFetch<{ data: Array<ITeamBasic> }>('/api/teams')
+	const [isLoadingTeams, fetchTeams] = useFetch<{ data: Array<ITeamBasic> }>('/teams')
 
 	React.useEffect(() => {
 		if (!open) return

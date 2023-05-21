@@ -28,7 +28,7 @@ function PlayerForm({
 	}, [open])
 
 	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>>([])
-	const [isLoadingTeams, fetchTeams] = useFetch<{ data: Array<ITeamBasic> }>('/api/teams')
+	const [isLoadingTeams, fetchTeams] = useFetch<{ data: Array<ITeamBasic> }>('/teams')
 
 	React.useEffect(() => {
 		if (!open) return

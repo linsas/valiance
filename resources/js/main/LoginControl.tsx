@@ -16,7 +16,7 @@ function LoginControl({ isOpen, setOpen }: {
 }) {
 	const context = React.useContext(AppContext)
 
-	const [isLoading, fetchLogin] = useFetch<LoginResponse>('/api/login', 'POST')
+	const [isLoading, fetchLogin] = useFetch<LoginResponse>('/login', 'POST')
 
 	const parseToken = (token: string) => {
 		const payloadBase64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')

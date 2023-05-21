@@ -101,7 +101,7 @@ function Player() {
 
 	const [player, setPlayer] = React.useState<IPlayer | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchPlayer] = useFetch<FetchPlayerResponse>('/api/players/' + routeParams.id)
+	const [isLoading, fetchPlayer] = useFetch<FetchPlayerResponse>('/players/' + routeParams.id)
 
 	const getPlayer = () => {
 		fetchPlayer().then(response => setPlayer(response.json?.data || null), setError)

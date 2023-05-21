@@ -13,7 +13,7 @@ function EventCreate({ update }: {
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState(false)
-	const [isCreating, fetchCreate] = useFetch('/api/tournaments', 'POST')
+	const [isCreating, fetchCreate] = useFetch('/tournaments', 'POST')
 
 	const onSubmit = (item: IEventPayload) => {
 		fetchCreate({ name: item.name, format: item.format }).then(() => update(), context.notifyFetchError)

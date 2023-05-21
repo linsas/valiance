@@ -13,7 +13,7 @@ function PlayerCreate({ update }: {
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState(false)
-	const [isCreating, fetchCreate] = useFetch('/api/players', 'POST')
+	const [isCreating, fetchCreate] = useFetch('/players', 'POST')
 
 	const onSubmit = (player: IPlayerPayload) => {
 		fetchCreate({ alias: player.alias, team: player.team?.id ?? null }).then(() => update(), context.notifyFetchError)

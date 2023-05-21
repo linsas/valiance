@@ -13,7 +13,7 @@ function PlayerEdit({ player, update } :{
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState(false)
-	const [isSaving, fetchEdit] = useFetch('/api/players/' + player.id, 'PUT')
+	const [isSaving, fetchEdit] = useFetch('/players/' + player.id, 'PUT')
 
 	const onSubmit = (player: IPlayerPayload) => {
 		fetchEdit({ alias: player.alias, team: player.team?.id ?? null }).then(() => update(), context.notifyFetchError)

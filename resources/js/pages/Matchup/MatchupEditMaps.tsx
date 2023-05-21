@@ -13,7 +13,7 @@ function MatchupEditMaps({ matchup, update }: {
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState(false)
-	const [isSaving, fetchEdit] = useFetch('/api/matchups/' + matchup.id, 'PUT')
+	const [isSaving, fetchEdit] = useFetch('/matchups/' + matchup.id, 'PUT')
 
 	const onSubmit = (list: Array<string|null>) => {
 		fetchEdit({ maps: list }).then(() => update(), context.notifyFetchError)

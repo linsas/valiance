@@ -14,7 +14,7 @@ function MatchupEditScore({ matchup, game, update }: {
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState(false)
-	const [isSaving, fetchEdit] = useFetch('/api/matchups/' + matchup.id + '/game/' + game.number, 'PUT')
+	const [isSaving, fetchEdit] = useFetch('/matchups/' + matchup.id + '/game/' + game.number, 'PUT')
 
 	const onSubmit = (game: IGame) => {
 		fetchEdit({ score1: game.score1, score2: game.score2 }).then(() => update(), context.notifyFetchError)

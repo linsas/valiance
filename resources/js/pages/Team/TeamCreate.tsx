@@ -13,7 +13,7 @@ function TeamCreate({ update }: {
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState<boolean>(false)
-	const [isCreating, fetchCreate] = useFetch('/api/teams', 'POST')
+	const [isCreating, fetchCreate] = useFetch('/teams', 'POST')
 
 	const onSubmit = (team: ITeamPayload) => {
 		fetchCreate({ name: team.name }).then(() => update(), context.notifyFetchError)

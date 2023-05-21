@@ -12,7 +12,7 @@ function EventDelete({ event }: {
 	const context = React.useContext(AppContext)
 	const history = useHistory()
 
-	const [isDeleting, fetchDelete] = useFetch('/api/tournaments/' + event.id, 'DELETE')
+	const [isDeleting, fetchDelete] = useFetch('/tournaments/' + event.id, 'DELETE')
 
 	const handleDelete = () => {
 		fetchDelete().then(() => history.push('/Events'), context.notifyFetchError)

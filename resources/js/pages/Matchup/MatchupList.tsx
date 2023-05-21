@@ -11,7 +11,7 @@ import { IMatchupBasic } from './MatchupTypes'
 function MatchupList() {
 	const [matchupList, setMatchupsList] = React.useState<Array<IMatchupBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchMatchups] = useFetch<{data: Array<IMatchupBasic>}>('/api/matchups')
+	const [isLoading, fetchMatchups] = useFetch<{data: Array<IMatchupBasic>}>('/matchups')
 
 	const getMatchups = () => {
 		fetchMatchups().then(response => setMatchupsList(response.json?.data ?? []), setError)

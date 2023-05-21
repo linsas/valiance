@@ -12,7 +12,7 @@ function ProgressionEdit({ event, update }:{
 }) {
 	const context = React.useContext(AppContext)
 
-	const [isAdvancing, fetchAdvance] = useFetch('/api/tournaments/' + event.id + '/advance', 'POST')
+	const [isAdvancing, fetchAdvance] = useFetch('/tournaments/' + event.id + '/advance', 'POST')
 
 	const pressAdvance = () => {
 		fetchAdvance().then(() => update(), context.notifyFetchError)

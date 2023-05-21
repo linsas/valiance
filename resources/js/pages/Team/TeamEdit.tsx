@@ -13,7 +13,7 @@ function TeamEdit({ team, update }: {
 	const context = React.useContext(AppContext)
 
 	const [formOpen, setFormOpen] = React.useState<boolean>(false)
-	const [isSaving, fetchEdit] = useFetch('/api/teams/' + team.id, 'PUT')
+	const [isSaving, fetchEdit] = useFetch('/teams/' + team.id, 'PUT')
 
 	const onSubmit = (team: ITeamPayload) => {
 		fetchEdit({ name: team.name }).then(() => update(), context.notifyFetchError)
