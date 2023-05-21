@@ -3,7 +3,7 @@ import React from 'react'
 import AppContext from '../main/AppContext'
 import { ApplicationError } from '../main/AppTypes';
 
-interface FetchResult<T> {
+export interface FetchResult<T> {
 	headers: Headers;
 	status: number;
 	statusText: string;
@@ -12,7 +12,7 @@ interface FetchResult<T> {
 }
 
 interface FetchError<T> extends ApplicationError {
-	result: FetchResult<T>;
+    result: FetchResult<T>;
 }
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -21,16 +21,6 @@ const apiEndpointPrefix = '/api'
 
 function never<T>(): Promise<FetchResult<T>> {
 	return new Promise(() => { })
-}
-
-export function isFetchError(error: ApplicationError): error is FetchError<unknown> {
-	return error.name === 'ResponseNotOkError'
-}
-
-export function fetchErrorMessageOrNull(error: FetchError<unknown>) {
-	if (error.result.json != null && typeof error.result.json === 'object' && 'message' in error.result.json)
-		return String(error.result.json.message)
-	return null
 }
 
 export default function useFetch<T>(apiEndpoint: string, method: HttpMethod = 'GET'): [
@@ -73,16 +63,26 @@ export default function useFetch<T>(apiEndpoint: string, method: HttpMethod = 'G
 				json: null,
 			}
 
-			if (response.headers.get('Content-Type') === 'application/json')
-				result.json = await response.json()
+			if (response.headers.get('Content-Type') !== 'application/json') {
+				throw { title: 'Bad Response', message: 'The server did not return the correct content type.', result } as FetchError<T>
+			}
+
+			result.json = await response.json()
 
 			if (!isMountedRef.current) return never<T>()
 			setIsLoading(false)
 
-			if (!response.ok) throw { name: 'ResponseNotOkError', message: 'The server did not return a 2xx response. ', result } as FetchError<T>
+			if (!response.ok){
+				let message = 'The server did not return a 2xx response.'
+
+				if (result.json != null && typeof result.json === 'object' && 'message' in result.json)
+					message = String(result.json.message)
+
+				throw { title: result.status + ' ' + result.statusText, message, result } as FetchError<T>
+			}
 
 			return result
-		}).catch((error: FetchError<T>) => {
+		}).catch((error: unknown) => {
 			if (!isMountedRef.current) return never<T>()
 			setIsLoading(false)
 			return Promise.reject(error)

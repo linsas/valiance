@@ -16,7 +16,6 @@ export interface ApplicationContext {
 }
 
 export interface ApplicationError {
-	/** The technical name of the error */
-	name: string;
+	title: string;
 	message: string;
 }
