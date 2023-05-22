@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Switch as RouterSwitch, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Container, CssBaseline } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
 import { ThemeProvider } from '@mui/material/styles'
@@ -60,22 +60,26 @@ function App() {
 						{/* </ThemeProvider> */}
 
 						<Container style={{ flex: '1 0 auto' }} maxWidth='md'>
-							<RouterSwitch>
-								<Route exact path='/Players/:id' component={Player} />
-								<Route exact path='/Players' component={PlayerList} />
-
-								<Route exact path='/Teams/:id' component={Team} />
-								<Route exact path='/Teams' component={TeamList} />
-
-								<Route exact path='/Events/:id' component={Event} />
-								<Route exact path='/Events' component={EventList} />
-
-								<Route exact path='/Matchups/:id' component={Matchup} />
-								<Route exact path='/Matchups' component={MatchupList} />
-
-								<Route exact path='/' component={Home} />
-								<Route component={NotFound} />
-							</RouterSwitch>
+							<Routes>
+								<Route path='Players'>
+									<Route path=':id' element={<Player />} />
+									<Route index element={<PlayerList />} />
+								</Route>
+								<Route path='Teams'>
+									<Route path=':id' element={<Team />} />
+									<Route index element={<TeamList />} />
+								</Route>
+								<Route path='Events'>
+									<Route path=':id' element={<Event />} />
+									<Route index element={<EventList />} />
+								</Route>
+								<Route path='Matchups'>
+									<Route path=':id' element={<Matchup />} />
+									<Route index element={<MatchupList />} />
+								</Route>
+								<Route path='*' element={<NotFound />} />
+								<Route index element={<Home />} />
+							</Routes>
 						</Container>
 
 						<Footer />
