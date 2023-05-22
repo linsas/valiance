@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '@mui/material'
 
 import AppContext from '../../main/AppContext'
@@ -10,12 +10,12 @@ function TeamDelete({ team }: {
 	team: ITeamBasic,
 }) {
 	const context = React.useContext(AppContext)
-	const history = useHistory()
+	const navigate = useNavigate()
 
 	const [isDeleting, fetchDelete] = useFetch('/teams/' + team.id, 'DELETE')
 
 	const handleDelete = () => {
-		fetchDelete().then(() => history.push('/Teams'), context.notifyFetchError)
+		fetchDelete().then(() => navigate('/Teams'), context.notifyFetchError)
 	}
 
 	if (context.jwt == null) return null
