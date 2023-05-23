@@ -2,10 +2,10 @@ import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { AppBar, Hidden, IconButton, Link, SvgIcon, Toolbar, Tooltip, Typography } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects'
-import EmojiObjectsOutlinedIcon from '@mui/icons-material/EmojiObjectsOutlined'
-import AccountCircle from '@mui/icons-material/AccountCircle'
+import FilledLightbulbIcon from '@mui/icons-material/EmojiObjects'
+import HollowLightbulbIcon from '@mui/icons-material/EmojiObjectsOutlined'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
+import ExitIcon from '@mui/icons-material/MeetingRoom';
 
 import AppContext from './AppContext'
 import navigation from '../utility/navigation'
@@ -65,7 +65,7 @@ function Header({ isDark, setDark, onPressLogin, onPressLogout, }:{
 
 			<Tooltip title='Toggle dark mode' arrow>
 				<IconButton color='inherit' onClick={() => setDark(!isDark)}>
-					{isDark ? <EmojiObjectsOutlinedIcon /> : <EmojiObjectsIcon />}
+					{isDark ? <HollowLightbulbIcon /> : <FilledLightbulbIcon />}
 				</IconButton>
 			</Tooltip>
 
@@ -78,7 +78,7 @@ function Header({ isDark, setDark, onPressLogin, onPressLogout, }:{
 			) : (
 				<Tooltip title='Logout' arrow>
 					<IconButton color='inherit' edge='end' onClick={onPressLogout}>
-						<AccountCircle />
+						<ExitIcon />
 					</IconButton>
 				</Tooltip>
 			)}
