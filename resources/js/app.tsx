@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Container, CssBaseline } from '@mui/material'
+import { Container, CssBaseline, useMediaQuery } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
 import { ThemeProvider } from '@mui/material/styles'
 
@@ -33,7 +33,13 @@ const lightTheme = createTheme({ palette: { ...mainPalette, mode: 'light', }, })
 const darkTheme = createTheme({ palette: { ...mainPalette, mode: 'dark', }, })
 
 function App() {
-	const [isDarkTheme, setDarkTheme] = React.useState<boolean>(false)
+	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+	const [isDarkMode, setDarkMode] = React.useState<boolean>(prefersDarkMode)
+
+	React.useEffect(() => {
+		setDarkMode(prefersDarkMode)
+	}, [prefersDarkMode])
+
 	const [jwt, setJWT] = React.useState<JWT | null>(null)
 	const [notificationQueue, setNotificationQueue] = React.useState<Array<ApplicationError>>([])
 
@@ -48,7 +54,7 @@ function App() {
 
 	return <>
 		{/* providers go here... */}
-		<ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+		<ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
 			<CssBaseline />
 			<AppContext.Provider value={{ jwt, setJWT, notifyFetchError }}>
 				<BrowserRouter>
@@ -56,7 +62,7 @@ function App() {
 					<div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 
 						{/* <ThemeProvider theme={lightTheme}> */}
-							<Header isDark={isDarkTheme} setDark={setDarkTheme} onPressLogin={() => setLoginFormOpen(true)} onPressLogout={onPressLogout} />
+							<Header isDark={isDarkMode} setDark={setDarkMode} onPressLogin={() => setLoginFormOpen(true)} onPressLogout={onPressLogout} />
 						{/* </ThemeProvider> */}
 
 						<Container style={{ flex: '1 0 auto' }} maxWidth='md'>
