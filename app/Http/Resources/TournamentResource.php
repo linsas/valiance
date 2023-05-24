@@ -18,7 +18,7 @@ final class TournamentResource
                 'id' => $tournament->id,
                 'name' => $tournament->name,
                 'format' => $tournament->format,
-                'participants' => $tournament->tournamentTeams->map(fn (TournamentTeam $participantTeam) => [
+                'participants' => $tournament->tournamentTeams->sortBy('seed')->map(fn (TournamentTeam $participantTeam) => [
                     'name' => $participantTeam->name,
                     'team' => [
                         'id' => $participantTeam->fk_team,
@@ -29,7 +29,7 @@ final class TournamentResource
                         'alias' => $participantPlayer->player->alias,
                     ])->toArray(),
                 ])->toArray(),
-                'rounds' => $tournament->rounds->map(fn (Round $round) => [
+                'rounds' => $tournament->rounds->sortBy('number')->map(fn (Round $round) => [
                     'number' => $round->number,
                     'matchups' => $round->matchups->map(fn (Matchup $matchup) => [
                         'id' => $matchup->id,

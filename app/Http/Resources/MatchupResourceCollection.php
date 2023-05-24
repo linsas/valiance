@@ -18,7 +18,7 @@ final class MatchupResourceCollection
                 'team1' => $matchup->team1->name,
                 'team2' => $matchup->team2->name,
                 'tournament' => $matchup->round->tournament->name,
-                'maps' => $matchup->games->map(fn (Game $game) => $game->map),
+                'maps' => $matchup->games->sortBy('number')->map(fn (Game $game) => $game->map),
             ])->toArray()
         ]);
     }
