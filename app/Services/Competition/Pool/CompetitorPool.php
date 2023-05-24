@@ -15,11 +15,13 @@ class CompetitorPool
     public function __construct(array $sources = [])
     {
         $this->sources = $sources;
+        $this->teams = collect();
     }
 
     public function fill(Tournament $tournament): void
     {
-        if ($this->teams != null) return;
+        if ($this->teams->count() !== 0) return;
+
         $this->teams = collect();
         foreach ($this->sources as $source) {
             $collected = $source->collectParticipants($tournament);
