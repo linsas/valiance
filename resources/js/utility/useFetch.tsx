@@ -12,7 +12,7 @@ export interface FetchResult<T> {
 }
 
 interface FetchError<T> extends ApplicationError {
-    result: FetchResult<T>;
+	result: FetchResult<T>;
 }
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -63,16 +63,18 @@ export default function useFetch<T>(apiEndpoint: string, method: HttpMethod = 'G
 				json: null,
 			}
 
-			if (response.headers.get('Content-Type') !== 'application/json') {
-				throw { title: 'Bad Response', message: 'The server did not return the correct content type.', result } as FetchError<T>
-			}
+			if (response.status !== 204) {
+				if (response.headers.get('Content-Type') !== 'application/json') {
+					throw { title: 'Bad Response', message: 'The server did not return the correct content type.', result } as FetchError<T>
+				}
 
-			result.json = await response.json()
+				result.json = await response.json()
+			}
 
 			if (!isMountedRef.current) return never<T>()
 			setIsLoading(false)
 
-			if (!response.ok){
+			if (!response.ok) {
 				let message = 'The server did not return a 2xx response.'
 
 				if (result.json != null && typeof result.json === 'object' && 'message' in result.json)
