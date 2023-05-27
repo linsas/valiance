@@ -11,15 +11,23 @@ export interface FetchResult<T> {
 	json: T | null;
 }
 
-interface FetchError<T> extends ApplicationError {
-	result: FetchResult<T>;
+class FetchError<T> implements ApplicationError {
+	public title: string;
+	public message: string;
+	public result: FetchResult<T>;
+
+	constructor(title: string, message: string, result: FetchResult<T>) {
+		this.title = title
+		this.message = message
+		this.result = result
+	}
 }
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 const apiEndpointPrefix = '/api'
 
-function never<T>(): Promise<FetchResult<T>> {
+function neverResolve<T>(): Promise<FetchResult<T>> {
 	return new Promise(() => { })
 }
 
@@ -65,29 +73,39 @@ export default function useFetch<T>(apiEndpoint: string, method: HttpMethod = 'G
 
 			if (response.status !== 204) {
 				if (response.headers.get('Content-Type') !== 'application/json') {
-					throw { title: 'Bad Response', message: 'The server did not return the correct content type.', result } as FetchError<T>
+					throw new FetchError('Bad Response', 'The server did not return the correct content type.', result)
 				}
 
 				result.json = await response.json()
 			}
 
-			if (!isMountedRef.current) return never<T>()
+			if (!isMountedRef.current) return neverResolve<T>()
 			setIsLoading(false)
 
 			if (!response.ok) {
-				let message = 'The server did not return a 2xx response.'
+				if (result.json != null && typeof result.json === 'object' && 'message' in result.json) {
+					throw new FetchError('An error occured', String(result.json.message), result)
+				}
 
-				if (result.json != null && typeof result.json === 'object' && 'message' in result.json)
-					message = String(result.json.message)
-
-				throw { title: result.status + ' ' + result.statusText, message, result } as FetchError<T>
+				throw new FetchError(response.status + ' ' + response.statusText, 'The server did not return a 2xx response.', result)
 			}
 
 			return result
 		}).catch((error: unknown) => {
-			if (!isMountedRef.current) return never<T>()
+			if (!isMountedRef.current) return neverResolve<T>()
+
 			setIsLoading(false)
-			return Promise.reject(error)
+
+			if (error instanceof FetchError) {
+				return Promise.reject(error)
+			}
+
+			if (error instanceof DOMException) {
+				return Promise.reject({ title: 'Aborted', message: 'The request was interrupted.' } as ApplicationError)
+			}
+
+			console.log(error)
+			return Promise.reject({ title: 'Unknown Error', message: 'An unknown error has occured.' } as ApplicationError)
 		})
 	}, [url, method, context.jwt])
 

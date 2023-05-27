@@ -34,4 +34,4 @@ Route::put('matchups/{matchup}/game/{game}', [MatchupController::class, 'updateS
 
 Route::post('login', [AuthController::class, 'login']);
 
-Route::get('{any}', fn () => response()->json(['messge' => 'Not Found'], 404))->where('any', '.*');
+Route::get('{any}', fn () => response()->json(['message' => 'Not Found'], 404))->where('any', '.*');
