@@ -19,7 +19,7 @@ final class PlayerResourceCollection
                     'id' => $player->history->last()->team->id,
                     'name' => $player->history->last()->team->name,
                 ],
-            ])->toArray()
+            ])->values()->toArray()
         ]);
     }
 }

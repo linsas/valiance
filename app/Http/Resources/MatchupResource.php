@@ -27,7 +27,7 @@ final class MatchupResource
                 'significance' => $matchup->significance->getRepresentation(),
                 'score1' => $matchup->getTeam1Score(),
                 'score2' => $matchup->getTeam2Score(),
-                'games' => $matchup->games->sortBy('number')->toArray(),
+                'games' => $matchup->games->sortBy('number')->values()->toArray(),
             ]
         ]);
     }

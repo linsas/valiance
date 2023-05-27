@@ -24,7 +24,7 @@ final class TeamResource
                 'players' => $players->map(fn (Player $player) => [
                     'id' => $player->id,
                     'alias' => $player->alias,
-                ])->toArray(),
+                ])->values()->toArray(),
                 'transfers' => $history->map(fn (PlayerTransfer $t) => $t->serialize())->sortBy('date')->reverse()->values()->toArray(),
                 'participations' => $team->tournamentTeams->map(fn (TournamentTeam $participantTeam) => [
                     'name' => $participantTeam->name,
@@ -32,7 +32,7 @@ final class TeamResource
                         'id' => $participantTeam->tournament->id,
                         'name' => $participantTeam->tournament->name,
                     ],
-                ])->toArray(),
+                ])->values()->toArray(),
             ]
         ]);
     }

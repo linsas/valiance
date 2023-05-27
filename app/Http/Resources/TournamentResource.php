@@ -27,8 +27,8 @@ final class TournamentResource
                     'players' => $participantTeam->tournamentTeamPlayers->map(fn (TournamentTeamPlayer $participantPlayer) => [
                         'id' => $participantPlayer->fk_player,
                         'alias' => $participantPlayer->player->alias,
-                    ])->toArray(),
-                ])->toArray(),
+                    ])->values()->toArray(),
+                ])->values()->toArray(),
                 'rounds' => $tournament->rounds->sortBy('number')->map(fn (Round $round) => [
                     'number' => $round->number,
                     'matchups' => $round->matchups->map(fn (Matchup $matchup) => [
@@ -38,8 +38,8 @@ final class TournamentResource
                         'team2' => $matchup->team2->name,
                         'score1' => $matchup->getTeam1Score(),
                         'score2' => $matchup->getTeam2Score(),
-                    ])->toArray(),
-                ])->toArray(),
+                    ])->values()->toArray(),
+                ])->values()->toArray(),
             ],
         ]);
     }

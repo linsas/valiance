@@ -35,7 +35,7 @@ final class PlayerResource
                         'id' => $participantPlayer->tournamentTeam->tournament->id,
                         'name' => $participantPlayer->tournamentTeam->tournament->name,
                     ],
-                ])->toArray(),
+                ])->values()->toArray(),
             ]
         ]);
     }

@@ -15,7 +15,7 @@ final class TeamResourceCollection
             'data' => $collection->map(fn (Team $team) => [
                 'id' => $team->id,
                 'name' => $team->name,
-            ])->toArray()
+            ])->values()->toArray()
         ]);
     }
 }

@@ -16,7 +16,7 @@ final class TournamentResourceCollection
                 'id' => $tournament->id,
                 'name' => $tournament->name,
                 'format' => $tournament->format,
-            ])->toArray()
+            ])->values()->toArray()
         ]);
     }
 }
