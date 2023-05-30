@@ -16,14 +16,10 @@ class PlayerTeamHistoryService
         $teamHistory = $team->getJoinHistory();
         foreach ($teamHistory as $item) {
             $prev = $item->getEarlierByPlayer();
-            if ($prev == null) {
-                $all->add(new PlayerTransfer($item->player, null, $item->date_since, false)); // special case for first entry for player
-            } else if ($prev->fk_team !== $team->id) {
-                $all->add(new PlayerTransfer($item->player, $prev->team, $item->date_since, false));
-            }
+            $all->add(new PlayerTransfer($item->player, $prev?->team, $item->date_since, false));
 
             $next = $item->getLaterByPlayer();
-            if ($next != null && $next->fk_team !== $team->id) {
+            if ($next != null) {
                 $all->add(new PlayerTransfer($item->player, $next->team, $next->date_since, true));
             }
         }
