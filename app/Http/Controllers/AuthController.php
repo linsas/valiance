@@ -19,6 +19,6 @@ class AuthController extends Controller
     {
         $inputData = $request->json()->all();
         $jwt = $this->service->login($inputData);
-        return response()->json($jwt);
+        return response()->json(['data' => $jwt]);
     }
 }

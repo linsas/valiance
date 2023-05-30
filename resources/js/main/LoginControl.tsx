@@ -6,17 +6,13 @@ import LoginForm from './LoginForm'
 
 const tokenCookieName = 'valiance_token'
 
-interface LoginResponse {
-	token: string
-}
-
 function LoginControl({ isOpen, setOpen }: {
 	isOpen: boolean,
 	setOpen: (open: boolean) => void,
 }) {
 	const context = React.useContext(AppContext)
 
-	const [isLoading, fetchLogin] = useFetch<LoginResponse>('/login', 'POST')
+	const [isLoading, fetchLogin] = useFetch<{ data: { token: string } }>('/login', 'POST')
 
 	const parseToken = (token: string) => {
 		const payloadBase64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
@@ -31,7 +27,7 @@ function LoginControl({ isOpen, setOpen }: {
 		context.setJWT({ raw: cookieValue, payload })
 	}, [])
 
-	const onLogin = (token: string|null) => {
+	const onLogin = (token: string | null) => {
 		if (token == null) return
 		setOpen(false)
 		const tokenString = token
@@ -41,7 +37,7 @@ function LoginControl({ isOpen, setOpen }: {
 	}
 
 	const onSubmit = (credentials: { username: string, password: string }) => {
-		fetchLogin(credentials).then(response => onLogin(response.json?.token ?? null), context.handleFetchError)
+		fetchLogin(credentials).then(response => onLogin(response.json?.data.token ?? null), context.handleFetchError)
 	}
 
 	return <LoginForm open={isOpen} onClose={() => setOpen(false)} onSubmit={onSubmit} />
