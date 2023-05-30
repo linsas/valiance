@@ -33,7 +33,7 @@ function PlayerForm({
 	React.useEffect(() => {
 		if (!open) return
 		if (isLoadingTeams) return
-		fetchTeams().then(response => setTeamsList(response.json?.data ?? []), context.notifyFetchError)
+		fetchTeams().then(response => setTeamsList(response.json?.data ?? []), context.handleFetchError)
 	}, [open])
 
 	const changeAlias = (alias: string) => setPlayer(p => ({ ...p, alias: alias }))

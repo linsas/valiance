@@ -15,7 +15,7 @@ function EventDelete({ event }: {
 	const [isDeleting, fetchDelete] = useFetch('/tournaments/' + event.id, 'DELETE')
 
 	const handleDelete = () => {
-		fetchDelete().then(() => navigate('/Events'), context.notifyFetchError)
+		fetchDelete().then(() => navigate('/Events'), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

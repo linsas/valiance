@@ -16,7 +16,7 @@ function TeamCreate({ update }: {
 	const [isCreating, fetchCreate] = useFetch('/teams', 'POST')
 
 	const onSubmit = (team: ITeamPayload) => {
-		fetchCreate({ name: team.name }).then(() => update(), context.notifyFetchError)
+		fetchCreate({ name: team.name }).then(() => update(), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

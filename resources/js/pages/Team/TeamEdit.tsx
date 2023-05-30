@@ -16,7 +16,7 @@ function TeamEdit({ team, update }: {
 	const [isSaving, fetchEdit] = useFetch('/teams/' + team.id, 'PUT')
 
 	const onSubmit = (team: ITeamPayload) => {
-		fetchEdit({ name: team.name }).then(() => update(), context.notifyFetchError)
+		fetchEdit({ name: team.name }).then(() => update(), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

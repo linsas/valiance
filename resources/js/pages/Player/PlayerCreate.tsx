@@ -16,7 +16,7 @@ function PlayerCreate({ update }: {
 	const [isCreating, fetchCreate] = useFetch('/players', 'POST')
 
 	const onSubmit = (player: IPlayerPayload) => {
-		fetchCreate({ alias: player.alias, team: player.team?.id ?? null }).then(() => update(), context.notifyFetchError)
+		fetchCreate({ alias: player.alias, team: player.team?.id ?? null }).then(() => update(), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

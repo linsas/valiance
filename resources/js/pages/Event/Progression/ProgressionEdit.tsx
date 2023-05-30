@@ -15,7 +15,7 @@ function ProgressionEdit({ event, update }:{
 	const [isAdvancing, fetchAdvance] = useFetch('/tournaments/' + event.id + '/advance', 'POST')
 
 	const pressAdvance = () => {
-		fetchAdvance().then(() => update(), context.notifyFetchError)
+		fetchAdvance().then(() => update(), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

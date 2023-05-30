@@ -43,7 +43,7 @@ function App() {
 	const [jwt, setJWT] = React.useState<JWT | null>(null)
 	const [notificationQueue, setNotificationQueue] = React.useState<Array<ApplicationError>>([])
 
-	const notifyFetchError = (error: ApplicationError) => {
+	const handleFetchError = (error: ApplicationError) => {
 		setNotificationQueue(q => q.concat(error))
 	}
 
@@ -56,7 +56,7 @@ function App() {
 		{/* providers go here... */}
 		<ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
 			<CssBaseline />
-			<AppContext.Provider value={{ jwt, setJWT, notifyFetchError }}>
+			<AppContext.Provider value={{ jwt, setJWT, handleFetchError }}>
 				<BrowserRouter>
 
 					<div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>

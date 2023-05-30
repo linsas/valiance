@@ -15,7 +15,7 @@ function TeamDelete({ team }: {
 	const [isDeleting, fetchDelete] = useFetch('/teams/' + team.id, 'DELETE')
 
 	const handleDelete = () => {
-		fetchDelete().then(() => navigate('/Teams'), context.notifyFetchError)
+		fetchDelete().then(() => navigate('/Teams'), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

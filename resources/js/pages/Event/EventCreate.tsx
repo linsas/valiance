@@ -16,7 +16,7 @@ function EventCreate({ update }: {
 	const [isCreating, fetchCreate] = useFetch('/tournaments', 'POST')
 
 	const onSubmit = (item: IEventPayload) => {
-		fetchCreate({ name: item.name, format: item.format }).then(() => update(), context.notifyFetchError)
+		fetchCreate({ name: item.name, format: item.format }).then(() => update(), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

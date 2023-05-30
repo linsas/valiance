@@ -15,7 +15,7 @@ function PlayerDelete({ player } :{
 	const [isDeleting, fetchDelete] = useFetch('/players/' + player.id, 'DELETE')
 
 	const handleDelete = () => {
-		fetchDelete().then(() => navigate('/Players'), context.notifyFetchError)
+		fetchDelete().then(() => navigate('/Players'), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

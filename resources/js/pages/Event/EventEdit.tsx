@@ -16,7 +16,7 @@ function EventEdit({ event, update }: {
 	const [isSaving, fetchEdit] = useFetch('/tournaments/' + event.id, 'PUT')
 
 	const onSubmit = (item: IEventPayload) => {
-		fetchEdit({ name: item.name, format: item.format }).then(() => update(), context.notifyFetchError)
+		fetchEdit({ name: item.name, format: item.format }).then(() => update(), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

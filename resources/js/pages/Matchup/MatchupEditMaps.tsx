@@ -16,7 +16,7 @@ function MatchupEditMaps({ matchup, update }: {
 	const [isSaving, fetchEdit] = useFetch('/matchups/' + matchup.id, 'PUT')
 
 	const onSubmit = (list: Array<string|null>) => {
-		fetchEdit({ maps: list }).then(() => update(), context.notifyFetchError)
+		fetchEdit({ maps: list }).then(() => update(), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

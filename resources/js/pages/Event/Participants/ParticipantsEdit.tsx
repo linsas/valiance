@@ -17,7 +17,7 @@ function ParticipantsEdit({ event, update } : {
 	const [isSaving, fetchEdit] = useFetch('/tournaments/' + event.id + '/teams', 'PUT')
 
 	const onSubmit = (list: Array<IFormParticipant>) => {
-		fetchEdit({ participants: list.map(p => p.team.id) }).then(() => update(), context.notifyFetchError)
+		fetchEdit({ participants: list.map(p => p.team.id) }).then(() => update(), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null

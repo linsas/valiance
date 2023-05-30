@@ -12,7 +12,7 @@ export interface JWT {
 export interface ApplicationContext {
 	jwt: JWT | null;
 	setJWT: React.Dispatch<JWT>;
-	notifyFetchError: (error: ApplicationError) => void;
+	handleFetchError: (error: ApplicationError) => void;
 }
 
 export interface ApplicationError {

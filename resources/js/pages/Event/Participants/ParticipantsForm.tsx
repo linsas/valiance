@@ -39,7 +39,7 @@ function ParticipantsForm({ open, list, onSubmit, onClose }: {
 		if (!open) return
 		if (isLoadingTeams) return
 		if (teamsList != null) return
-		fetchTeams().then(response => setTeamsList(response.json?.data ?? []), context.notifyFetchError)
+		fetchTeams().then(response => setTeamsList(response.json?.data ?? []), context.handleFetchError)
 	}, [open])
 
 	const onDrop = ({ removedIndex, addedIndex }: {
