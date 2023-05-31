@@ -87,7 +87,8 @@ function ParticipantsForm({ open, list, onSubmit, onClose }: {
 					options={teamsList ?? []}
 					value={null}
 					inputValue={searchValue}
-					getOptionLabel={option => option.name || ''}
+					renderOption={(props, option) => <li {...props} key={option.id}>{option.name}</li>}
+					getOptionLabel={option => option.name ?? ''}
 					getOptionDisabled={option => items.find(i => i.team.id === option.id) != null}
 					onInputChange={(_event, text) => setSearchValue(text)}
 					onChange={(_event, option) => insert(teamAsFormParticipant(option))}

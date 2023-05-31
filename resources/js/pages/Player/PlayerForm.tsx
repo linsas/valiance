@@ -56,7 +56,8 @@ function PlayerForm({
 				<Autocomplete
 					options={teamsList}
 					value={player.team}
-					getOptionLabel={option => option.name || ''}
+					renderOption={(props, option, state) => <li {...props} key={option.id}>{option.name}</li>}
+					getOptionLabel={option => option.name ?? ''}
 					isOptionEqualToValue={(option, value) => option.id === value?.id}
 					onChange={(_event, option) => changeTeam(option)}
 					renderInput={params => <TextField {...params} margin='normal' variant='filled' label='Team' />}
