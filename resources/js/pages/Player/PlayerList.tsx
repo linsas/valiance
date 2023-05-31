@@ -11,10 +11,10 @@ import PlayerCreate from './PlayerCreate'
 function PlayerList() {
 	const [playersList, setPlayersList] = React.useState<Array<IPlayerBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchPlayers] = useFetch<{ data: Array<IPlayerBasic> }>('/players')
+	const [isLoading, fetchPlayers] = useFetch<Array<IPlayerBasic>>('/players')
 
 	const getPlayers = () => {
-		fetchPlayers().then(response => setPlayersList(response.json?.data ?? []), setError)
+		fetchPlayers().then(response => setPlayersList(response?.data ?? []), setError)
 	}
 	React.useEffect(() => getPlayers(), [])
 

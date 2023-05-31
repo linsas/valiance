@@ -117,19 +117,15 @@ function TeamHistory({ team }: {
 	</>
 }
 
-interface FetchResponse {
-	data: ITeam;
-}
-
 function Team() {
 	const routeParams = useParams<{ id: string }>()
 
 	const [team, setTeam] = React.useState<ITeam | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchTeam] = useFetch<FetchResponse>('/teams/' + routeParams.id)
+	const [isLoading, fetchTeam] = useFetch<ITeam>('/teams/' + routeParams.id)
 
 	const getTeam = () => {
-		fetchTeam().then(response => setTeam(response.json?.data || null), setError)
+		fetchTeam().then(response => setTeam(response.data ?? null), setError)
 	}
 	React.useEffect(() => getTeam(), [])
 

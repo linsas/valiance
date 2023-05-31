@@ -8,17 +8,13 @@ import ListItemLink from '../../components/ListItemLink'
 import { ITeamBasic } from './TeamTypes'
 import TeamCreate from './TeamCreate'
 
-interface FetchResponse {
-	data: Array<ITeamBasic>;
-}
-
 function TeamList() {
 	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchTeams] = useFetch<FetchResponse>('/teams')
+	const [isLoading, fetchTeams] = useFetch<Array<ITeamBasic>>('/teams')
 
 	const getTeams = () => {
-		fetchTeams().then(response => setTeamsList(response.json?.data || []), setError)
+		fetchTeams().then(response => setTeamsList(response.data ?? []), setError)
 	}
 	React.useEffect(() => getTeams(), [])
 

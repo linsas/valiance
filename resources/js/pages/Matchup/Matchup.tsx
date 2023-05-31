@@ -15,10 +15,10 @@ function Matchup() {
 
 	const [matchup, setMatchup] = React.useState<IMatchup | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchMatchup] = useFetch<{ data: IMatchup }>('/matchups/' + routeParams.id)
+	const [isLoading, fetchMatchup] = useFetch<IMatchup>('/matchups/' + routeParams.id)
 
 	const getMatchup = () => {
-		fetchMatchup().then(response => setMatchup(response.json?.data ?? null), setError)
+		fetchMatchup().then(response => setMatchup(response?.data ?? null), setError)
 	}
 	React.useEffect(() => getMatchup(), [])
 

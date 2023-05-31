@@ -4,11 +4,8 @@ import AppContext from '../main/AppContext'
 import { ApplicationError } from '../main/AppTypes';
 
 export interface FetchResult<T> {
-	headers: Headers;
-	status: number;
-	statusText: string;
-	url: string;
-	json: T | null;
+	response: Response;
+	data: T | null;
 }
 
 class FetchError<T> implements ApplicationError {
@@ -44,7 +41,7 @@ export default function useFetch<T>(apiEndpoint: string, method: HttpMethod = 'G
 	const controllerRef = React.useRef(new AbortController())
 	const isMountedRef = React.useRef(true)
 
-	const fetchData = React.useCallback((data: any) => {
+	const fetchData = React.useCallback((payload: any) => {
 		controllerRef.current.abort()
 		controllerRef.current = new AbortController()
 		setIsLoading(true)
@@ -55,39 +52,55 @@ export default function useFetch<T>(apiEndpoint: string, method: HttpMethod = 'G
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
 		}
-		if (context.jwt != null) headers['Authorization'] = 'JWT ' + context.jwt.raw
+		if (context.jwt != null) {
+			headers['Authorization'] = 'JWT ' + context.jwt.raw
+		}
 
 		return fetch(url, {
 			signal: controllerRef.current.signal,
 			method,
 			headers,
-			body: JSON.stringify(data),
+			body: JSON.stringify(payload),
 		}).then(async response => {
+			let json: unknown = null
+
+			if (response.headers.get('Content-Type') === 'application/json') {
+				json = await response.json()
+			}
+
+			return { response, json }
+		}).then(({ response, json }) => {
 			const result: FetchResult<T> = {
-				headers: response.headers,
-				status: response.status,
-				statusText: response.statusText,
-				url: response.url,
-				json: null,
+				response: response,
+				data: null,
 			}
 
-			if (response.status !== 204) {
-				if (response.headers.get('Content-Type') !== 'application/json') {
-					throw new FetchError('Bad Response', 'The server did not return the correct content type.', result)
-				}
+			// console.log({ response, json })
 
-				result.json = await response.json()
+			if (json != null && typeof json === 'object' && 'data' in json) {
+				result.data = json.data as T
 			}
 
-			if (!isMountedRef.current) return neverResolve<T>()
+			if (!isMountedRef.current) {
+				return neverResolve<T>()
+			}
+
 			setIsLoading(false)
 
 			if (!response.ok) {
-				if (result.json != null && typeof result.json === 'object' && 'message' in result.json) {
-					throw new FetchError('An error occured', String(result.json.message), result)
+				if (json != null && typeof json === 'object' && 'message' in json) {
+					throw new FetchError('An error occured', String(json.message), result)
 				}
 
 				throw new FetchError(response.status + ' ' + response.statusText, 'The server did not return a 2xx response.', result)
+			}
+
+			if (response.status === 204) {
+				return result
+			}
+
+			if (result.data == null) {
+				throw new FetchError('Bad Response', 'The server did not return any content.', result)
 			}
 
 			return result

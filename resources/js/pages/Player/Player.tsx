@@ -47,7 +47,7 @@ function PlayerTransfer({ transfer, earlier }: {
 	earlier: IPlayerTransfer | null,
 }) {
 
-	if (transfer.team == null){
+	if (transfer.team == null) {
 		if (earlier?.team == null) return <ListItem>
 			<ListItemText>
 				<Typography component='span'>{transfer.date}:</Typography>{' '}
@@ -92,19 +92,15 @@ function PlayerTeamHistory({ player }: {
 	</>
 }
 
-interface FetchPlayerResponse {
-	data: IPlayer;
-}
-
 function Player() {
 	const routeParams = useParams<{ id: string }>()
 
 	const [player, setPlayer] = React.useState<IPlayer | null>(null)
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchPlayer] = useFetch<FetchPlayerResponse>('/players/' + routeParams.id)
+	const [isLoading, fetchPlayer] = useFetch<IPlayer>('/players/' + routeParams.id)
 
 	const getPlayer = () => {
-		fetchPlayer().then(response => setPlayer(response.json?.data || null), setError)
+		fetchPlayer().then(response => setPlayer(response?.data ?? null), setError)
 	}
 	React.useEffect(() => getPlayer(), [])
 

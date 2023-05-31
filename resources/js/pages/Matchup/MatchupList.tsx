@@ -11,10 +11,10 @@ import { IMatchupBasic } from './MatchupTypes'
 function MatchupList() {
 	const [matchupList, setMatchupsList] = React.useState<Array<IMatchupBasic>>([])
 	const [errorFetch, setError] = React.useState(null)
-	const [isLoading, fetchMatchups] = useFetch<{data: Array<IMatchupBasic>}>('/matchups')
+	const [isLoading, fetchMatchups] = useFetch<Array<IMatchupBasic>>('/matchups')
 
 	const getMatchups = () => {
-		fetchMatchups().then(response => setMatchupsList(response.json?.data ?? []), setError)
+		fetchMatchups().then(response => setMatchupsList(response?.data ?? []), setError)
 	}
 	React.useEffect(() => getMatchups(), [])
 

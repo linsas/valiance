@@ -12,7 +12,7 @@ function LoginControl({ isOpen, setOpen }: {
 }) {
 	const context = React.useContext(AppContext)
 
-	const [isLoading, fetchLogin] = useFetch<{ data: { token: string } }>('/login', 'POST')
+	const [isLoading, fetchLogin] = useFetch<{ token: string }>('/login', 'POST')
 
 	const parseToken = (token: string) => {
 		const payloadBase64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
@@ -37,7 +37,7 @@ function LoginControl({ isOpen, setOpen }: {
 	}
 
 	const onSubmit = (credentials: { username: string, password: string }) => {
-		fetchLogin(credentials).then(response => onLogin(response.json?.data.token ?? null), context.handleFetchError)
+		fetchLogin(credentials).then(response => onLogin(response.data?.token ?? null), context.handleFetchError)
 	}
 
 	return <LoginForm open={isOpen} onClose={() => setOpen(false)} onSubmit={onSubmit} />

@@ -12,7 +12,7 @@ function PlayerForm({
 	player: defaultPlayer,
 	onSubmit,
 	onClose
-}:{
+}: {
 	open: boolean,
 	player: IPlayerPayload,
 	onSubmit: (player: IPlayerPayload) => void,
@@ -28,12 +28,12 @@ function PlayerForm({
 	}, [open])
 
 	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>>([])
-	const [isLoadingTeams, fetchTeams] = useFetch<{ data: Array<ITeamBasic> }>('/teams')
+	const [isLoadingTeams, fetchTeams] = useFetch<Array<ITeamBasic>>('/teams')
 
 	React.useEffect(() => {
 		if (!open) return
 		if (isLoadingTeams) return
-		fetchTeams().then(response => setTeamsList(response.json?.data ?? []), context.handleFetchError)
+		fetchTeams().then(response => setTeamsList(response?.data ?? []), context.handleFetchError)
 	}, [open])
 
 	const changeAlias = (alias: string) => setPlayer(p => ({ ...p, alias: alias }))

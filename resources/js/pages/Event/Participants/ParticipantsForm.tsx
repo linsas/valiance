@@ -31,15 +31,15 @@ function ParticipantsForm({ open, list, onSubmit, onClose }: {
 		})))
 	}, [open])
 
-	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic>|null>(null)
+	const [teamsList, setTeamsList] = React.useState<Array<ITeamBasic> | null>(null)
 	const [searchValue, setSearchValue] = React.useState('')
-	const [isLoadingTeams, fetchTeams] = useFetch<{ data: Array<ITeamBasic> }>('/teams')
+	const [isLoadingTeams, fetchTeams] = useFetch<Array<ITeamBasic>>('/teams')
 
 	React.useEffect(() => {
 		if (!open) return
 		if (isLoadingTeams) return
 		if (teamsList != null) return
-		fetchTeams().then(response => setTeamsList(response.json?.data ?? []), context.handleFetchError)
+		fetchTeams().then(response => setTeamsList(response?.data ?? []), context.handleFetchError)
 	}, [open])
 
 	const onDrop = ({ removedIndex, addedIndex }: {
@@ -77,7 +77,7 @@ function ParticipantsForm({ open, list, onSubmit, onClose }: {
 		setItems(newItems)
 	}
 
-	const teamAsFormParticipant = (team: ITeamBasic | null) => team == null ? null : ({ name: team.name, team: { id: team.id, name: team.name}}) as IFormParticipant
+	const teamAsFormParticipant = (team: ITeamBasic | null) => team == null ? null : ({ name: team.name, team: { id: team.id, name: team.name } }) as IFormParticipant
 
 	return <>
 		<Dialog open={open} fullWidth disableEnforceFocus>
