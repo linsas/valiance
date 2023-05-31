@@ -2,7 +2,6 @@
 
 namespace App\Services\Competition;
 
-
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\InvalidStateException;
 use App\Models\Round;
@@ -31,7 +30,7 @@ class CompetitionService
             }
         } else {
             if ($tournament->tournamentTeams->count() !== $format->getTeamsNeeded()) {
-                throw new InvalidStateException('There must be exactly (' . $format->getTeamsNeeded() . ') participating teams in the tournament.');
+                throw new InvalidStateException('There must be exactly ' . $format->getTeamsNeeded() . ' participating teams in the tournament.');
             }
         }
 

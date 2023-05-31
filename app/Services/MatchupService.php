@@ -83,11 +83,11 @@ class MatchupService
         $score2 = intval($validData['score2']);
 
         if ($score1 + $score2 > $maxGameRounds) {
-            throw new InvalidStateException('Invalid score.'); // impossible
+            throw new InvalidStateException('There cannot be more than '.$maxGameRounds.' game rounds played');
         }
 
         if (!($score1 === $victory || $score2 === $victory)) {
-            throw new InvalidStateException('Invalid score.'); // one team must be a clear winner
+            throw new InvalidStateException('One team must have won '.$victory.' game rounds.');
         }
 
         $game->score1 = $score1;
