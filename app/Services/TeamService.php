@@ -24,9 +24,9 @@ class TeamService
         ]);
         $validData = $validator->validate();
 
-        $team = new Team;
-        $team->name = $validData['name'];
-        $team->save();
+        Team::create([
+            'name' => $validData['name'],
+        ]);
     }
 
     public function update(array $inputData, int $id): void

@@ -17,10 +17,10 @@ class TournamentService
         ]);
         $validData = $validator->validate();
 
-        $entry = new Tournament;
-        $entry->name = $validData['name'];
-        $entry->format = $validData['format'];
-        $entry->save();
+        Tournament::create([
+            'name' => $validData['name'],
+            'format' => $validData['format'],
+        ]);
     }
 
     public function update(array $inputData, int $id): void

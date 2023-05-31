@@ -51,19 +51,19 @@ class ParticipationService
         foreach ($desired as $index => $newcomer) {
             $team = Team::findOrFail($newcomer);
 
-            $participantTeam = new TournamentTeam;
-            $participantTeam->name = $team->name;
-            $participantTeam->seed = $index + 1;
-            $participantTeam->fk_team = $team->id;
-            $participantTeam->fk_tournament = $tournament->id;
-            $participantTeam->save();
+            $participantTeam = TournamentTeam::create([
+                'name' => $team->name,
+                'seed' => $index + 1,
+                'fk_team' => $team->id,
+                'fk_tournament' => $tournament->id,
+            ]);
 
             $players = $this->historyService->getPlayersInTeam($team);
             foreach ($players as $player) {
-                $ttp = new TournamentTeamPlayer;
-                $ttp->fk_player = $player->id;
-                $ttp->fk_tournament_team = $participantTeam->id;
-                $ttp->save();
+                TournamentTeamPlayer::create([
+                    'fk_player' => $player->id,
+                    'fk_tournament_team' => $participantTeam->id,
+                ]);
             }
         }
         DB::commit();

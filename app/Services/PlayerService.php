@@ -24,9 +24,9 @@ class PlayerService
         ]);
         $validData = $validator->validate();
 
-        $player = new Player;
-        $player->alias = $validData['alias'];
-        $player->save();
+        $player = Player::create([
+            'alias' => $validData['alias'],
+        ]);
 
         $this->historyService->changePlayerTeam($player, $validData['team'] ?? null);
     }

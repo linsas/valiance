@@ -42,10 +42,10 @@ class CompetitionService
         }
 
         DB::beginTransaction();
-        $round = new Round;
-        $round->fk_tournament = $tournament->id;
-        $round->number = $roundIndex + 1;
-        $round->save();
+        $round = Round::create([
+            'fk_tournament' => $tournament->id,
+            'number' => $roundIndex + 1,
+        ]);
 
         foreach ($roundRuleset as $pairing) {
             $this->matchPair($pairing, $round);
@@ -58,18 +58,18 @@ class CompetitionService
         $high = $matchRule->takeHigh();
         $low = $matchRule->takeLow();
 
-        $match = new Matchup;
-        $match->fk_round = $round->id;
-        $match->fk_team1 = $high->id;
-        $match->fk_team2 = $low->id;
-        $match->significance = $matchRule->matchupSignificance;
-        $match->save();
+        $match = Matchup::create([
+            'fk_round' => $round->id,
+            'fk_team1' => $high->id,
+            'fk_team2' => $low->id,
+            'significance' => $matchRule->matchupSignificance,
+        ]);
 
         for ($j = 0; $j < $matchRule->numGames; $j++) {
-            $game = new Game;
-            $game->fk_matchup = $match->id;
-            $game->number = $j + 1;
-            $game->save();
+            Game::create([
+                'fk_matchup' => $match->id,
+                'number' => $j + 1,
+            ]);
         }
     }
 }

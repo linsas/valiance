@@ -53,10 +53,10 @@ class PlayerTeamHistoryService
 
         if ($latestPlayerHistory != null && $latestPlayerHistory->fk_team === $teamId) return;
 
-        $newHistory = new PlayerTeamHistory;
-        $newHistory->fk_player = $player->id;
-        $newHistory->date_since = $today;
-        $newHistory->fk_team = $teamId;
-        $newHistory->save();
+        PlayerTeamHistory::create([
+            'fk_player' => $player->id,
+            'date_since' => $today,
+            'fk_team' => $teamId,
+        ]);
     }
 }
