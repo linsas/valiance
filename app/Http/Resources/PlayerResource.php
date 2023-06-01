@@ -15,7 +15,7 @@ final class PlayerResource
             'data' => [
                 'id' => $player->id,
                 'alias' => $player->alias,
-                'team' => ($player->history->last() == null || $player->history->last()->team == null) ? null : [
+                'team' => ($player->history->last()?->team == null) ? null : [
                     'id' => $player->history->last()->team->id,
                     'name' => $player->history->last()->team->name,
                 ],

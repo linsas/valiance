@@ -60,7 +60,7 @@ class TeamService
             }
 
             $earlierEntry = $teamHistoryEntry->getEarlierByPlayer();
-            if ($earlierEntry == null || $earlierEntry->fk_team == null) {
+            if ($earlierEntry?->fk_team == null) {
                 $teamHistoryEntry->delete();
             }
         }
