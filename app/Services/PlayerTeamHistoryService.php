@@ -59,4 +59,24 @@ class PlayerTeamHistoryService
             'fk_team' => $teamId,
         ]);
     }
+
+    public function setPlayersInTeam(array $playerArray, Team $team): void
+    {
+        $playerCollection = collect($playerArray);
+
+        $currentPlayers = $this->getPlayersInTeam($team);
+        foreach ($currentPlayers as $player) {
+            if (!$playerCollection->contains($player->id)) {
+                $this->changePlayerTeam($player, null);
+            }
+        }
+
+        foreach ($playerCollection as $playerId) {
+            $player = Player::findOrFail($playerId);
+            // if ($player == null) continue;
+            if (!$currentPlayers->contains($player)) {
+                $this->changePlayerTeam($player, $team->id);
+            }
+        }
+    }
 }

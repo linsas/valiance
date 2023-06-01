@@ -22,6 +22,7 @@ use App\Http\Controllers\AuthController;
 
 Route::apiResource('players', PlayerController::class);
 Route::apiResource('teams', TeamController::class);
+Route::put('teams/{id}/players', [TeamController::class, 'players']);
 Route::apiResource('tournaments', TournamentController::class);
 
 Route::put('tournaments/{tournament}/teams', [ParticipationController::class, 'reorder']);

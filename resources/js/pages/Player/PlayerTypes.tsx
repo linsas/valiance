@@ -1,5 +1,5 @@
 export interface IPlayerBasic {
-	id: string;
+	id: number;
 	alias: string;
 	team: {
 		id: number;

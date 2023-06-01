@@ -55,4 +55,11 @@ class TeamController extends Controller
         $this->service->destroy($id);
         return response()->noContent();
     }
+
+    public function players(Request $request, int $id): Response
+    {
+        $inputData = $request->json()->all();
+        $this->service->setPlayers($inputData, $id);
+        return response()->noContent();
+    }
 }

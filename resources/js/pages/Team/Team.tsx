@@ -12,6 +12,7 @@ import ListItemLink from '../../components/ListItemLink'
 import { ITeam, ITeamTransfer } from './TeamTypes'
 import TeamEdit from './TeamEdit'
 import TeamDelete from './TeamDelete'
+import TeamPlayersEdit from './TeamPlayersEdit';
 
 function TeamParticipations({ team }: {
 	team: ITeam,
@@ -169,6 +170,7 @@ function Team() {
 		<Box my={2} />
 		<TeamHistory team={team} />
 
+		<TeamPlayersEdit team={team} update={getTeam} />
 	</>
 }
 

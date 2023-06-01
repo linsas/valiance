@@ -18,11 +18,13 @@ export interface ITeamTransfer {
 	isLeaving: boolean;
 }
 
+export interface ITeamPlayer {
+	id: number;
+	alias: string;
+}
+
 export interface ITeam extends ITeamBasic {
-	players: Array<{
-		id: string;
-		alias: string;
-	}>;
+	players: Array<ITeamPlayer>;
 	transfers: Array<ITeamTransfer>;
 	participations: Array<{
 		name: string;

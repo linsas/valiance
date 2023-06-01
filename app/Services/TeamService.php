@@ -69,6 +69,21 @@ class TeamService
         DB::commit();
     }
 
+    public function setPlayers(array $inputData, int $id): void
+    {
+        $team = Team::findOrFail($id);
+
+        $validator = Validator::make($inputData, [
+            'players' => 'required|array|max:30',
+            'players.*' => 'exists:player,id',
+        ]);
+        $validData = $validator->validate();
+
+        $playerArray = $validData['players'];
+
+        $this->historyService->setPlayersInTeam($playerArray, $team);
+    }
+
     public function getPlayers(Team $team): Collection
     {
         return $this->historyService->getPlayersInTeam($team);
