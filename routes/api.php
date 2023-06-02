@@ -7,6 +7,7 @@ use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\ParticipationController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\MatchupController;
+use App\Http\Controllers\MapController;
 use App\Http\Controllers\AuthController;
 
 /*
@@ -32,6 +33,8 @@ Route::get('matchups', [MatchupController::class, 'index']);
 Route::get('matchups/{matchup}', [MatchupController::class, 'show']);
 Route::put('matchups/{matchup}', [MatchupController::class, 'updateMaps']);
 Route::put('matchups/{matchup}/game/{game}', [MatchupController::class, 'updateScore']);
+
+Route::get('maps', [MapController::class, 'maps']);
 
 Route::post('login', [AuthController::class, 'login']);
 
