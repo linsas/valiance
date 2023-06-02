@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $number
  * @property int $fk_matchup
  * @property Matchup $matchup
- * @property ?string $map
+ * @property ?int $fk_map
+ * @property ?Map $map
  * @property ?int $score1
  * @property ?int $score2
  */
@@ -22,13 +23,17 @@ class Game extends Model
 
     protected $visible = ['map', 'score1', 'score2', 'number'];
 
-    public static array $validMaps = ['bind', 'haven', 'split', 'ascent', 'icebox', 'breeze', 'fracture', 'pearl',];
     public static int $roundsPerHalf = 12;
 
     /** @return BelongsTo<Matchup, Game> */
     public function matchup(): BelongsTo
     {
         return $this->belongsTo(Matchup::class, 'fk_matchup');
+    }
+
+    public function map()
+    {
+        return $this->belongsTo('App\Models\Map', 'fk_map');
     }
 
     public function isCompleted(): bool

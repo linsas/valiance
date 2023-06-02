@@ -15,6 +15,7 @@ use App\Models\TournamentTeamPlayer;
 use App\Models\Round;
 use App\Models\Matchup;
 use App\Models\Game;
+use App\Models\Map;
 
 class CompetitionSeeder extends Seeder
 {
@@ -129,7 +130,7 @@ class CompetitionSeeder extends Seeder
                 $high = $pairing->takeHigh();
                 $low = $pairing->takeLow();
 
-                $matchupMapList = $this->faker->shuffle(Game::$validMaps); // shuffle the maps once per matchup
+                $matchupMapList = $this->faker->shuffle(Map::all()); // shuffle the maps once per matchup
 
                 $isLastPlayedRound = $i === $numPlayedRounds - 1;
                 $hasMaps = !$isLastPlayedRound || $this->faker->boolean; // if this is the incomplete round, don't fill the map info sometimes
@@ -156,7 +157,7 @@ class CompetitionSeeder extends Seeder
                     Game::create([
                         'fk_matchup' => $match->id,
                         'number' => $j + 1,
-                        'map' => $hasMaps ? $matchupMapList[$j] : null,
+                        'fk_map' => $hasMaps ? $matchupMapList[$j]->id : null,
                         'score1' => $isGamePlayed ? ($isTeam1Winner ? Game::$roundsPerHalf + 1 : $loserScore) : null,
                         'score2' => $isGamePlayed ? (!$isTeam1Winner ? Game::$roundsPerHalf + 1 : $loserScore) : null,
                     ]);

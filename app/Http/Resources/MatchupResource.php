@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Game;
 use App\Models\Matchup;
 use Illuminate\Http\JsonResponse;
 
@@ -27,7 +28,16 @@ final class MatchupResource
                 'significance' => $matchup->significance->getRepresentation(),
                 'score1' => $matchup->getTeam1Score(),
                 'score2' => $matchup->getTeam2Score(),
-                'games' => $matchup->games->sortBy('number')->values()->toArray(),
+                'games' => $matchup->games->sortBy('number')->map(fn (Game $game) => [
+                    'map' => $game->map == null ? null : [
+                        'id' => $game->map->id,
+                        'name' => $game->map->name,
+                        'color' => $game->map->color,
+                    ],
+                    'score1' => $game->score1,
+                    'score2' => $game->score2,
+                    'number' => $game->number,
+                ])->values()->toArray(),
             ]
         ]);
     }

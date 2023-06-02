@@ -16,7 +16,7 @@ class MatchupService
         $entry = Matchup::findOrFail($id);
 
         $validator = Validator::make($inputData, [
-            'maps' => ['required', 'array', \Illuminate\Validation\Rule::in(Game::$validMaps)],
+            'maps' => ['required', 'array', 'exists:map,id'],
         ]);
         $validData = $validator->validate();
 
@@ -24,7 +24,8 @@ class MatchupService
             throw new InvalidStateException('Cannot change maps after entering score data.');
         }
 
-        $mapCollection = collect($validData['maps']);
+        $mapArray = $validData['maps'];
+        $mapCollection = collect($mapArray);
 
         $numGames = $entry->games->count();
         if ($mapCollection->count() !== $numGames) {
@@ -37,7 +38,7 @@ class MatchupService
 
         DB::beginTransaction();
         foreach ($entry->games->sortBy('number') as $game) {
-            $game->map = $mapCollection[$game->number - 1];
+            $game->fk_map = $mapCollection[$game->number - 1];
             $game->save();
         }
         DB::commit();
