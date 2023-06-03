@@ -3,7 +3,7 @@ import { Button } from '@mui/material'
 
 import AppContext from '../../main/AppContext'
 import useFetch from '../../utility/useFetch'
-import { IMatchup } from './MatchupTypes'
+import { IGameMap, IMatchup } from './MatchupTypes'
 import MatchupMapForm from './MatchupMapForm'
 
 function MatchupEditMaps({ matchup, update }: {
@@ -15,8 +15,8 @@ function MatchupEditMaps({ matchup, update }: {
 	const [formOpen, setFormOpen] = React.useState(false)
 	const [isSaving, fetchEdit] = useFetch('/matchups/' + matchup.id, 'PUT')
 
-	const onSubmit = (list: Array<number | null>) => {
-		fetchEdit({ maps: list }).then(() => update(), context.handleFetchError)
+	const onSubmit = (list: Array<IGameMap | null>) => {
+		fetchEdit({ maps: list.map(map => map?.id ?? null) }).then(() => update(), context.handleFetchError)
 	}
 
 	if (context.jwt == null) return null
