@@ -7,6 +7,7 @@ export interface IMatchupBasic {
 }
 
 export interface IGameMap {
+	id: number;
 	name: string;
 	color: string;
 }
