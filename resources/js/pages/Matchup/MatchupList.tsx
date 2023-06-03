@@ -2,7 +2,6 @@ import React from 'react'
 import { Paper, Box, Typography, ListItem, ListItemText, Divider, List } from '@mui/material'
 import { Skeleton } from '@mui/material'
 
-import mapList from '../../data/maps'
 import useFetch from '../../utility/useFetch'
 import AlertError from '../../components/AlertError'
 import ListItemLink from '../../components/ListItemLink'
@@ -63,7 +62,7 @@ function MatchupList() {
 					</ListItemText>
 					<ListItemText style={{ flexBasis: '20%' }}>
 						<Typography variant='body2' color='textSecondary'>
-							{item.maps.map(mapCode => mapList.reduce((aggr, next) => (next.id === mapCode ? next.name : aggr), mapCode)).filter(m => m != null).join(', ')}
+							{item.maps.filter(m => m != null).join(', ')}
 						</Typography>
 					</ListItemText>
 

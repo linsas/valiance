@@ -6,9 +6,14 @@ export interface IMatchupBasic {
 	maps: Array<string>;
 }
 
-export type IGame = {
+export interface IGameMap {
+	name: string;
+	color: string;
+}
+
+export interface IGame {
 	number: number;
-	map: string | null;
+	map: IGameMap | null;
 	score1: string | null;
 	score2: string | null;
 }

@@ -2,15 +2,12 @@ import React from 'react'
 import { useTheme, lighten, darken } from '@mui/material'
 import { Box, Typography, Paper, Divider, Grid } from '@mui/material'
 
-import mapList from '../../data/maps'
-import { IGame, IMatchup } from './MatchupTypes'
+import { IGame, IGameMap, IMatchup } from './MatchupTypes'
 import MatchupEditScore from './MatchupEditScore'
 
-function MatchupGameMap({ gameMap }: {
-	gameMap: string | null
+function MatchupGameMap({ map }: {
+	map: IGameMap | null
 }) {
-	const map = mapList.find(map => map.id === gameMap)
-
 	const mapName = map == null ? 'Undecided' : map.name
 	const mapColor = map == null ? '#808080' : map.color
 
@@ -18,7 +15,7 @@ function MatchupGameMap({ gameMap }: {
 	const bgColor = theme.palette.mode === 'light' ? lighten(mapColor, 0.8) : darken(mapColor, 0.8)
 
 	return <Box style={{ backgroundColor: bgColor }} sx={{ textAlign: 'center', padding: 0.5 }}>
-		<Typography color={gameMap == null ? 'textSecondary' : undefined}>
+		<Typography color={map == null ? 'textSecondary' : undefined}>
 			{mapName}
 		</Typography>
 	</Box>
@@ -31,7 +28,7 @@ function MatchupGame({ matchup, game, update }: {
 }) {
 	return <>
 		<Paper square sx={{ marginTop: 4 }}>
-			<MatchupGameMap gameMap={game.map} />
+			<MatchupGameMap map={game.map} />
 			<Divider />
 
 			<Box p={1}>
