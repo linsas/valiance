@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -16,6 +17,7 @@ class Map extends Model
 
     protected $visible = ['name', 'color'];
 
+    /** @return HasMany<Game> */
     public function games()
     {
         return $this->hasMany('App\Models\Game', 'fk_map');

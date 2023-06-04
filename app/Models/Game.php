@@ -31,6 +31,7 @@ class Game extends Model
         return $this->belongsTo(Matchup::class, 'fk_matchup');
     }
 
+    /** @return BelongsTo<Map, Game> */
     public function map()
     {
         return $this->belongsTo('App\Models\Map', 'fk_map');

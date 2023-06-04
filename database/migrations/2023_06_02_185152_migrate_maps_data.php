@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 
 class MigrateMapsData extends Migration
 {
-    // map list as of 2023 january
+    /** @var array<array<string, string>> */
     private $maps = [
         ['name' => 'Bind', 'key' => 'bind', 'color' => 'hsl(50, 90%, 60%)',],
         ['name' => 'Haven', 'key' => 'haven', 'color' => 'hsl(20, 90%, 60%)',],

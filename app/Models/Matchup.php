@@ -53,11 +53,11 @@ class Matchup extends Model
         return $this->hasMany(Game::class, 'fk_matchup');
     }
 
+    /** @return Attribute<MatchupSignificance, never> */
     protected function significance(): Attribute
     {
         return Attribute::make(
             get: fn (string $scalar) => MatchupSignificance::from($scalar),
-            set: fn (MatchupSignificance $object) => $object->value,
         );
     }
 

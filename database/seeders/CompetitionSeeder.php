@@ -26,12 +26,7 @@ class CompetitionSeeder extends Seeder
         $this->faker = Container::getInstance()->make(Generator::class);;
     }
 
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         Tournament::factory()
             ->state(new Sequence(
@@ -76,6 +71,8 @@ class CompetitionSeeder extends Seeder
 
         for ($i = 0; $i < $format->getTeamsNeeded(); $i++) {
             $team = $allTeams[$i];
+            if ($team == null) continue;
+
             $participant = TournamentTeam::create([
                 'fk_tournament' => $tournament->id,
                 'fk_team' => $team->id,

@@ -34,6 +34,7 @@ class Team extends Model
         return $this->hasMany(TournamentTeam::class, 'fk_team');
     }
 
+    /** @return Collection<int, PlayerTeamHistory> */
     public function getJoinHistory(): Collection
     {
         return PlayerTeamHistory::with('player')->where('fk_team', $this->id)->get();
