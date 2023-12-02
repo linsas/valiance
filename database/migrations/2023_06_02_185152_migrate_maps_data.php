@@ -24,7 +24,7 @@ class MigrateMapsData extends Migration
     public function up(): void
     {
         foreach ($this->maps as $map) {
-            DB::insert('insert into map (id, name, color) values (null, ?, ?)', [$map['name'], $map['color']]);
+            DB::insert('insert into map (name, color) values (?, ?)', [$map['name'], $map['color']]);
         }
 
         $games = DB::select('select * from game');
