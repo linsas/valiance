@@ -73,7 +73,7 @@ class CompetitionSeeder extends Seeder
             $team = $allTeams[$i];
             if ($team == null) continue;
 
-            $participant = TournamentTeam::create([
+            $participantTeam = TournamentTeam::create([
                 'fk_tournament' => $tournament->id,
                 'fk_team' => $team->id,
                 'name' => $this->faker->boolean(75) ? $team->name : $this->faker->streetName,
@@ -96,7 +96,7 @@ class CompetitionSeeder extends Seeder
                 $player = $players[$j];
                 TournamentTeamPlayer::create([
                     'fk_player' => $player->id,
-                    'fk_tournament_team' => $participant->id,
+                    'fk_tournament_team' => $participantTeam->id,
                 ]);
             }
         }
@@ -106,8 +106,8 @@ class CompetitionSeeder extends Seeder
     {
         $format = $tournament->getFormat();
 
-        $participants = $tournament->tournamentTeams;
-        if ($participants->count() !== $format->getTeamsNeeded()) return; // all participants must be present
+        $participantTeams = $tournament->tournamentTeams;
+        if ($participantTeams->count() !== $format->getTeamsNeeded()) return; // all participants must be present
 
         $rules = $format->getRules();
         $numPlayedRounds = $this->faker->numberBetween(1, count($rules)); // don't play all the rounds - have an incomplete round in the middle

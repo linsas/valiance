@@ -11,6 +11,7 @@ use App\Values\MatchupOutcome;
 
 class MatchupService
 {
+    /** @param array<string, mixed> $inputData */
     public function updateMaps(array $inputData, int $id): void
     {
         $entry = Matchup::findOrFail($id);
@@ -24,6 +25,7 @@ class MatchupService
             throw new InvalidStateException('Cannot change maps after entering score data.');
         }
 
+        /** @var array<int> */
         $mapArray = $validData['maps'];
         $mapCollection = collect($mapArray);
 
@@ -44,6 +46,7 @@ class MatchupService
         DB::commit();
     }
 
+    /** @param array<string, mixed> $inputData */
     public function updateScore(array $inputData, int $matchupId, int $gameNumber): void
     {
         $matchup = Matchup::findOrFail($matchupId);

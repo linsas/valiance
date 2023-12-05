@@ -20,6 +20,7 @@ class ParticipationService
         $this->historyService = $historyService;
     }
 
+    /** @param array<string, mixed> $inputData */
     public function updateParticipations(array $inputData, int $tournamentId): void
     {
         $tournament = Tournament::findOrFail($tournamentId);
@@ -33,6 +34,7 @@ class ParticipationService
         ]);
         $validData = $validator->validate();
 
+        /** @var array<int> */
         $desiredArray = $validData['participants'];
         $desired = collect($desiredArray);
 

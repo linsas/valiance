@@ -20,6 +20,7 @@ class PlayerTransfer
         $this->isLeaving = $isLeaving;
     }
 
+    /** @return array<string, mixed> */
     public function serialize(): array
     {
         return [

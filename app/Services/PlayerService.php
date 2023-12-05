@@ -16,6 +16,7 @@ class PlayerService
         $this->historyService = $historyService;
     }
 
+    /** @param array<string, mixed> $inputData */
     public function store(array $inputData): void
     {
         $validator = Validator::make($inputData, [
@@ -31,6 +32,7 @@ class PlayerService
         $this->historyService->changePlayerTeam($player, $validData['team'] ?? null);
     }
 
+    /** @param array<string, mixed> $inputData */
     public function update(array $inputData, int $id): void
     {
         $player = Player::findOrFail($id);

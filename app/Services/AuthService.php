@@ -42,6 +42,10 @@ class AuthService
         return $encodedHeaderAndPayload . '.' . $encodedSignature;
     }
 
+    /**
+     * @param array<string, mixed> $inputData
+     * @return array<string, mixed>
+     */
     public function login(array $inputData): array
     {
         $validator = Validator::make($inputData, [

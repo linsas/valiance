@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 
 class PlayerTeamHistoryService
 {
+    /** @return Collection<int, PlayerTransfer> */
     public function getTeamTransfersHistory(Team $team): Collection
     {
         $all = collect();
@@ -26,6 +27,7 @@ class PlayerTeamHistoryService
         return $all;
     }
 
+    /** @return Collection<int, Player> */
     public function getPlayersInTeam(Team $team): Collection
     {
         $players = collect();
@@ -60,18 +62,19 @@ class PlayerTeamHistoryService
         ]);
     }
 
-    public function setPlayersInTeam(array $playerArray, Team $team): void
+    /** @param array<int> $playerIdArray */
+    public function setPlayersInTeam(array $playerIdArray, Team $team): void
     {
-        $playerCollection = collect($playerArray);
+        $playerIdCollection = collect($playerIdArray);
 
         $currentPlayers = $this->getPlayersInTeam($team);
         foreach ($currentPlayers as $player) {
-            if (!$playerCollection->contains($player->id)) {
+            if (!$playerIdCollection->contains($player->id)) {
                 $this->changePlayerTeam($player, null);
             }
         }
 
-        foreach ($playerCollection as $playerId) {
+        foreach ($playerIdCollection as $playerId) {
             $player = Player::findOrFail($playerId);
             // if ($player == null) continue;
             if (!$currentPlayers->contains($player)) {

@@ -9,9 +9,13 @@ use Illuminate\Support\Collection;
 
 class CompetitorPool
 {
+    /** @var array<CompetitorPoolSource> */
     private array $sources;
+
+    /** @var Collection<int, TournamentTeam> */
     private Collection $teams;
 
+    /** @param array<CompetitorPoolSource> $sources */
     public function __construct(array $sources = [])
     {
         $this->sources = $sources;
@@ -41,6 +45,7 @@ class CompetitorPool
         return $this->teams->pop();
     }
 
+    /** @param array<int> $seeds */
     public static function fromSeed(array $seeds): CompetitorPool
     {
         return new CompetitorPool([new CompetitorSourceSeed($seeds)]);

@@ -9,6 +9,7 @@ use App\Models\Tournament;
 
 class TournamentService
 {
+    /** @param array<string, mixed> $inputData */
     public function store(array $inputData): void
     {
         $validator = Validator::make($inputData, [
@@ -23,6 +24,7 @@ class TournamentService
         ]);
     }
 
+    /** @param array<string, mixed> $inputData */
     public function update(array $inputData, int $id): void
     {
         $entry = Tournament::findOrFail($id);

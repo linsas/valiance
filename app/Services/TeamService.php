@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Collection;
 use App\Exceptions\InvalidStateException;
 use App\Models\Team;
+use App\Models\Player;
+use App\Values\PlayerTransfer;
 
 class TeamService
 {
@@ -17,6 +19,7 @@ class TeamService
         $this->historyService = $historyService;
     }
 
+    /** @param array<string, mixed> $inputData */
     public function store(array $inputData): void
     {
         $validator = Validator::make($inputData, [
@@ -29,6 +32,7 @@ class TeamService
         ]);
     }
 
+    /** @param array<string, mixed> $inputData */
     public function update(array $inputData, int $id): void
     {
         $team = Team::findOrFail($id);
@@ -69,6 +73,7 @@ class TeamService
         DB::commit();
     }
 
+    /** @param array<string, mixed> $inputData */
     public function setPlayers(array $inputData, int $id): void
     {
         $team = Team::findOrFail($id);
@@ -84,11 +89,13 @@ class TeamService
         $this->historyService->setPlayersInTeam($playerArray, $team);
     }
 
+    /** @return Collection<int, Player> */
     public function getPlayers(Team $team): Collection
     {
         return $this->historyService->getPlayersInTeam($team);
     }
 
+    /** @return Collection<int, PlayerTransfer> */
     public function getTransfersHistory(Team $team): Collection
     {
         return $this->historyService->getTeamTransfersHistory($team);
