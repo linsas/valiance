@@ -15,8 +15,6 @@ class Map extends Model
     public $timestamps = false;
     protected $table = 'map';
 
-    protected $visible = ['name', 'color'];
-
     /** @return HasMany<Game> */
     public function games()
     {

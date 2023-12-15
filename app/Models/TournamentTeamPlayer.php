@@ -17,7 +17,7 @@ class TournamentTeamPlayer extends Model
     public $timestamps = false;
     protected $table = 'tournament_team_player';
 
-    protected $visible = ['id', 'fk_player', 'fk_tournament_team'];
+    protected $fillable = ['fk_player', 'fk_tournament_team'];
 
     /** @return BelongsTo<Player, TournamentTeamPlayer> */
     public function player(): BelongsTo

@@ -30,7 +30,7 @@ class Tournament extends Model
     public $timestamps = false;
     protected $table = 'tournament';
 
-    protected $visible = ['id', 'name', 'format'];
+    protected $fillable = ['name', 'format'];
 
     /** @var array<int> */
     public static array $validFormats = [1, 2, 3, 4, 5];

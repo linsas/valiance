@@ -19,7 +19,7 @@ class Round extends Model
     public $timestamps = false;
     protected $table = 'round';
 
-    protected $visible = ['number'];
+    protected $fillable = ['fk_tournament', 'number'];
 
     /** @return BelongsTo<Tournament, Round> */
     public function tournament(): BelongsTo

@@ -18,7 +18,7 @@ class PlayerTeamHistory extends Model
     public $timestamps = false;
     protected $table = 'player_team_history';
 
-    protected $visible = ['date_since', 'fk_player', 'fk_team'];
+    protected $fillable = ['date_since', 'fk_player', 'fk_team', 'name'];
 
     /** @return BelongsTo<Player, PlayerTeamHistory> */
     public function player(): BelongsTo

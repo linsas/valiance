@@ -20,7 +20,7 @@ class Team extends Model
     public $timestamps = false;
     protected $table = 'team';
 
-    protected $visible = ['id', 'name'];
+    protected $fillable = ['name'];
 
     /** @return HasMany<PlayerTeamHistory> */
     public function history(): HasMany

@@ -21,7 +21,7 @@ class Game extends Model
     public $timestamps = false;
     protected $table = 'game';
 
-    protected $visible = ['map', 'score1', 'score2', 'number'];
+    protected $fillable = ['fk_matchup', 'fk_map', 'score1', 'score2', 'number'];
 
     public static int $roundsPerHalf = 12;
 

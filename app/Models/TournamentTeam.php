@@ -22,7 +22,7 @@ class TournamentTeam extends Model
     public $timestamps = false;
     protected $table = 'tournament_team';
 
-    protected $visible = ['id', 'name', 'seed'];
+    protected $fillable = ['name', 'seed', 'fk_team', 'fk_tournament'];
 
     /** @return BelongsTo<Tournament, TournamentTeam> */
     public function tournament(): BelongsTo

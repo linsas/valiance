@@ -27,7 +27,7 @@ class Matchup extends Model
     public $timestamps = false;
     protected $table = 'matchup';
 
-    protected $visible = ['id', 'team1', 'team2', 'games', 'significance'];
+    protected $fillable = ['fk_round', 'fk_team1', 'fk_team2', 'significance'];
 
     /** @return BelongsTo<Round, Matchup> */
     public function round(): BelongsTo
