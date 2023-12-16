@@ -41,11 +41,11 @@ class PlayerTeamHistoryService
         return $players;
     }
 
-    public function changePlayerTeam(Player $player, ?int $teamId = null): void
+    public function changePlayerTeam(Player $player, ?Team $team): void
     {
         $latestPlayerHistory = $player->getLatestHistory();
 
-        if ($latestPlayerHistory == null && $teamId == null) return;
+        if ($latestPlayerHistory == null && $team == null) return;
 
         $today = date('Y-m-d');
         if ($latestPlayerHistory != null && $latestPlayerHistory->date_since === $today) {
@@ -53,12 +53,13 @@ class PlayerTeamHistoryService
             $latestPlayerHistory = $player->getLatestHistory();
         }
 
-        if ($latestPlayerHistory != null && $latestPlayerHistory->fk_team === $teamId) return;
+        if ($latestPlayerHistory != null && $latestPlayerHistory->fk_team === $team->id) return;
 
         PlayerTeamHistory::create([
             'fk_player' => $player->id,
             'date_since' => $today,
-            'fk_team' => $teamId,
+            'fk_team' => $team?->id,
+            'name' => $team?->name,
         ]);
     }
 
@@ -78,7 +79,7 @@ class PlayerTeamHistoryService
             $player = Player::findOrFail($playerId);
             // if ($player == null) continue;
             if (!$currentPlayers->contains($player)) {
-                $this->changePlayerTeam($player, $team->id);
+                $this->changePlayerTeam($player, $team);
             }
         }
     }

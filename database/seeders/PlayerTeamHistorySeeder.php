@@ -28,21 +28,22 @@ class PlayerTeamHistorySeeder extends Seeder
             $previousTeamId = null;
 
             for ($i = 0; $i < $numberOfTransfers; $i++) {
-                $shouldTeamBeNotNull = $this->faker->boolean(75);
+                $isNextTeamNotNull = $this->faker->boolean(75);
                 $isPreviousTeamNull = $previousTeamId == null;
-                $teamId = ($isPreviousTeamNull || $shouldTeamBeNotNull) ? $teams->random()->id : null;
+                $team = ($isPreviousTeamNull || $isNextTeamNotNull) ? $teams->random() : null;
 
-                if ($teamId === $previousTeamId) $teamId = null; // rare, but not impossible
+                if ($team->id === $previousTeamId) $team = null; // rare, but not impossible
 
                 $daysAgo = 14 * ($numberOfTransfers - $i - 1) + $this->faker->numberBetween(0, 13);
                 $date = CarbonImmutable::now()->addDays(-$daysAgo)->format('Y-m-d');
 
                 PlayerTeamHistory::create([
                     'fk_player' => $player->id,
-                    'fk_team' => $teamId,
+                    'fk_team' => $team->id,
                     'date_since' => $date,
+                    'name' => $team->name,
                 ]);
-                $previousTeamId = $teamId;
+                $previousTeamId = $team->id;
             }
         }
     }

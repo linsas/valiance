@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\InvalidStateException;
 use App\Models\Player;
+use App\Models\Team;
 
 class PlayerService
 {
@@ -29,7 +30,9 @@ class PlayerService
             'alias' => $validData['alias'],
         ]);
 
-        $this->historyService->changePlayerTeam($player, $validData['team'] ?? null);
+        $team = $validData['team'] === null ? null : Team::findOrFail($validData['team']);
+
+        $this->historyService->changePlayerTeam($player, $team);
     }
 
     /** @param array<string, mixed> $inputData */
@@ -46,7 +49,9 @@ class PlayerService
         $player->alias = $validData['alias'];
         $player->save();
 
-        $this->historyService->changePlayerTeam($player, $validData['team'] ?? null);
+        $team = $validData['team'] === null ? null : Team::findOrFail($validData['team']);
+
+        $this->historyService->changePlayerTeam($player, $team);
     }
 
     public function destroy(int $id): void

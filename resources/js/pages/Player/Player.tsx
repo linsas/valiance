@@ -66,9 +66,19 @@ function PlayerTransfer({ transfer, earlier }: {
 
 	return <ListItemLink to={'/Teams/' + transfer.team.id}>
 		<ListItemText>
-			<Typography component='span'>{transfer.date}:</Typography>{' '}
+			{transfer.date}:{' '}
 			<Typography component='span' color='textSecondary'>{earlier?.team == null ? 'Joined' : 'Transferred to'}</Typography>{' '}
-			<Typography component='span'>{transfer.team.name}</Typography>
+			{transfer.name !== transfer.team.name ?
+				<>
+					{transfer.name}{' '}
+					<Typography component='span' variant='body2' color='textSecondary'>(now known as
+						{' '}
+						<Typography component='span' variant='body2' color='textPrimary'>{transfer.team.name}</Typography>
+					)</Typography>
+				</>
+			:
+				<>{transfer.team.name}</>
+			}
 		</ListItemText>
 	</ListItemLink>
 }

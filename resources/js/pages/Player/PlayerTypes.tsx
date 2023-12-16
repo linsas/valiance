@@ -11,6 +11,7 @@ export type IPlayerPayload = Omit<IPlayerBasic, 'id'>
 
 export interface IPlayerTransfer {
 	date: string;
+	name: string|null;
 	team: {
 		id: string;
 		name: string;

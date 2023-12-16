@@ -21,6 +21,7 @@ final class PlayerResource
                 ],
                 'history' => $player->history->sortBy('date_since')->reverse()->map(fn (PlayerTeamHistory $entry) => [
                     'date' => $entry->date_since,
+                    'name' => $entry->team == null ? null : $entry->name,
                     'team' => $entry->team == null ? null : [
                         'id' => $entry->team->id,
                         'name' => $entry->team->name,

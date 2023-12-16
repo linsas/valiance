@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
+ * @property ?string $name
  * @property string $date_since
  * @property int $fk_player
  * @property ?int $fk_team
